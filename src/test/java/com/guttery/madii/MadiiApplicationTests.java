@@ -1,4 +1,4 @@
-package com.uttery.madii;
+package com.guttery.madii;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package com.uttery.madii.controller;
+package com.guttery.madii.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,4 +1,4 @@
-package com.uttery.madii;
+package com.guttery.madii;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
