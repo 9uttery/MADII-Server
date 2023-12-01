@@ -14,6 +14,11 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.util.List;
+
+import static com.guttery.madii.common.config.security.SecurityConstant.AUTH_WHITELIST;
 
 @RequiredArgsConstructor
 @Configuration
@@ -29,11 +34,14 @@ public class SecurityConfig {
     @Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        final List<AntPathRequestMatcher> matchers = AUTH_WHITELIST.stream()
+                .map(AntPathRequestMatcher::new)
+                .toList();
 
         return httpSecurity
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers(SecurityConstant.AUTH_WHITELIST.toArray(new String[0]))
+                                .requestMatchers(matchers.toArray(AntPathRequestMatcher[]::new))
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
