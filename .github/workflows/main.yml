@@ -3,7 +3,8 @@ name: 9uttery-MADII
 on:
   push:
     branches:
-      - [ "main", "dev" ]
+      - main
+      - dev
   workflow_dispatch:
 
 env:
