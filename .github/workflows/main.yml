@@ -3,7 +3,7 @@ name: 9uttery-MADII
 on:
   push:
     branches:
-      - main
+      - [ "main", "dev" ]
   workflow_dispatch:
 
 env:
@@ -26,6 +26,29 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
+
+
+      - name: make application-secret.yml
+        run: echo ${{ secrets.APPLICATION_SECRET_BASE64 }} | base64 --decode > ./src/main/resources/application-secret.yml
+        shell: bash
+
+      - name: make application-dev.yml
+        run: echo ${{ secrets.APPLICATION_DEV_BASE64 }} | base64 --decode > ./src/main/resources/application-dev.yml
+        shell: bash
+
+      - name: make application-prod.yml
+        run: echo ${{ secrets.APPLICATION_PROD_BASE64 }}  | base64 --decode > ./src/main/resources/application-prod.yml
+        shell: bash
+
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Build with Gradle
         run: ./gradlew build
