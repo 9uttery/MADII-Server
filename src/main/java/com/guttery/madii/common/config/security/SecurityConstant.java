@@ -19,7 +19,7 @@ public class SecurityConstant {
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/api-docs/**",
-            "/health-check",
+            "/health",
             "/favicon.ico",
             "/auth/**"
 
