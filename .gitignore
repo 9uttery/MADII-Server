@@ -40,3 +40,4 @@ out/
 application-dev.yml
 application-prod.yml
 application-jwt.yml
+application-secret.yml
