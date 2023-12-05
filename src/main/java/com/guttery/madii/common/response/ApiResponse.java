@@ -1,6 +1,5 @@
-package com.guttery.madii.common.dto.response;
+package com.guttery.madii.common.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
