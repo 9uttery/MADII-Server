@@ -1,6 +1,5 @@
-package com.guttery.madii.common.advice;
+package com.guttery.madii.common.response;
 
-import com.guttery.madii.common.dto.response.ApiResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -24,7 +23,9 @@ public class ApiResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
 
-
+        if (body instanceof final ApiResponse<?> apiResponse) {
+            return apiResponse;
+        }
 
         return ApiResponse.of(SUCCESS_STATUS, SUCCESS_CODE, SUCCESS_MESSAGE, body); // 200, OK, API 요청이 성공했습니다.
     }
