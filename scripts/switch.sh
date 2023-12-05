@@ -7,9 +7,9 @@ TARGET_PORT=0
 echo "> Nginx currently proxies to ${CURRENT_PORT}."
 
 # Toggle port number
-if [ ${CURRENT_PORT} -eq 8081 ]; then
+if [ "${CURRENT_PORT}" -eq 8081 ]; then
     TARGET_PORT=8082
-elif [ ${CURRENT_PORT} -eq 8082 ]; then
+elif [ "${CURRENT_PORT}" -eq 8082 ]; then
     TARGET_PORT=8081
 else
     echo "> No WAS is connected to nginx"
@@ -17,7 +17,7 @@ else
 fi
 
 # Change proxying port into target port
-echo "set \$service_url http://127.0.0.1:${TARGET_PORT};" | tee /etc/nginx/conf.d/service-url.inc
+echo "set \$service_url http://127.0.0.1:${TARGET_PORT};" | sudo tee /etc/nginx/conf.d/service-url.inc
 
 echo "> Now Nginx proxies to ${TARGET_PORT}."
 
