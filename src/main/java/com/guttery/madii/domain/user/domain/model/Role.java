@@ -1,4 +1,4 @@
-package com.guttery.madii.domain.user.domain;
+package com.guttery.madii.domain.user.domain.model;
 
 import org.springframework.security.core.GrantedAuthority;
 
