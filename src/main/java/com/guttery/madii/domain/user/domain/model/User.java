@@ -29,7 +29,6 @@ public class User extends BaseTimeEntity {
     @Embedded
     private OnboardingInfo onboardingInfo;
     private Role role;
-    private boolean active;
 
     private User(LoginInfo loginInfo, SocialInfo socialInfo, OnboardingInfo onboardingInfo, Role role) {
         this.loginInfo = loginInfo;
