@@ -23,8 +23,8 @@ public class GlobalExceptionHandler {
         logExceptionInfo(ex);
 
         return ApiResponse.of(
-                ex.getStatus(),
-                ex.getCode(),
+                ex.getErrorDetailsStatus(),
+                ex.getErrorDetailsCode(),
                 ex.getMessage(),
                 null);
     }
@@ -120,8 +120,8 @@ public class GlobalExceptionHandler {
     private void logExceptionInfo(final Exception ex) {
         if (ex instanceof final CustomException customException) {
             log.error("예외 발생 - Code: {}, Status: {}, Message: {}, Cause: {}",
-                    customException.getCode(),
-                    customException.getStatus(),
+                    customException.getErrorDetailsCode(),
+                    customException.getErrorDetailsStatus(),
                     customException.getMessage(),
                     ExceptionUtils.getStackTrace(customException));
         } else {
