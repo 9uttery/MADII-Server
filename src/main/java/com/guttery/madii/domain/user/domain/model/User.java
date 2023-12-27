@@ -5,6 +5,8 @@ import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,13 +29,14 @@ public class User extends BaseTimeEntity {
     @Embedded
     private SocialInfo socialInfo;
     @Embedded
-    private OnboardingInfo onboardingInfo;
+    private UserProfile userProfile;
+    @Enumerated(EnumType.STRING)
     private Role role;
 
-    private User(LoginInfo loginInfo, SocialInfo socialInfo, OnboardingInfo onboardingInfo, Role role) {
+    private User(LoginInfo loginInfo, SocialInfo socialInfo, UserProfile userProfile, Role role) {
         this.loginInfo = loginInfo;
         this.socialInfo = socialInfo;
-        this.onboardingInfo = onboardingInfo;
+        this.userProfile = userProfile;
         this.role = role;
     }
 
@@ -45,12 +48,12 @@ public class User extends BaseTimeEntity {
         return new User(null, new SocialInfo(socialId, provider), null, Role.ROLE_USER);
     }
 
-    public void updateOnboardingInfo(OnboardingInfo onboardingInfo) {
-        this.onboardingInfo = onboardingInfo;
+    public void updateUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 
-    public void modifyInfo(OnboardingInfo onboardingInfo) {
-        this.onboardingInfo = onboardingInfo;
+    public void modifyInfo(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 
     public void linkSocialInfo(SocialInfo socialInfo) {
@@ -59,5 +62,9 @@ public class User extends BaseTimeEntity {
 
     public void unlinkSocialInfo() {
         this.socialInfo = null;
+    }
+
+    public String getEncryptedPassword() {
+        return loginInfo.getPassword();
     }
 }
