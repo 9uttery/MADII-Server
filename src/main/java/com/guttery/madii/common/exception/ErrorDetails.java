@@ -47,6 +47,7 @@ public enum ErrorDetails {
 
     USER_NOT_FOUND("U001", HttpStatus.NOT_FOUND.value(), "사용자를 찾을 수 없습니다."),
     PASSWORD_NOT_MATCH("U002", HttpStatus.BAD_REQUEST.value(), "비밀번호가 일치하지 않습니다."),
+    DUPLICATED_LOGIN_ID("U003", HttpStatus.BAD_REQUEST.value(), "중복된 로그인 아이디입니다."),
     ;
 
     private final String code;
