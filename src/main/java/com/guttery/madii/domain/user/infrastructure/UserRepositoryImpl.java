@@ -37,5 +37,13 @@ public class UserRepositoryImpl extends BaseQueryDslRepository<User> implements 
         );
     }
 
+    @Override
+    public boolean existsByLoginId(String loginId) {
+        return select(user)
+                .from(user)
+                .where(user.loginInfo.loginId.eq(loginId))
+                .fetchFirst() != null;
+    }
+
 
 }
