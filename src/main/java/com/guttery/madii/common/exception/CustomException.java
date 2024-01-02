@@ -12,11 +12,15 @@ public class CustomException extends RuntimeException{
         return new CustomException(errorDetails);
     }
 
-    public int getStatus() {
+    public int getErrorDetailsStatus() {
         return this.errorDetails.getStatus();
     }
 
-    public String getCode() {
+    public String getErrorDetailsCode() {
         return this.errorDetails.getCode();
+    }
+
+    public String getErrorDetailsMessage() {
+        return this.errorDetails.getMessage();
     }
 }

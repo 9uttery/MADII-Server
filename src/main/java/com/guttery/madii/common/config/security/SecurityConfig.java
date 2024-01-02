@@ -1,5 +1,9 @@
 package com.guttery.madii.common.config.security;
 
+import com.guttery.madii.common.jwt.JwtAccessDeniedHandler;
+import com.guttery.madii.common.jwt.JwtAuthenticationEntryPoint;
+import com.guttery.madii.common.jwt.JwtAuthenticationFilter;
+import com.guttery.madii.common.jwt.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +18,7 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.List;
@@ -25,6 +30,11 @@ import static com.guttery.madii.common.config.security.SecurityConstant.AUTH_WHI
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final LoggingFilter loggingFilter;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -67,14 +77,14 @@ public class SecurityConfig {
                                 HeadersConfigurer.FrameOptionsConfig::sameOrigin
                         )
                 )
-//                .exceptionHandling(
-//                        exceptionHandling -> exceptionHandling
-//                                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//                                .accessDeniedHandler(jwtAccessDeniedHandler)
-//                )
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class)
-//                .addFilterBefore(loggingFilter, JwtExceptionFilter.class)
+                .exceptionHandling(
+                        exceptionHandling -> exceptionHandling
+                                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                                .accessDeniedHandler(jwtAccessDeniedHandler)
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class)
+                .addFilterBefore(loggingFilter, JwtExceptionFilter.class)
                 .build();
     }
 }

@@ -12,8 +12,8 @@ public class CustomAsyncExceptionHandler implements AsyncUncaughtExceptionHandle
     public void handleUncaughtException(final Throwable ex, final Method method, final Object... params) {
         if (ex instanceof final CustomException customException) {
             log.error("비동기 예외 발생: Code: {}, Status: {}, Message: {}, Cause: {}",
-                    customException.getCode(),
-                    customException.getStatus(),
+                    customException.getErrorDetailsCode(),
+                    customException.getErrorDetailsStatus(),
                     customException.getMessage(),
                     ExceptionUtils.getStackTrace(customException));
         } else {
