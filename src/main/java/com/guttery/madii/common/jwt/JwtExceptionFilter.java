@@ -18,7 +18,6 @@ import static com.guttery.madii.common.config.security.SecurityConstant.AUTH_WHI
 @RequiredArgsConstructor
 @Component
 public class JwtExceptionFilter extends OncePerRequestFilter {
-    private final AntPathMatcher antPathMatcher;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain)
@@ -33,6 +32,8 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
+        final AntPathMatcher antPathMatcher = new AntPathMatcher();
+
         return AUTH_WHITELIST.stream().anyMatch(whitelist -> antPathMatcher.match(whitelist, request.getRequestURI()));
     }
 

@@ -28,7 +28,6 @@ import static com.guttery.madii.common.config.security.SecurityConstant.BEARER_P
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
-    private final AntPathMatcher antPathMatcher;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -41,6 +40,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
+        final AntPathMatcher antPathMatcher = new AntPathMatcher();
+
         return AUTH_WHITELIST.stream().anyMatch(whitelist -> antPathMatcher.match(whitelist, request.getRequestURI()));
     }
 
