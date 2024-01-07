@@ -1,13 +1,18 @@
 package com.guttery.madii;
 
 import com.guttery.madii.common.config.security.SecurityConfig;
+import com.guttery.madii.common.jwt.JwtAccessDeniedHandler;
+import com.guttery.madii.common.jwt.JwtAuthenticationEntryPoint;
+import com.guttery.madii.common.jwt.JwtProvider;
 import com.guttery.madii.controller.HealthController;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,9 +25,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		controllers = HealthController.class
 )
 @Import(SecurityConfig.class)
+@MockBean(JpaMetamodelMappingContext.class)
 class MadiiApplicationTests {
 	@Autowired
 	private MockMvc mockMvc;
+
+	@MockBean
+	private JwtProvider jwtProvider;
+
+	@MockBean
+	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+	@MockBean
+	private JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
 
 	@Test
 	@DisplayName("서버 시작 후 Health Check API를 테스트")
