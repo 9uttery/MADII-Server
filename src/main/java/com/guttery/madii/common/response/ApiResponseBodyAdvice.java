@@ -9,7 +9,7 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "com.guttery.madii")
 public class ApiResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     private static final int SUCCESS_STATUS = 200;
     private static final String SUCCESS_CODE = "OK";
