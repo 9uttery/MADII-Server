@@ -13,12 +13,12 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.List;
@@ -42,16 +42,22 @@ public class SecurityConfig {
     }
 
     @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+
+        return web -> web.ignoring()
+                .requestMatchers(
+                        getMatchers().toArray(AntPathRequestMatcher[]::new)
+                );
+    }
+
+    @Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        final List<AntPathRequestMatcher> matchers = AUTH_WHITELIST.stream()
-                .map(AntPathRequestMatcher::new)
-                .toList();
 
         return httpSecurity
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers(matchers.toArray(AntPathRequestMatcher[]::new))
+                                .requestMatchers(getMatchers().toArray(AntPathRequestMatcher[]::new))
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
@@ -82,9 +88,15 @@ public class SecurityConfig {
                                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class)
-                .addFilterBefore(loggingFilter, JwtExceptionFilter.class)
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class)
+//                .addFilterBefore(loggingFilter, JwtExceptionFilter.class)
                 .build();
+    }
+
+    private List<AntPathRequestMatcher> getMatchers() {
+        return AUTH_WHITELIST.stream()
+                .map(AntPathRequestMatcher::new)
+                .toList();
     }
 }
