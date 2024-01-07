@@ -15,9 +15,11 @@ public class SecurityConstant {
 
     // Immutable List 사용
     public static final List<String> AUTH_WHITELIST = List.of(
+            "/",
+            "/h2-console/**",
             "/swagger-resources/**",
             "/swagger-ui/**",
-            "/v3/api-docs/**",
+            "/v3/**",
             "/api-docs/**",
             "/health/**",
             "/favicon.ico",
