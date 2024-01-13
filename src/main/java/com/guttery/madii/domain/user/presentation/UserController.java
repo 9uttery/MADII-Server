@@ -1,5 +1,6 @@
 package com.guttery.madii.domain.user.presentation;
 
+import com.guttery.madii.domain.user.application.dto.AppleLoginRequest;
 import com.guttery.madii.domain.user.application.dto.KakaoLoginRequest;
 import com.guttery.madii.domain.user.application.dto.NormalLoginRequest;
 import com.guttery.madii.domain.user.application.dto.SignUpRequest;
@@ -86,4 +87,20 @@ public class UserController {
     public TokenResponse kakaoLogin(@Valid @RequestBody KakaoLoginRequest kakaoLoginRequest) {
         return loginService.kakaoLogin(kakaoLoginRequest);
     }
+
+    @PostMapping("/login/apple")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "애플 로그인 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    public TokenResponse appleLogin(@Valid @RequestBody AppleLoginRequest appleLoginRequest) {
+        return loginService.appleLogin(appleLoginRequest);
+    }
+
+
 }
