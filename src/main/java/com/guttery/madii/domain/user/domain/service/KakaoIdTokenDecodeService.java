@@ -17,21 +17,17 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class IdTokenDecodeService {
-    private final KakaoOidcKeyClient kakaoOIDCKeyClient;
+public class KakaoIdTokenDecodeService {
+    private final KakaoOidcKeyClient kakaoOidcKeyClient;
     @Value("${oauth.kakao.iss}")
     private String iss;
     @Value("${oauth.kakao.client-id}")
     private String clientId;
 
-    private String getKidFromUnsignedIdToken(final String token) {
-        return OidcJwtDecoder.getKidFromUnsignedTokenHeader(token, iss, clientId);
-    }
-
     @Transactional(propagation = Propagation.MANDATORY) // Redis에 접근하므로 Tranasactional
     public OidcDecodePayload getPayloadFromIdToken(final String token) {
         final String kid = getKidFromUnsignedIdToken(token);
-        final OidcPublicKeyListResponse kakaoPublicKeyList = kakaoOIDCKeyClient.getKakaoOidcOpenKeys();
+        final OidcPublicKeyListResponse kakaoPublicKeyList = kakaoOidcKeyClient.getKakaoOidcOpenKeys();
 
         final OidcPublicKeyResponse oidcPublicKey =
                 kakaoPublicKeyList.keys().stream()
@@ -40,5 +36,9 @@ public class IdTokenDecodeService {
                         .orElseThrow(() -> CustomException.of(ErrorDetails.KAKAO_KEY_SERVER_ERROR));
 
         return OidcJwtDecoder.getOIDCTokenBody(token, oidcPublicKey.n(), oidcPublicKey.e());
+    }
+
+    private String getKidFromUnsignedIdToken(final String token) {
+        return OidcJwtDecoder.getKidFromUnsignedTokenHeader(token, iss, clientId);
     }
 }

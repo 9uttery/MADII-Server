@@ -73,7 +73,9 @@ public class OidcJwtDecoder {
                 body.getIssuer(),
                 body.getAudience(),
                 body.getSubject(),
-                body.get("email", String.class));
+                body.get("nickname", String.class),
+                body.get("picture", String.class)
+        );
     }
 
     private static Key getRSAPublicKey(String modulus, String exponent)

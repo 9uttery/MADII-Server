@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @FeignClient(
-        name = "KakaoOIDCKeyClient",
+        name = "KakaoOidcKeyClient",
         url = "https://kauth.kakao.com"
 )
 public interface KakaoOidcKeyClient {
