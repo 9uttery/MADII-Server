@@ -1,4 +1,4 @@
-package com.guttery.madii.domain.joyTag.domain.model;
+package com.guttery.madii.domain.joytag.domain.model;
 
 import com.guttery.madii.common.domain.model.BaseTimeEntity;
 import com.guttery.madii.domain.joy.domain.model.Joy;
