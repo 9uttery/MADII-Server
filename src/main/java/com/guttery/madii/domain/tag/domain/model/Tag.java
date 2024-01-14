@@ -1,6 +1,5 @@
 package com.guttery.madii.domain.tag.domain.model;
 
-import com.guttery.madii.common.domain.model.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "t_tag")
 @Access(AccessType.FIELD)
-public class Tag extends BaseTimeEntity {
+public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tagId;

@@ -21,7 +21,7 @@ public class Joy extends BaseTimeEntity {
     private User user;
     @Enumerated(EnumType.STRING)
     private JoyType joyType; // 소확행 타입 (공식, 개인)
-    private Integer joyIconNum; // 소확행 썸네일 번호
+    private Integer joyIconNum; // 소확행 썸네일 아이콘 번호
     @Column(length = 30)
     private String contents; // 소확행 내용
 
