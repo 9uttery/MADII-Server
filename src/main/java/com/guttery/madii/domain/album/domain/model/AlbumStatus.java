@@ -13,12 +13,12 @@ import java.util.Objects;
 @AllArgsConstructor
 @Embeddable
 public class AlbumStatus {
-    private Boolean isPersonal; // 공개 여부
+    private Boolean isOfficial; // 공개 여부
     private Boolean isBlocked; // 신고 정지 여부
     private Boolean isDeleted; // 삭제 여부
 
     @Override
-    public int hashCode() { return Objects.hash(isPersonal, isBlocked, isDeleted); }
+    public int hashCode() { return Objects.hash(isOfficial, isBlocked, isDeleted); }
 
     @Override
     public boolean equals(Object obj) {
@@ -29,12 +29,13 @@ public class AlbumStatus {
             return false;
         }
         var that = (AlbumStatus) obj;
-        return Objects.equals(this.isPersonal, that.isPersonal) &&
+        return Objects.equals(this.isOfficial, that.isOfficial) &&
                 Objects.equals(this.isBlocked, that.isBlocked) &&
                 Objects.equals(this.isBlocked, that.isBlocked);
     }
 
-    public void setPersonal(Boolean personal) {
-        isPersonal = personal;
+    public AlbumStatus withOfficial(Boolean isOfficial) {
+        return new AlbumStatus(isOfficial, this.isBlocked, this.isDeleted);
     }
+
 }

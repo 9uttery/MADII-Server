@@ -37,15 +37,19 @@ public class Album extends BaseTimeEntity {
     }
 
     public static Album createAlbum(User user, String name, String description,
-                                    Boolean isPersonal, Boolean isBlocked, Boolean isDeleted,
+                                    Boolean isOfficial, Boolean isBlocked, Boolean isDeleted,
                                     Integer albumIconNum, Integer albumColorNum) {
-        return new Album(user, name, description, new AlbumStatus(isPersonal, isBlocked, isDeleted), new AlbumInfo(albumIconNum, albumColorNum));
+        return new Album(user, name, description, new AlbumStatus(isOfficial, isBlocked, isDeleted), new AlbumInfo(albumIconNum, albumColorNum));
     }
 
     public void modifyInfo(AlbumInfo albumInfo) { this.albumInfo = albumInfo; }
 
-    public void makePersonal() { this.albumStatus.setPersonal(true); }
+    public void makeOfficial() {
+        this.albumStatus = this.albumStatus.withOfficial(true);
+    }
 
-    public void makePublic() { this.albumStatus.setPersonal(false); }
+    public void makePersonal() {
+        this.albumStatus = this.albumStatus.withOfficial(false);
+    }
 
 }
