@@ -6,11 +6,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @FeignClient(
-        name = "KakaoOidcKeyClient",
-        url = "https://kauth.kakao.com"
+        name = "kakao-oidc-key-client"
 )
 public interface KakaoOidcKeyClient {
-    @Cacheable(cacheNames = "KakaoOidcKey", cacheManager = "kakaoOidcCacheManager")
+    @Cacheable(cacheNames = "KakaoOidcKey", cacheManager = "oidcCacheManager")
     @GetMapping("/.well-known/jwks.json")
     OidcPublicKeyListResponse getKakaoOidcOpenKeys();
 }

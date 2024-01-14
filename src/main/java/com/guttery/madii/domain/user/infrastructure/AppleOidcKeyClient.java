@@ -6,11 +6,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @FeignClient(
-        name = "AppleOidcKeyClient",
-        url = "https://appleid.apple.com/auth"
+        name = "apple-oidc-key-client"
 )
 public interface AppleOidcKeyClient {
-    @Cacheable(cacheNames = "AppleOidcKey", cacheManager = "appleOidcCacheManager")
-    @GetMapping("/keys")
+    @Cacheable(cacheNames = "AppleOidcKey", cacheManager = "oidcCacheManager")
+    @GetMapping("/auth/keys")
     OidcPublicKeyListResponse getAppleOidcOpenKeys();
 }
