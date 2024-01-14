@@ -1,6 +1,8 @@
 package com.guttery.madii.domain.user.domain.model;
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +16,7 @@ import java.util.Objects;
 @Embeddable
 public class SocialInfo {
     private String socialId;
+    @Enumerated(EnumType.STRING)
     private SocialProvider provider;
 
     @Override

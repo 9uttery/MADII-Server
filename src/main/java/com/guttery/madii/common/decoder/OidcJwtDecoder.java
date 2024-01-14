@@ -53,10 +53,10 @@ public class OidcJwtDecoder {
         return splitToken[0] + "." + splitToken[1] + ".";
     }
 
-    public static Jws<Claims> getOIDCTokenJws(String token, String modulus, String exponent) {
+    public static Jws<Claims> getOidcTokenJws(String token, String modulus, String exponent) {
         try {
             return Jwts.parserBuilder()
-                    .setSigningKey(getRSAPublicKey(modulus, exponent))
+                    .setSigningKey(getRsaPublicKey(modulus, exponent))
                     .build()
                     .parseClaimsJws(token);
         } catch (ExpiredJwtException e) {
@@ -67,16 +67,18 @@ public class OidcJwtDecoder {
         }
     }
 
-    public static OidcDecodePayload getOIDCTokenBody(String token, String modulus, String exponent) {
-        Claims body = getOIDCTokenJws(token, modulus, exponent).getBody();
+    public static OidcDecodePayload getOidcTokenBody(String token, String modulus, String exponent) {
+        Claims body = getOidcTokenJws(token, modulus, exponent).getBody();
         return new OidcDecodePayload(
                 body.getIssuer(),
                 body.getAudience(),
                 body.getSubject(),
-                body.get("email", String.class));
+                body.get("nickname", String.class),
+                body.get("picture", String.class)
+        );
     }
 
-    private static Key getRSAPublicKey(String modulus, String exponent)
+    private static Key getRsaPublicKey(String modulus, String exponent)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         byte[] decodeN = Base64.getUrlDecoder().decode(modulus);
