@@ -58,7 +58,6 @@ public class LoginService {
         final User newUser = User.createSocialUser(oidcDecodePayload.sub(), SocialProvider.KAKAO);
 
         newUser.updateUserProfile(oidcDecodePayload.nickname(), oidcDecodePayload.picture());
-        // Payload 정보로 UserProfile 업데이트하는 로직 필요 (카카오 기본 닉네임, 프사 가져와야 함!)
 
         return userRepository.save(newUser);
     }
