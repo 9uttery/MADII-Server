@@ -35,7 +35,7 @@ public class KakaoIdTokenDecodeService {
                         .findFirst()
                         .orElseThrow(() -> CustomException.of(ErrorDetails.KAKAO_KEY_SERVER_ERROR));
 
-        return OidcJwtDecoder.getOIDCTokenBody(token, oidcPublicKey.n(), oidcPublicKey.e());
+        return OidcJwtDecoder.getOidcTokenBody(token, oidcPublicKey.n(), oidcPublicKey.e());
     }
 
     private String getKidFromUnsignedIdToken(final String token) {

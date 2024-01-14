@@ -33,9 +33,11 @@ public class AppleIdTokenDecodeService {
                 applePublicKeyList.keys().stream()
                         .filter(o -> o.kid().equals(kid))
                         .findFirst()
-                        .orElseThrow(() -> CustomException.of(ErrorDetails.KAKAO_KEY_SERVER_ERROR));
+                        .orElseThrow(() -> CustomException.of(ErrorDetails.APPLE_KEY_SERVER_ERROR));
 
-        return OidcJwtDecoder.getOIDCTokenBody(token, oidcPublicKey.n(), oidcPublicKey.e());
+        // 캐시 무효화 로직 관련해서 고민해보기.
+
+        return OidcJwtDecoder.getOidcTokenBody(token, oidcPublicKey.n(), oidcPublicKey.e());
     }
 
     private String getKidFromUnsignedIdToken(final String token) {
