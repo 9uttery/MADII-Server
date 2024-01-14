@@ -48,12 +48,8 @@ public class User extends BaseTimeEntity {
         return new User(null, new SocialInfo(socialId, provider), null, Role.ROLE_USER);
     }
 
-    public void updateUserProfile(UserProfile userProfile) {
-        this.userProfile = userProfile;
-    }
-
-    public void modifyInfo(UserProfile userProfile) {
-        this.userProfile = userProfile;
+    public void updateUserProfile(String nickname, String profileImage) {
+        this.userProfile = new UserProfile(nickname, profileImage);
     }
 
     public void linkSocialInfo(SocialInfo socialInfo) {
