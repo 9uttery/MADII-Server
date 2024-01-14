@@ -1,4 +1,13 @@
 spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          kakao-oidc-key-client:
+            url: https://kauth.kakao.com
+          apple-oidc-key-client:
+            url: https://appleid.apple.com
+
   profiles:
     group:
       local-env:
