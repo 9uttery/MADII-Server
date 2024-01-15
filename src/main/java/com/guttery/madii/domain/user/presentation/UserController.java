@@ -9,6 +9,7 @@ import com.guttery.madii.domain.user.application.dto.TokenResponse;
 import com.guttery.madii.domain.user.application.service.LoginService;
 import com.guttery.madii.domain.user.application.service.ProfileService;
 import com.guttery.madii.domain.user.application.service.SignUpService;
+import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -45,7 +46,7 @@ public class UserController {
                     )
             }
     )
-    @Operation(summary = "ID 중복 체크 API", description = "ID 중복 체크 API입니다.")
+    @Operation(summary = "ID 중복 체크 API", description = "ID 중복 체크 API입니다. true인 경우 회원가입 가능, false인 경우 불가능을 나타냅니다.")
     public boolean checkLoginId(
             @NotBlank @RequestParam final String loginId
     ) {
@@ -113,7 +114,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/users/profile")
+    @PostMapping("/profile")
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -126,8 +127,8 @@ public class UserController {
     @Operation(summary = "프로필 등록 및 수정 API", description = "프로필 등록 및 수정 API입니다.")
     public void updateProfile(
             @Valid @RequestBody ProfileUpdateRequest profileUpdateRequest,
-            @AuthenticationPrincipal Long userId
+            @AuthenticationPrincipal final UserPrincipal userPrincipal
     ) {
-
+        profileService.updateProfile(profileUpdateRequest, userPrincipal);
     }
 }
