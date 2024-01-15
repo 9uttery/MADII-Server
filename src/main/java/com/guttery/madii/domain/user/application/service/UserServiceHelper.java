@@ -5,7 +5,10 @@ import com.guttery.madii.common.exception.ErrorDetails;
 import com.guttery.madii.domain.user.domain.model.User;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import com.guttery.madii.domain.user.domain.repository.UserRepository;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class UserServiceHelper {
     public static User findExistingUser(final UserRepository userRepository, final UserPrincipal userPrincipal) {
         return userRepository.findById(userPrincipal.id())
