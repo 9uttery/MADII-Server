@@ -2,7 +2,9 @@ package com.guttery.madii.domain.joy.application.service;
 
 import com.guttery.madii.domain.joy.application.dto.JoyCreateRequest;
 import com.guttery.madii.domain.joy.application.dto.JoyCreateResponse;
+import com.guttery.madii.domain.joy.application.dto.JoyGetMyAllResponse;
 import com.guttery.madii.domain.joy.domain.model.Joy;
+import com.guttery.madii.domain.joy.domain.repository.JoyQueryDslRepository;
 import com.guttery.madii.domain.joy.domain.repository.JoyRepository;
 import com.guttery.madii.domain.user.application.service.UserServiceHelper;
 import com.guttery.madii.domain.user.domain.model.User;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ import java.util.Random;
 @Service
 public class JoyService {
     private final JoyRepository joyRepository;
+    private final JoyQueryDslRepository joyQueryDslRepository;
     private final UserRepository userRepository;
 
     public JoyCreateResponse createJoy(final JoyCreateRequest joyCreateRequest, UserPrincipal userPrincipal) {
@@ -30,6 +34,15 @@ public class JoyService {
 
         final Joy joy = Joy.createPersonalJoy(user, random.nextInt(bound), joyCreateRequest.contents());
         joyRepository.save(joy);
-        return new JoyCreateResponse(joy.getJoyIconNum(), joy.getContents());
+
+        JoyCreateResponse joyCreateResponse = new JoyCreateResponse(joy.getJoyIconNum(), joy.getContents());
+        return joyCreateResponse;
+    }
+
+    public List<JoyGetMyAllResponse> getMyJoy(UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+
+        List<JoyGetMyAllResponse> joyGetMyAllResponseList = joyQueryDslRepository.getMyJoy(user.getUserId());
+        return joyGetMyAllResponseList;
     }
 }
