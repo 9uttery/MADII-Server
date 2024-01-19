@@ -70,4 +70,20 @@ public class JoyController {
                                          @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         return joyService.putMyJoy(joyId, joyPutRequest, userPrincipal);
     }
+
+    @DeleteMapping("/{joyId}")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "소확행 삭제 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "소확행 삭제 API", description = "소확행 삭제 API입니다.")
+    public void deleteMyJoy(@PathVariable Long joyId,
+                                   @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        joyService.deleteMyJoy(joyId, userPrincipal);
+    }
 }
