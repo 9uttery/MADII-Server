@@ -70,4 +70,18 @@ public class JoyService {
 
         return joyPutResponse;
     }
+
+    public void deleteMyJoy(Long joyId, UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+        final Joy joy = joyRepository.findById(joyId)
+                .orElseThrow(() -> CustomException.of(ErrorDetails.JOY_NOT_FOUND));
+
+        if (joy.getUser().getUserId().equals(user.getUserId())) { // 내가 기록한 소확행
+            joyRepository.delete(joy);
+        } else {
+            // 1. 북마크 해제 -> * 북마크 기능 후 구현 완료하기
+
+        }
+
+    }
 }
