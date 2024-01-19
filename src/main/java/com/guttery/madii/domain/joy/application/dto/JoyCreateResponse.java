@@ -1,8 +1,6 @@
 package com.guttery.madii.domain.joy.application.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Schema(description = "소확행 기록 응답")
 public record JoyCreateResponse(
