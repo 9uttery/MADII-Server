@@ -10,7 +10,6 @@ import com.guttery.madii.domain.user.application.service.UserServiceHelper;
 import com.guttery.madii.domain.user.domain.model.User;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import com.guttery.madii.domain.user.domain.repository.UserRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 @Slf4j
 @Service
+@Transactional
 public class JoyService {
     private final JoyRepository joyRepository;
     private final JoyQueryDslRepository joyQueryDslRepository;
@@ -41,6 +41,7 @@ public class JoyService {
         return joyCreateResponse;
     }
 
+    @Transactional(readOnly = true)
     public List<JoyGetMyAllResponse> getMyJoy(UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
 
@@ -48,7 +49,6 @@ public class JoyService {
         return joyGetMyAllResponseList;
     }
 
-    @Transactional
     public JoyPutResponse putMyJoy(Long joyId, final JoyPutRequest joyPutRequest, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
         final Joy joy = joyRepository.findById(joyId)
