@@ -1,4 +1,4 @@
-package com.guttery.madii.domain.album.domain.model;
+package com.guttery.madii.domain.albums.domain.model;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
