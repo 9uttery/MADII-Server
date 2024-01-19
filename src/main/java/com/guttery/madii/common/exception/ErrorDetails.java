@@ -50,6 +50,7 @@ public enum ErrorDetails {
     KAKAO_KEY_SERVER_ERROR("U004", HttpStatus.INTERNAL_SERVER_ERROR.value(), "카카오 공개 키 서버와 통신 중 오류가 발생했습니다. 다시 시도해 주세요."),
     APPLE_KEY_SERVER_ERROR("U005", HttpStatus.INTERNAL_SERVER_ERROR.value(), "애플 공개 키 서버와 통신 중 오류가 발생했습니다. 다시 시도해 주세요."),
 
+    JOY_NOT_FOUND("J001", HttpStatus.NOT_FOUND.value(), "소확행을 찾을 수 없습니다."),
     ;
 
     private final String code;
