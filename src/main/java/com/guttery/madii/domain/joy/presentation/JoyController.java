@@ -1,8 +1,6 @@
 package com.guttery.madii.domain.joy.presentation;
 
-import com.guttery.madii.domain.joy.application.dto.JoyCreateRequest;
-import com.guttery.madii.domain.joy.application.dto.JoyCreateResponse;
-import com.guttery.madii.domain.joy.application.dto.JoyGetMyAllResponse;
+import com.guttery.madii.domain.joy.application.dto.*;
 import com.guttery.madii.domain.joy.application.service.JoyService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,5 +52,22 @@ public class JoyController {
     @Operation(summary = "내가 기록한 소확행 조회 API", description = "내가 기록한 소확행 조회 API입니다.")
     public List<JoyGetMyAllResponse> getMyJoy(@AuthenticationPrincipal final UserPrincipal userPrincipal) {
         return joyService.getMyJoy(userPrincipal);
+    }
+
+    @PutMapping("/{joyId}")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "소확행 수정 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "소확행 수정 API", description = "소확행 수정 API입니다.")
+    public JoyPutResponse putMyJoy(@PathVariable Long joyId,
+                                         @Valid @RequestBody JoyPutRequest joyPutRequest,
+                                         @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        return joyService.putMyJoy(joyId, joyPutRequest, userPrincipal);
     }
 }
