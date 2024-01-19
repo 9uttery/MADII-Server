@@ -48,7 +48,9 @@ public class JoyRepositoryImpl implements JoyQueryDslRepository {
                                         .from(joySub)
                                         .where(joySub.user.userId.eq(userId), formattedDateSub.eq(formattedDate)),
                                 list(Projections.constructor(JoyGetMyOne.class,
-                                        joy.joyIconNum, joy.contents)))));
+                                        joy.joyId,
+                                        joy.joyIconNum,
+                                        joy.contents)))));
     }
 
 }
