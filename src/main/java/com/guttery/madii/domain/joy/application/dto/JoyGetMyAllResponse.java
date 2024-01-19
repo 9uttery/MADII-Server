@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
+@Schema(description = "내가 기록한 소확행 조회 응답")
 public record JoyGetMyAllResponse(
         @Schema(description = "소확행 기록 날짜", example = "2024. 01. 12")
         String createdAt,
