@@ -2,7 +2,7 @@ package com.guttery.madii.domain.albums.presentation;
 
 import com.guttery.madii.domain.albums.application.dto.AlbumCreateRequest;
 import com.guttery.madii.domain.albums.application.dto.AlbumCreateResponse;
-import com.guttery.madii.domain.albums.application.dto.AlbumPutJoyRequest;
+import com.guttery.madii.domain.albums.application.dto.AlbumPutRequest;
 import com.guttery.madii.domain.albums.application.dto.AlbumSaveJoyRequest;
 import com.guttery.madii.domain.albums.application.service.AlbumService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
@@ -71,9 +71,9 @@ public class AlbumController {
     )
     @Operation(summary = "앨범 이름, 설명 수정 API", description = "앨범 이름, 설명 수정 API입니다.")
     public void putMyAlbum(@PathVariable Long albumId,
-                            @Valid @RequestBody AlbumPutJoyRequest albumPutJoyRequest,
+                            @Valid @RequestBody AlbumPutRequest albumPutRequest,
                             @AuthenticationPrincipal final UserPrincipal userPrincipal) {
-        albumService.putMyAlbum(albumId, albumPutJoyRequest, userPrincipal);
+        albumService.putMyAlbum(albumId, albumPutRequest, userPrincipal);
     }
 
 }
