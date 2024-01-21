@@ -1,9 +1,6 @@
 package com.guttery.madii.domain.albums.presentation;
 
-import com.guttery.madii.domain.albums.application.dto.AlbumCreateRequest;
-import com.guttery.madii.domain.albums.application.dto.AlbumCreateResponse;
-import com.guttery.madii.domain.albums.application.dto.AlbumPutJoyRequest;
-import com.guttery.madii.domain.albums.application.dto.AlbumSaveJoyRequest;
+import com.guttery.madii.domain.albums.application.dto.*;
 import com.guttery.madii.domain.albums.application.service.AlbumService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
@@ -71,9 +68,24 @@ public class AlbumController {
     )
     @Operation(summary = "앨범 이름, 설명 수정 API", description = "앨범 이름, 설명 수정 API입니다.")
     public void putMyAlbum(@PathVariable Long albumId,
-                            @Valid @RequestBody AlbumPutJoyRequest albumPutJoyRequest,
+                            @Valid @RequestBody AlbumPutRequest albumPutRequest,
                             @AuthenticationPrincipal final UserPrincipal userPrincipal) {
-        albumService.putMyAlbum(albumId, albumPutJoyRequest, userPrincipal);
+        albumService.putMyAlbum(albumId, albumPutRequest, userPrincipal);
     }
 
+    @PutMapping("/{albumId}/status")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "앨범 공개 여부 수정 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "앨범 공개 여부 수정 API", description = "앨범 공개 여부 수정 API입니다.")
+    public void putMyAlbumStatus(@PathVariable Long albumId,
+                                 @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        albumService.putMyAlbumStatus(albumId, userPrincipal);
+    }
 }
