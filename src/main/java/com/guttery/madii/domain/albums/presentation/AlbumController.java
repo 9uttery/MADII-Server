@@ -2,6 +2,7 @@ package com.guttery.madii.domain.albums.presentation;
 
 import com.guttery.madii.domain.albums.application.dto.AlbumCreateRequest;
 import com.guttery.madii.domain.albums.application.dto.AlbumCreateResponse;
+import com.guttery.madii.domain.albums.application.dto.AlbumPutJoyRequest;
 import com.guttery.madii.domain.albums.application.dto.AlbumSaveJoyRequest;
 import com.guttery.madii.domain.albums.application.service.AlbumService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
@@ -58,5 +59,21 @@ public class AlbumController {
         albumService.addJoyToAlbum(joyId, albumSaveJoyRequest, userPrincipal);
     }
 
+    @PutMapping("/{albumId}")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "앨범 이름, 설명 수정 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "앨범 이름, 설명 수정 API", description = "앨범 이름, 설명 수정 API입니다.")
+    public void putMyAlbum(@PathVariable Long albumId,
+                            @Valid @RequestBody AlbumPutJoyRequest albumPutJoyRequest,
+                            @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        albumService.putMyAlbum(albumId, albumPutJoyRequest, userPrincipal);
+    }
 
 }

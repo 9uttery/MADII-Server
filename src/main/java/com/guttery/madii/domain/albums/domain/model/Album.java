@@ -42,6 +42,11 @@ public class Album extends BaseTimeEntity {
         return new Album(user, name, description, new AlbumStatus(isOfficial, isBlocked, isDeleted), new AlbumInfo(albumIconNum, albumColorNum));
     }
 
+    public void modifyNameAndDes(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public void modifyInfo(AlbumInfo albumInfo) { this.albumInfo = albumInfo; }
 
     public void makeOfficial() {

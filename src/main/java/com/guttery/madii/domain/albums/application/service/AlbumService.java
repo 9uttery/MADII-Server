@@ -4,6 +4,7 @@ import com.guttery.madii.common.exception.CustomException;
 import com.guttery.madii.common.exception.ErrorDetails;
 import com.guttery.madii.domain.albums.application.dto.AlbumCreateRequest;
 import com.guttery.madii.domain.albums.application.dto.AlbumCreateResponse;
+import com.guttery.madii.domain.albums.application.dto.AlbumPutJoyRequest;
 import com.guttery.madii.domain.albums.application.dto.AlbumSaveJoyRequest;
 import com.guttery.madii.domain.albums.domain.model.Album;
 import com.guttery.madii.domain.albums.domain.model.SavingJoy;
@@ -63,5 +64,13 @@ public class AlbumService {
             final SavingJoy savingJoy = SavingJoy.createSavingJoy(joy, album);
             savingAlbumRepository.save(savingJoy);
         }
+    }
+
+    public void putMyAlbum(Long albumId, AlbumPutJoyRequest albumPutJoyRequest, UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+        final Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUN_NOT_FOUND));
+
+        album.modifyNameAndDes(albumPutJoyRequest.name(), albumPutJoyRequest.description());
     }
 }
