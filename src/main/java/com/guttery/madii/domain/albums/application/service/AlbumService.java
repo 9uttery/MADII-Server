@@ -1,10 +1,17 @@
 package com.guttery.madii.domain.albums.application.service;
 
+import com.guttery.madii.common.exception.CustomException;
+import com.guttery.madii.common.exception.ErrorDetails;
 import com.guttery.madii.domain.albums.application.dto.AlbumCreateRequest;
 import com.guttery.madii.domain.albums.application.dto.AlbumCreateResponse;
+import com.guttery.madii.domain.albums.application.dto.AlbumSaveJoyRequest;
 import com.guttery.madii.domain.albums.domain.model.Album;
+import com.guttery.madii.domain.albums.domain.model.SavingJoy;
 import com.guttery.madii.domain.albums.domain.repository.AlbumQueryDslRepository;
 import com.guttery.madii.domain.albums.domain.repository.AlbumRepository;
+import com.guttery.madii.domain.albums.domain.repository.SavingAlbumRepository;
+import com.guttery.madii.domain.joy.domain.model.Joy;
+import com.guttery.madii.domain.joy.domain.repository.JoyRepository;
 import com.guttery.madii.domain.user.application.service.UserServiceHelper;
 import com.guttery.madii.domain.user.domain.model.User;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
@@ -25,6 +32,8 @@ public class AlbumService {
     private final AlbumRepository albumRepository;
     private final AlbumQueryDslRepository albumQueryDslRepository;
     private final UserRepository userRepository;
+    private final JoyRepository joyRepository;
+    private final SavingAlbumRepository savingAlbumRepository;
 
     public List<AlbumCreateResponse> createAlbum(AlbumCreateRequest albumCreateRequest, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
@@ -41,5 +50,18 @@ public class AlbumService {
 
         List<AlbumCreateResponse> albumCreateResponseList = albumQueryDslRepository.getMyAlbums(user.getUserId());
         return albumCreateResponseList;
+    }
+
+    public void addJoyToAlbum(Long joyId, AlbumSaveJoyRequest albumSaveJoyRequest, UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+
+        for (Long albumId : albumSaveJoyRequest.albumIds()) {
+            final Joy joy =  joyRepository.findById(joyId)
+                    .orElseThrow(() -> CustomException.of(ErrorDetails.JOY_NOT_FOUND));
+            final Album album = albumRepository.findById(albumId)
+                    .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUN_NOT_FOUND));
+            final SavingJoy savingJoy = SavingJoy.createSavingJoy(joy, album);
+            savingAlbumRepository.save(savingJoy);
+        }
     }
 }

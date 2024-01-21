@@ -66,8 +66,8 @@ public class JoyController {
     )
     @Operation(summary = "소확행 수정 API", description = "소확행 수정 API입니다.")
     public JoyPutResponse putMyJoy(@PathVariable Long joyId,
-                                         @Valid @RequestBody JoyPutRequest joyPutRequest,
-                                         @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+                                   @Valid @RequestBody JoyPutRequest joyPutRequest,
+                                   @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         return joyService.putMyJoy(joyId, joyPutRequest, userPrincipal);
     }
 
@@ -83,7 +83,7 @@ public class JoyController {
     )
     @Operation(summary = "소확행 삭제 API", description = "소확행 삭제 API입니다.")
     public void deleteMyJoy(@PathVariable Long joyId,
-                                   @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+                            @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         joyService.deleteMyJoy(joyId, userPrincipal);
     }
 }
