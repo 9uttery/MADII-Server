@@ -2,6 +2,7 @@ package com.guttery.madii.domain.albums.presentation;
 
 import com.guttery.madii.domain.albums.application.dto.AlbumCreateRequest;
 import com.guttery.madii.domain.albums.application.dto.AlbumCreateResponse;
+import com.guttery.madii.domain.albums.application.dto.AlbumSaveJoyRequest;
 import com.guttery.madii.domain.albums.application.service.AlbumService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,10 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,5 +40,23 @@ public class AlbumController {
                                                  @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         return albumService.createAlbum(albumCreateRequest, userPrincipal);
     }
+
+    @PostMapping("/{joyId}")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "앨범에 소확행 추가 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "앨범에 소확행 추가 API", description = "앨범에 소확행 추가 API입니다.")
+    public void addJoyToAlbum(@PathVariable Long joyId,
+                              @Valid @RequestBody AlbumSaveJoyRequest albumSaveJoyRequest,
+                              @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        albumService.addJoyToAlbum(joyId, albumSaveJoyRequest, userPrincipal);
+    }
+
 
 }
