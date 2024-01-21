@@ -73,4 +73,16 @@ public class AlbumService {
 
         album.modifyNameAndDes(albumPutRequest.name(), albumPutRequest.description());
     }
+
+    public void putMyAlbumStatus(Long albumId, UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+        final Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUN_NOT_FOUND));
+
+        if (album.getAlbumStatus().getIsOfficial()) {
+            album.makePersonal();
+        } else {
+            album.makeOfficial();
+        }
+    }
 }
