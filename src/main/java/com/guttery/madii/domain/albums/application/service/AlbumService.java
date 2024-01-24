@@ -2,10 +2,7 @@ package com.guttery.madii.domain.albums.application.service;
 
 import com.guttery.madii.common.exception.CustomException;
 import com.guttery.madii.common.exception.ErrorDetails;
-import com.guttery.madii.domain.albums.application.dto.AlbumCreateRequest;
-import com.guttery.madii.domain.albums.application.dto.AlbumCreateResponse;
-import com.guttery.madii.domain.albums.application.dto.AlbumPutRequest;
-import com.guttery.madii.domain.albums.application.dto.AlbumSaveJoyRequest;
+import com.guttery.madii.domain.albums.application.dto.*;
 import com.guttery.madii.domain.albums.domain.model.Album;
 import com.guttery.madii.domain.albums.domain.model.SavingJoy;
 import com.guttery.madii.domain.albums.domain.repository.AlbumQueryDslRepository;
@@ -84,5 +81,25 @@ public class AlbumService {
         } else {
             album.makeOfficial();
         }
+    }
+
+    @Transactional(readOnly = true)
+    public AlbumGetDetailResponse getAlbumDetail(Long albumId, UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+        final Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUN_NOT_FOUND));
+
+        AlbumGetDetailResponse albumGetDetailResponse;
+        List<JoyGetInfo> joyInfoList;
+        if (album.getUser().getUserId().equals(user.getUserId())) { // 내 앨범
+            joyInfoList = albumQueryDslRepository.getMyAlbumJoys(albumId);
+            albumGetDetailResponse = new AlbumGetDetailResponse(null, album.getName(), null, album.getDescription(), joyInfoList);
+        } else { // 남 앨범
+            joyInfoList = albumQueryDslRepository.getAlbumJoys(albumId, user.getUserId());
+            Boolean isAlbumSaved = albumQueryDslRepository.getIsAlbumSaved(albumId, user.getUserId());
+            albumGetDetailResponse = new AlbumGetDetailResponse(isAlbumSaved, album.getName(), album.getUser().getUserProfile().getNickname(), album.getDescription(), joyInfoList);
+        }
+
+        return albumGetDetailResponse;
     }
 }

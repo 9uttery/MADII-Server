@@ -88,4 +88,20 @@ public class AlbumController {
                                  @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         albumService.putMyAlbumStatus(albumId, userPrincipal);
     }
+
+    @GetMapping("/{albumId}")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "앨범 상세 조회 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "앨범 상세 조회 API", description = "앨범 상세 조회 API입니다.")
+    public AlbumGetDetailResponse getAlbumDetail(@PathVariable Long albumId,
+                                 @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        return albumService.getAlbumDetail(albumId, userPrincipal);
+    }
 }
