@@ -83,14 +83,12 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
 
     @Override
     public Boolean getIsAlbumSaved(Long albumId, Long userId) {
-        return queryFactory
-                .select(
-                        new CaseBuilder()
-                                .when(savingAlbum.album.albumId.eq(albumId)
-                                        .and(savingAlbum.user.userId.eq(userId)))
-                                .then(true)
-                                .otherwise(false))
-                .from(savingAlbum)
-                .fetchOne();
+        long count = queryFactory
+                .selectFrom(savingAlbum)
+                .where(savingAlbum.album.albumId.eq(albumId)
+                        .and(savingAlbum.user.userId.eq(userId)))
+                .fetchCount();
+
+        return count > 0L;
     }
 }
