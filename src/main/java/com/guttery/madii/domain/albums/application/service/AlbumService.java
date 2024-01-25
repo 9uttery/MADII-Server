@@ -106,6 +106,10 @@ public class AlbumService {
         return albumGetDetailResponse;
     }
 
+    public Boolean bookmarkStatus(User user, Album album) {
+        return savingAlbumRepository.existsByUserAndAlbum(user, album);
+    }
+
     public void createAlbumBookmark(Long albumId, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
         final Album album = albumRepository.findById(albumId)
@@ -117,7 +121,13 @@ public class AlbumService {
         savingAlbumRepository.save(savingAlbum);
     }
 
-    public Boolean bookmarkStatus(User user, Album album) {
-        return savingAlbumRepository.existsByUserAndAlbum(user, album);
+    public void deleteAlbumBookmark(Long albumId, UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+        final Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUN_NOT_FOUND));
+
+        if (!bookmarkStatus(user, album)) throw CustomException.of(ErrorDetails.NOT_FOUND_BOOKMARK);
+
+        savingAlbumRepository.deleteByUserAndAlbum(user, album);
     }
 }
