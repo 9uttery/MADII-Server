@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SavingAlbumRepository extends JpaRepository<SavingAlbum, Long> {
     Boolean existsByUserAndAlbum(User user, Album album);
+
+    void deleteByUserAndAlbum(User user, Album album);
 }

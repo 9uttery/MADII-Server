@@ -121,4 +121,20 @@ public class AlbumController {
         albumService.createAlbumBookmark(albumId, userPrincipal);
     }
 
+    @DeleteMapping("/{albumId}/bookmarks")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "앨범 북마크 해제 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "앨범 북마크 해제 API", description = "앨범 북마크 해제 API입니다.")
+    public void deleteAlbumBookmark(@PathVariable Long albumId,
+                                    @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        albumService.deleteAlbumBookmark(albumId, userPrincipal);
+    }
+
 }
