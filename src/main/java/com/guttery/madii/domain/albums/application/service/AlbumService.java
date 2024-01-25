@@ -4,10 +4,12 @@ import com.guttery.madii.common.exception.CustomException;
 import com.guttery.madii.common.exception.ErrorDetails;
 import com.guttery.madii.domain.albums.application.dto.*;
 import com.guttery.madii.domain.albums.domain.model.Album;
+import com.guttery.madii.domain.albums.domain.model.SavingAlbum;
 import com.guttery.madii.domain.albums.domain.model.SavingJoy;
 import com.guttery.madii.domain.albums.domain.repository.AlbumQueryDslRepository;
 import com.guttery.madii.domain.albums.domain.repository.AlbumRepository;
 import com.guttery.madii.domain.albums.domain.repository.SavingAlbumRepository;
+import com.guttery.madii.domain.albums.domain.repository.SavingJoyRepository;
 import com.guttery.madii.domain.joy.domain.model.Joy;
 import com.guttery.madii.domain.joy.domain.repository.JoyRepository;
 import com.guttery.madii.domain.user.application.service.UserServiceHelper;
@@ -32,6 +34,7 @@ public class AlbumService {
     private final UserRepository userRepository;
     private final JoyRepository joyRepository;
     private final SavingAlbumRepository savingAlbumRepository;
+    private final SavingJoyRepository savingJoyRepository;
 
     public List<AlbumCreateResponse> createAlbum(AlbumCreateRequest albumCreateRequest, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
@@ -59,7 +62,7 @@ public class AlbumService {
             final Album album = albumRepository.findById(albumId)
                     .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUN_NOT_FOUND));
             final SavingJoy savingJoy = SavingJoy.createSavingJoy(joy, album);
-            savingAlbumRepository.save(savingJoy);
+            savingJoyRepository.save(savingJoy);
         }
     }
 
@@ -101,5 +104,20 @@ public class AlbumService {
         }
 
         return albumGetDetailResponse;
+    }
+
+    public void createAlbumBookmark(Long albumId, UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+        final Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUN_NOT_FOUND));
+
+        if (bookmarkStatus(user, album)) throw CustomException.of(ErrorDetails.ALREADY_EXIST_BOOKMARK);
+
+        final SavingAlbum savingAlbum = SavingAlbum.createSavingAlbum(user, album);
+        savingAlbumRepository.save(savingAlbum);
+    }
+
+    public Boolean bookmarkStatus(User user, Album album) {
+        return savingAlbumRepository.existsByUserAndAlbum(user, album);
     }
 }

@@ -101,7 +101,24 @@ public class AlbumController {
     )
     @Operation(summary = "앨범 상세 조회 API", description = "앨범 상세 조회 API입니다.")
     public AlbumGetDetailResponse getAlbumDetail(@PathVariable Long albumId,
-                                 @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+                                                 @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         return albumService.getAlbumDetail(albumId, userPrincipal);
     }
+
+    @PostMapping("/{albumId}/bookmarks")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "앨범 북마크 등록 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "앨범 북마크 등록 API", description = "앨범 북마크 등록 API입니다.")
+    public void createAlbumBookmark(@PathVariable Long albumId,
+                                    @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        albumService.createAlbumBookmark(albumId, userPrincipal);
+    }
+
 }
