@@ -21,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -129,5 +131,18 @@ public class AlbumService {
         if (!bookmarkStatus(user, album)) throw CustomException.of(ErrorDetails.NOT_FOUND_BOOKMARK);
 
         savingAlbumRepository.deleteByUserAndAlbum(user, album);
+    }
+
+    @Transactional(readOnly = true)
+    public List<AlbumGetMyAllResponse> getMyAllAlbums(UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+
+        List<AlbumGetMyAllResponse> getMyAlbumsInfoList = albumQueryDslRepository.getMyAlbumsInfo(user.getUserId());
+        List<AlbumGetMyAllResponse> getMyBookmarksInfoList = albumQueryDslRepository.getMyBookmarksInfo(user.getUserId());
+        List<AlbumGetMyAllResponse> albumGetMyAllResponseList = new ArrayList<>();
+        albumGetMyAllResponseList.addAll(getMyAlbumsInfoList);
+        albumGetMyAllResponseList.addAll(getMyBookmarksInfoList);
+        albumGetMyAllResponseList.sort(Comparator.comparing(AlbumGetMyAllResponse::modifiedAt).reversed());
+        return albumGetMyAllResponseList;
     }
 }
