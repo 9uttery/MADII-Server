@@ -36,7 +36,6 @@ public enum ErrorDetails {
     INVALID_ID_TOKEN("3010", HttpStatus.BAD_REQUEST.value(), "유효하지 않은 ID 토큰입니다."),
     EXPIRED_ID_TOKEN("3011", HttpStatus.BAD_REQUEST.value(), "ID 토큰이 만료되었습니다."),
     INVALID_AUTHORIZATION_CODE("3012", HttpStatus.BAD_REQUEST.value(), "유효하지 않은 인가 코드입니다."),
-    KAKAO_KEY_SERVER_ERROR("3020", HttpStatus.INTERNAL_SERVER_ERROR.value(), "카카오 공개키 서버와 통신 중 오류가 발생했습니다. 다시 시도해 주세요."),
     USER_AND_AGENCY_NOT_FOUND("3030", HttpStatus.NOT_FOUND.value(), "이메일로 사용자와 기관을 찾을 수 없습니다."),
 
     /**
@@ -48,6 +47,15 @@ public enum ErrorDetails {
     USER_NOT_FOUND("U001", HttpStatus.NOT_FOUND.value(), "사용자를 찾을 수 없습니다."),
     PASSWORD_NOT_MATCH("U002", HttpStatus.BAD_REQUEST.value(), "비밀번호가 일치하지 않습니다."),
     DUPLICATED_LOGIN_ID("U003", HttpStatus.BAD_REQUEST.value(), "중복된 로그인 아이디입니다."),
+    KAKAO_KEY_SERVER_ERROR("U004", HttpStatus.INTERNAL_SERVER_ERROR.value(), "카카오 공개 키 서버와 통신 중 오류가 발생했습니다. 다시 시도해 주세요."),
+    APPLE_KEY_SERVER_ERROR("U005", HttpStatus.INTERNAL_SERVER_ERROR.value(), "애플 공개 키 서버와 통신 중 오류가 발생했습니다. 다시 시도해 주세요."),
+
+    JOY_NOT_FOUND("J001", HttpStatus.NOT_FOUND.value(), "소확행을 찾을 수 없습니다."),
+
+    ALBUN_NOT_FOUND("A001", HttpStatus.NOT_FOUND.value(), "앨범을 찾을 수 없습니다."),
+    ALREADY_EXIST_BOOKMARK("A002", HttpStatus.BAD_REQUEST.value(), "이미 저장한 앨범입니다."),
+    NOT_FOUND_BOOKMARK("A003", HttpStatus.BAD_REQUEST.value(), "저장한 앨범이 아닙니다.")
+
     ;
 
     private final String code;

@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private void setAuthentication(final String accessToken) {
         final UserPrincipal userPrincipal = jwtProvider.extractUserPrincipalFromToken(accessToken);
-        JwtAuthenticationToken jwtAuthenticationToken = JwtAuthenticationToken.of(userPrincipal);
+        final JwtAuthenticationToken jwtAuthenticationToken = JwtAuthenticationToken.of(userPrincipal);
         SecurityContextHolder.getContext().setAuthentication(jwtAuthenticationToken);
     }
 }
