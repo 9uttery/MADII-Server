@@ -114,6 +114,23 @@ public class UserController {
         return loginService.appleLogin(appleLoginRequest);
     }
 
+    @PostMapping("/refresh")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "토큰 리프레시 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "토큰 리프레시 API", description = "토큰 리프레시 API입니다.")
+    public TokenResponse refresh(
+            @NotBlank @RequestParam final String refreshToken
+    ) {
+        return loginService.refresh(refreshToken);
+    }
+
     @GetMapping("/profile")
     @ApiResponses(
             value = {

@@ -78,4 +78,8 @@ public class LoginService {
 
         return userRepository.save(newUser);
     }
+
+    public TokenResponse refresh(final String refreshToken) {
+        return new TokenResponse(jwtProvider.reIssueAccessToken(refreshToken), jwtProvider.reIssueRefreshToken(refreshToken));
+    }
 }
