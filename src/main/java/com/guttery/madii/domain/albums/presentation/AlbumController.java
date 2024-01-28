@@ -137,4 +137,18 @@ public class AlbumController {
         albumService.deleteAlbumBookmark(albumId, userPrincipal);
     }
 
+    @GetMapping("")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "내가 만든 & 저장한 앨범 목록 조회 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "내가 만든 & 저장한 앨범 목록 조회 API", description = "내가 만든 & 저장한 앨범 목록 조회 API입니다.")
+    public List<AlbumGetMyAllResponse> getMyAllAlbums(@AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        return albumService.getMyAllAlbums(userPrincipal);
+    }
 }

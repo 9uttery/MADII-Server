@@ -1,13 +1,14 @@
 package com.guttery.madii.domain.albums.infrastructure;
 
 import com.guttery.madii.domain.albums.application.dto.AlbumCreateResponse;
+import com.guttery.madii.domain.albums.application.dto.AlbumGetMyAllResponse;
 import com.guttery.madii.domain.albums.application.dto.JoyGetInfo;
 import com.guttery.madii.domain.albums.domain.model.QSavingJoy;
 import com.guttery.madii.domain.albums.domain.repository.AlbumQueryDslRepository;
 import com.querydsl.core.types.NullExpression;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -91,4 +92,34 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
 
         return count > 0L;
     }
+
+    @Override
+    public List<AlbumGetMyAllResponse> getMyAlbumsInfo(Long userId) {
+        return queryFactory
+                .select(Projections.constructor(AlbumGetMyAllResponse.class,
+                        album.albumId,
+                        album.albumInfo.albumIconNum,
+                        album.albumInfo.albumColorNum,
+                        album.name,
+                        album.modifiedAt))
+                .from(album)
+                .where(album.user.userId.eq(userId))
+                .fetch();
+    }
+
+    @Override
+    public List<AlbumGetMyAllResponse> getMyBookmarksInfo(Long userId) {
+        return queryFactory
+                .select(Projections.constructor(AlbumGetMyAllResponse.class,
+                        album.albumId,
+                        album.albumInfo.albumIconNum,
+                        album.albumInfo.albumColorNum,
+                        album.name,
+                        savingAlbum.createdAt))
+                .from(savingAlbum)
+                .join(savingAlbum.album, album)
+                .where(savingAlbum.user.userId.eq(userId))
+                .fetch();
+    }
+
 }
