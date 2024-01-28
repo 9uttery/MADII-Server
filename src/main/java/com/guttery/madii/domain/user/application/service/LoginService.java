@@ -7,6 +7,7 @@ import com.guttery.madii.domain.user.application.dto.AppleLoginRequest;
 import com.guttery.madii.domain.user.application.dto.KakaoLoginRequest;
 import com.guttery.madii.domain.user.application.dto.NormalLoginRequest;
 import com.guttery.madii.domain.user.application.dto.OidcDecodePayload;
+import com.guttery.madii.domain.user.application.dto.TokenRefreshRequest;
 import com.guttery.madii.domain.user.application.dto.TokenResponse;
 import com.guttery.madii.domain.user.domain.model.SocialInfo;
 import com.guttery.madii.domain.user.domain.model.SocialProvider;
@@ -77,5 +78,9 @@ public class LoginService {
         final User newUser = User.createSocialUser(oidcDecodePayload.sub(), SocialProvider.APPLE);
 
         return userRepository.save(newUser);
+    }
+
+    public TokenResponse refresh(final TokenRefreshRequest tokenRefreshRequest) {
+        return new TokenResponse(jwtProvider.reIssueAccessToken(tokenRefreshRequest.refreshToken()), jwtProvider.reIssueRefreshToken(tokenRefreshRequest.refreshToken()));
     }
 }
