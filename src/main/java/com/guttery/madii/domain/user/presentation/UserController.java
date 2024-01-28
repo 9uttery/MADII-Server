@@ -3,6 +3,7 @@ package com.guttery.madii.domain.user.presentation;
 import com.guttery.madii.domain.user.application.dto.AppleLoginRequest;
 import com.guttery.madii.domain.user.application.dto.KakaoLoginRequest;
 import com.guttery.madii.domain.user.application.dto.NormalLoginRequest;
+import com.guttery.madii.domain.user.application.dto.ProfileReadResponse;
 import com.guttery.madii.domain.user.application.dto.ProfileUpdateRequest;
 import com.guttery.madii.domain.user.application.dto.SignUpRequest;
 import com.guttery.madii.domain.user.application.dto.TokenResponse;
@@ -113,6 +114,22 @@ public class UserController {
         return loginService.appleLogin(appleLoginRequest);
     }
 
+    @GetMapping("/profile")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "프로필 조회 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "프로필 조회 API", description = "프로필 조회 API입니다.")
+    public ProfileReadResponse readProfile(
+            @AuthenticationPrincipal final UserPrincipal userPrincipal
+    ) {
+        return profileService.readProfile(userPrincipal);
+    }
 
     @PostMapping("/profile")
     @ApiResponses(

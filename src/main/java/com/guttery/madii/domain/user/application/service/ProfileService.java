@@ -1,6 +1,8 @@
 package com.guttery.madii.domain.user.application.service;
 
+import com.guttery.madii.domain.user.application.dto.ProfileReadResponse;
 import com.guttery.madii.domain.user.application.dto.ProfileUpdateRequest;
+import com.guttery.madii.domain.user.application.mapper.UserMapper;
 import com.guttery.madii.domain.user.domain.model.User;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import com.guttery.madii.domain.user.domain.repository.UserRepository;
@@ -16,6 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public class ProfileService {
     private final UserRepository userRepository;
+
+    public ProfileReadResponse readProfile(UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+
+        return UserMapper.toProfileReadResponse(user);
+    }
 
     public void updateProfile(final ProfileUpdateRequest profileUpdateRequest, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
