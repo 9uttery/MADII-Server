@@ -6,13 +6,13 @@ import com.guttery.madii.domain.user.application.dto.NormalLoginRequest;
 import com.guttery.madii.domain.user.application.dto.ProfileReadResponse;
 import com.guttery.madii.domain.user.application.dto.ProfileUpdateRequest;
 import com.guttery.madii.domain.user.application.dto.SignUpRequest;
+import com.guttery.madii.domain.user.application.dto.TokenRefreshRequest;
 import com.guttery.madii.domain.user.application.dto.TokenResponse;
 import com.guttery.madii.domain.user.application.service.LoginService;
 import com.guttery.madii.domain.user.application.service.ProfileService;
 import com.guttery.madii.domain.user.application.service.SignUpService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -127,10 +127,9 @@ public class UserController {
     )
     @Operation(summary = "토큰 리프레시 API", description = "토큰 리프레시 API입니다.")
     public TokenResponse refresh(
-            @Parameter(description = "리프레시 토큰")
-            @NotBlank @RequestParam final String refreshToken
+            TokenRefreshRequest tokenRefreshRequest
     ) {
-        return loginService.refresh(refreshToken);
+        return loginService.refresh(tokenRefreshRequest);
     }
 
     @GetMapping("/profile")
