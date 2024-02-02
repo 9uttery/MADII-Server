@@ -1,6 +1,7 @@
 package com.guttery.madii.domain.albums.domain.repository;
 
 import com.guttery.madii.domain.albums.application.dto.AlbumCreateResponse;
+import com.guttery.madii.domain.albums.application.dto.AlbumGetJoyAllResponse;
 import com.guttery.madii.domain.albums.application.dto.AlbumGetMyAllResponse;
 import com.guttery.madii.domain.albums.application.dto.JoyGetInfo;
 
@@ -19,4 +20,5 @@ public interface AlbumQueryDslRepository {
 
     List<AlbumGetMyAllResponse> getMyBookmarksInfo(Long userId);
 
+    List<AlbumGetJoyAllResponse> getMyJoyAllAlbums(Long joyId, Long userId);
 }

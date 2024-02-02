@@ -145,4 +145,12 @@ public class AlbumService {
         albumGetMyAllResponseList.sort(Comparator.comparing(AlbumGetMyAllResponse::modifiedAt).reversed());
         return albumGetMyAllResponseList;
     }
+
+    @Transactional(readOnly = true)
+    public List<AlbumGetJoyAllResponse> getMyJoyAllAlbums(Long joyId, UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+
+        List<AlbumGetJoyAllResponse> getJoyAllResponseList = albumQueryDslRepository.getMyJoyAllAlbums(joyId, user.getUserId());
+        return getJoyAllResponseList;
+    }
 }
