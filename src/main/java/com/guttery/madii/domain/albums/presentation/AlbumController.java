@@ -151,4 +151,20 @@ public class AlbumController {
     public List<AlbumGetMyAllResponse> getMyAllAlbums(@AuthenticationPrincipal final UserPrincipal userPrincipal) {
         return albumService.getMyAllAlbums(userPrincipal);
     }
+
+    @GetMapping("/joy/{joyId}")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "특정 소확행 저장 여부와 함께 앨범 목록 조회 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "특정 소확행 저장 여부와 함께 앨범 목록 조회 API", description = "특정 소확행 저장 여부와 함께 앨범 목록 조회 API입니다.")
+    public List<AlbumGetJoyAllResponse> getMyJoyAllAlbums(@PathVariable Long joyId,
+                                                          @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        return albumService.getMyJoyAllAlbums(joyId, userPrincipal);
+    }
 }

@@ -1,6 +1,7 @@
 package com.guttery.madii.domain.albums.infrastructure;
 
 import com.guttery.madii.domain.albums.application.dto.AlbumCreateResponse;
+import com.guttery.madii.domain.albums.application.dto.AlbumGetJoyAllResponse;
 import com.guttery.madii.domain.albums.application.dto.AlbumGetMyAllResponse;
 import com.guttery.madii.domain.albums.application.dto.JoyGetInfo;
 import com.guttery.madii.domain.albums.domain.model.QSavingJoy;
@@ -122,4 +123,23 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
                 .fetch();
     }
 
+    @Override
+    public List<AlbumGetJoyAllResponse> getMyJoyAllAlbums(Long joyId, Long userId) {
+        return queryFactory
+                .select(Projections.constructor(AlbumGetJoyAllResponse.class,
+                        JPAExpressions
+                                .selectOne()
+                                .from(savingJoy)
+                                .where(savingJoy.album.albumId.eq(album.albumId)
+                                        .and(savingJoy.joy.joyId.eq(joyId)))
+                                .exists(),
+                        album.albumId,
+                        album.albumInfo.albumIconNum,
+                        album.albumInfo.albumColorNum,
+                        album.name,
+                        album.modifiedAt))
+                .from(album)
+                .where(album.user.userId.eq(userId))
+                .fetch();
+    }
 }
