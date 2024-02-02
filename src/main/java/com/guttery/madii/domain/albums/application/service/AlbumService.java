@@ -2,7 +2,13 @@ package com.guttery.madii.domain.albums.application.service;
 
 import com.guttery.madii.common.exception.CustomException;
 import com.guttery.madii.common.exception.ErrorDetails;
-import com.guttery.madii.domain.albums.application.dto.*;
+import com.guttery.madii.domain.albums.application.dto.AlbumCreateRequest;
+import com.guttery.madii.domain.albums.application.dto.AlbumCreateResponse;
+import com.guttery.madii.domain.albums.application.dto.AlbumGetDetailResponse;
+import com.guttery.madii.domain.albums.application.dto.AlbumGetMyAllResponse;
+import com.guttery.madii.domain.albums.application.dto.AlbumPutRequest;
+import com.guttery.madii.domain.albums.application.dto.AlbumSaveJoyRequest;
+import com.guttery.madii.domain.albums.application.dto.JoyGetInfo;
 import com.guttery.madii.domain.albums.domain.model.Album;
 import com.guttery.madii.domain.albums.domain.model.SavingAlbum;
 import com.guttery.madii.domain.albums.domain.model.SavingJoy;
@@ -62,7 +68,7 @@ public class AlbumService {
             final Joy joy =  joyRepository.findById(joyId)
                     .orElseThrow(() -> CustomException.of(ErrorDetails.JOY_NOT_FOUND));
             final Album album = albumRepository.findById(albumId)
-                    .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUN_NOT_FOUND));
+                    .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
             final SavingJoy savingJoy = SavingJoy.createSavingJoy(joy, album);
             savingJoyRepository.save(savingJoy);
         }
@@ -71,7 +77,7 @@ public class AlbumService {
     public void putMyAlbum(Long albumId, AlbumPutRequest albumPutRequest, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
         final Album album = albumRepository.findById(albumId)
-                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUN_NOT_FOUND));
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
 
         album.modifyNameAndDes(albumPutRequest.name(), albumPutRequest.description());
     }
@@ -79,7 +85,7 @@ public class AlbumService {
     public void putMyAlbumStatus(Long albumId, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
         final Album album = albumRepository.findById(albumId)
-                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUN_NOT_FOUND));
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
 
         if (album.getAlbumStatus().getIsOfficial()) {
             album.makePersonal();
@@ -92,7 +98,7 @@ public class AlbumService {
     public AlbumGetDetailResponse getAlbumDetail(Long albumId, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
         final Album album = albumRepository.findById(albumId)
-                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUN_NOT_FOUND));
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
 
         AlbumGetDetailResponse albumGetDetailResponse;
         List<JoyGetInfo> joyInfoList;
@@ -115,7 +121,7 @@ public class AlbumService {
     public void createAlbumBookmark(Long albumId, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
         final Album album = albumRepository.findById(albumId)
-                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUN_NOT_FOUND));
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
 
         if (bookmarkStatus(user, album)) throw CustomException.of(ErrorDetails.ALREADY_EXIST_BOOKMARK);
 
@@ -126,7 +132,7 @@ public class AlbumService {
     public void deleteAlbumBookmark(Long albumId, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
         final Album album = albumRepository.findById(albumId)
-                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUN_NOT_FOUND));
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
 
         if (!bookmarkStatus(user, album)) throw CustomException.of(ErrorDetails.NOT_FOUND_BOOKMARK);
 

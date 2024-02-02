@@ -6,6 +6,7 @@ import com.guttery.madii.domain.user.application.dto.NormalLoginRequest;
 import com.guttery.madii.domain.user.application.dto.ProfileReadResponse;
 import com.guttery.madii.domain.user.application.dto.ProfileUpdateRequest;
 import com.guttery.madii.domain.user.application.dto.SignUpRequest;
+import com.guttery.madii.domain.user.application.dto.TokenRefreshRequest;
 import com.guttery.madii.domain.user.application.dto.TokenResponse;
 import com.guttery.madii.domain.user.application.service.LoginService;
 import com.guttery.madii.domain.user.application.service.ProfileService;
@@ -112,6 +113,23 @@ public class UserController {
     @Operation(summary = "애플 로그인 API", description = "애플 로그인 API입니다.")
     public TokenResponse appleLogin(@Valid @RequestBody AppleLoginRequest appleLoginRequest) {
         return loginService.appleLogin(appleLoginRequest);
+    }
+
+    @PostMapping("/refresh")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "토큰 리프레시 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "토큰 리프레시 API", description = "토큰 리프레시 API입니다.")
+    public TokenResponse refresh(
+            TokenRefreshRequest tokenRefreshRequest
+    ) {
+        return loginService.refresh(tokenRefreshRequest);
     }
 
     @GetMapping("/profile")

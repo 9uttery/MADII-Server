@@ -20,7 +20,6 @@ public enum ErrorDetails {
     INVALID_INPUT_BODY("2006", HttpStatus.BAD_REQUEST.value(), "API Validation에 실패했습니다. Body의 형식이 일치하는 지 확인해주세요."),
     INVALID_INPUT_ENUM("2007", HttpStatus.BAD_REQUEST.value(), "API Validation에 실패했습니다. Value 값으로 준 ENUM이 유효한 지 확인해주세요."),
     INVALID_FILE("2008", HttpStatus.BAD_REQUEST.value(), "유효하지 않은 파일입니다."),
-    IMAGE_UPLOAD_FAILED("2009", HttpStatus.INTERNAL_SERVER_ERROR.value(), "이미지 업로드에 실패했습니다."),
     IMAGE_DOWNLOAD_FAILED("2010", HttpStatus.INTERNAL_SERVER_ERROR.value(), "이미지 다운로드에 실패했습니다."),
 
     /**
@@ -52,9 +51,11 @@ public enum ErrorDetails {
 
     JOY_NOT_FOUND("J001", HttpStatus.NOT_FOUND.value(), "소확행을 찾을 수 없습니다."),
 
-    ALBUN_NOT_FOUND("A001", HttpStatus.NOT_FOUND.value(), "앨범을 찾을 수 없습니다."),
+    ALBUM_NOT_FOUND("A001", HttpStatus.NOT_FOUND.value(), "앨범을 찾을 수 없습니다."),
     ALREADY_EXIST_BOOKMARK("A002", HttpStatus.BAD_REQUEST.value(), "이미 저장한 앨범입니다."),
-    NOT_FOUND_BOOKMARK("A003", HttpStatus.BAD_REQUEST.value(), "저장한 앨범이 아닙니다.")
+    NOT_FOUND_BOOKMARK("A003", HttpStatus.BAD_REQUEST.value(), "저장한 앨범이 아닙니다."),
+
+    FILE_UPLOAD_FAILED("F001", HttpStatus.INTERNAL_SERVER_ERROR.value(), "파일 업로드에 실패했습니다."),
 
     ;
 
