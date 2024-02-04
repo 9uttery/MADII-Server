@@ -23,4 +23,6 @@ public interface AlbumQueryDslRepository {
     List<Long> getSavedMyAlbums(Long joyId, Long userId);
 
     List<AlbumGetAllResponse> getAllAlbums(Long cursorId, int size);
+
+    List<AlbumGetOthersResponse> getOtherAlbums(Long albumId, Long userId);
 }

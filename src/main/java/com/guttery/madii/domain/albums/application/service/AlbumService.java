@@ -169,8 +169,15 @@ public class AlbumService {
 
     @Transactional(readOnly = true)
     public Slice<AlbumGetAllResponse> getAllAlbums(Long albumId, int size) {
-
         List<AlbumGetAllResponse> getAllResponseList = albumQueryDslRepository.getAllAlbums(albumId, size);
         return toSlice(getAllResponseList, PageRequest.of(0, size));
+    }
+
+    @Transactional(readOnly = true)
+    public List<AlbumGetOthersResponse> getOtherAlbums(Long albumId, UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+
+        List<AlbumGetOthersResponse> getOthersResponseList = albumQueryDslRepository.getOtherAlbums(albumId, user.getUserId());
+        return getOthersResponseList;
     }
 }
