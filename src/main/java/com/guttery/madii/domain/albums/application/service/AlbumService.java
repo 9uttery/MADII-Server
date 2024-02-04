@@ -2,13 +2,7 @@ package com.guttery.madii.domain.albums.application.service;
 
 import com.guttery.madii.common.exception.CustomException;
 import com.guttery.madii.common.exception.ErrorDetails;
-import com.guttery.madii.domain.albums.application.dto.AlbumCreateRequest;
-import com.guttery.madii.domain.albums.application.dto.AlbumCreateResponse;
-import com.guttery.madii.domain.albums.application.dto.AlbumGetDetailResponse;
-import com.guttery.madii.domain.albums.application.dto.AlbumGetMyAllResponse;
-import com.guttery.madii.domain.albums.application.dto.AlbumPutRequest;
-import com.guttery.madii.domain.albums.application.dto.AlbumSaveJoyRequest;
-import com.guttery.madii.domain.albums.application.dto.JoyGetInfo;
+import com.guttery.madii.domain.albums.application.dto.*;
 import com.guttery.madii.domain.albums.domain.model.Album;
 import com.guttery.madii.domain.albums.domain.model.SavingAlbum;
 import com.guttery.madii.domain.albums.domain.model.SavingJoy;
