@@ -11,13 +11,11 @@ import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.guttery.madii.domain.albums.domain.model.QAlbum.album;
 import static com.guttery.madii.domain.albums.domain.model.QSavingAlbum.savingAlbum;
@@ -169,6 +167,30 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
                 .where(predicate)
                 .orderBy(album.albumId.desc())
                 .limit(size + 1)
+                .fetch();
+    }
+
+    @Override
+    public List<AlbumGetOthersResponse> getOtherAlbums(Long albumId, Long userId) {
+        List<Long> albumIds = queryFactory
+                .select(album.albumId)
+                .from(album)
+                .where(album.albumId.ne(albumId)
+                        .and(album.user.userId.ne(userId)))
+                .fetch();
+
+        Collections.shuffle(albumIds);
+        List<Long> randomIds = albumIds.stream().limit(4).collect(Collectors.toList());
+
+        return queryFactory
+                .select(Projections.constructor(AlbumGetOthersResponse.class,
+                        album.albumId,
+                        album.albumInfo.albumIconNum,
+                        album.albumInfo.albumColorNum,
+                        album.name,
+                        album.user.userProfile.nickname))
+                .from(album)
+                .where(album.albumId.in(randomIds))
                 .fetch();
     }
 }

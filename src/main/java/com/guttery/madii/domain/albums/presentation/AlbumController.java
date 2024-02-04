@@ -184,4 +184,20 @@ public class AlbumController {
                                                    @RequestParam int size) {
         return albumService.getAllAlbums(albumId, size);
     }
+
+    @GetMapping("/{albumId}/random")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "다른 소확행 앨범 모음 조회 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "다른 소확행 앨범 모음 조회 API", description = "다른 소확행 앨범 모음 조회 API입니다.")
+    public List<AlbumGetOthersResponse> getOtherAlbums(@PathVariable Long albumId,
+                                                       @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        return albumService.getOtherAlbums(albumId, userPrincipal);
+    }
 }
