@@ -8,8 +8,6 @@ import com.guttery.madii.domain.albums.domain.model.QSavingJoy;
 import com.guttery.madii.domain.albums.domain.repository.AlbumQueryDslRepository;
 import com.querydsl.core.types.NullExpression;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -140,6 +138,17 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
                         album.modifiedAt))
                 .from(album)
                 .where(album.user.userId.eq(userId))
+                .fetch();
+    }
+
+    @Override
+    public List<Long> getSavedMyAlbums(Long joyId, Long userId) {
+        return queryFactory
+                .select(album.albumId)
+                .from(savingJoy)
+                .join(savingJoy.album, album)
+                .where(savingJoy.joy.joyId.eq(joyId)
+                        .and(album.user.userId.eq(userId)))
                 .fetch();
     }
 }
