@@ -1,18 +1,20 @@
 package com.guttery.madii.domain.albums.infrastructure;
 
-import com.guttery.madii.domain.albums.application.dto.AlbumCreateResponse;
-import com.guttery.madii.domain.albums.application.dto.AlbumGetJoyAllResponse;
-import com.guttery.madii.domain.albums.application.dto.AlbumGetMyAllResponse;
-import com.guttery.madii.domain.albums.application.dto.JoyGetInfo;
+import com.guttery.madii.domain.albums.application.dto.*;
 import com.guttery.madii.domain.albums.domain.model.QSavingJoy;
 import com.guttery.madii.domain.albums.domain.repository.AlbumQueryDslRepository;
 import com.querydsl.core.types.NullExpression;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -149,6 +151,24 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
                 .join(savingJoy.album, album)
                 .where(savingJoy.joy.joyId.eq(joyId)
                         .and(album.user.userId.eq(userId)))
+                .fetch();
+    }
+
+    @Override
+    public List<AlbumGetAllResponse> getAllAlbums(Long cursorId, int size) {
+        BooleanExpression predicate = (cursorId == null) ? null : album.albumId.lt(cursorId);
+
+        return queryFactory
+                .select(Projections.constructor(AlbumGetAllResponse.class,
+                        album.albumId,
+                        album.albumInfo.albumIconNum,
+                        album.albumInfo.albumColorNum,
+                        album.name,
+                        album.user.userProfile.nickname))
+                .from(album)
+                .where(predicate)
+                .orderBy(album.albumId.desc())
+                .limit(size + 1)
                 .fetch();
     }
 }

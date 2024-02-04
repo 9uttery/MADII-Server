@@ -18,6 +18,10 @@ import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import com.guttery.madii.domain.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -152,5 +156,21 @@ public class AlbumService {
 
         List<AlbumGetJoyAllResponse> getJoyAllResponseList = albumQueryDslRepository.getMyJoyAllAlbums(joyId, user.getUserId());
         return getJoyAllResponseList;
+    }
+
+    private <T> Slice<T> toSlice(List<T> content, Pageable pageable) {
+        boolean hasNext = false;
+        if (content.size() > pageable.getPageSize()) {
+            content.remove(content.size() - 1);
+            hasNext = true;
+        }
+        return new SliceImpl<>(content, pageable, hasNext);
+    }
+
+    @Transactional(readOnly = true)
+    public Slice<AlbumGetAllResponse> getAllAlbums(Long albumId, int size) {
+
+        List<AlbumGetAllResponse> getAllResponseList = albumQueryDslRepository.getAllAlbums(albumId, size);
+        return toSlice(getAllResponseList, PageRequest.of(0, size));
     }
 }

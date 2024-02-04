@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -166,5 +167,21 @@ public class AlbumController {
     public List<AlbumGetJoyAllResponse> getMyJoyAllAlbums(@PathVariable Long joyId,
                                                           @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         return albumService.getMyJoyAllAlbums(joyId, userPrincipal);
+    }
+
+    @GetMapping("/all")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "전체 앨범 조회 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "전체 앨범 조회 API", description = "전체 앨범 조회 API입니다.")
+    public Slice<AlbumGetAllResponse> getAllAlbums(@RequestParam(required = false) Long albumId,
+                                                   @RequestParam int size) {
+        return albumService.getAllAlbums(albumId, size);
     }
 }

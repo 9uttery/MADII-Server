@@ -1,9 +1,7 @@
 package com.guttery.madii.domain.albums.domain.repository;
 
-import com.guttery.madii.domain.albums.application.dto.AlbumCreateResponse;
-import com.guttery.madii.domain.albums.application.dto.AlbumGetJoyAllResponse;
-import com.guttery.madii.domain.albums.application.dto.AlbumGetMyAllResponse;
-import com.guttery.madii.domain.albums.application.dto.JoyGetInfo;
+import com.guttery.madii.domain.albums.application.dto.*;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
@@ -23,4 +21,6 @@ public interface AlbumQueryDslRepository {
     List<AlbumGetJoyAllResponse> getMyJoyAllAlbums(Long joyId, Long userId);
 
     List<Long> getSavedMyAlbums(Long joyId, Long userId);
+
+    List<AlbumGetAllResponse> getAllAlbums(Long cursorId, int size);
 }
