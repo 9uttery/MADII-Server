@@ -4,6 +4,7 @@ import com.guttery.madii.common.exception.CustomException;
 import com.guttery.madii.common.exception.ErrorDetails;
 import com.guttery.madii.domain.albums.domain.model.Album;
 import com.guttery.madii.domain.albums.domain.model.SavingJoy;
+import com.guttery.madii.domain.albums.domain.repository.AlbumQueryDslRepository;
 import com.guttery.madii.domain.albums.domain.repository.AlbumRepository;
 import com.guttery.madii.domain.albums.domain.repository.SavingJoyRepository;
 import com.guttery.madii.domain.joy.application.dto.*;
@@ -32,6 +33,7 @@ public class JoyService {
     private final UserRepository userRepository;
     private final AlbumRepository albumRepository;
     private final SavingJoyRepository savingJoyRepository;
+    private final AlbumQueryDslRepository albumQueryDslRepository;
 
     public JoyCreateResponse createJoy(final JoyCreateRequest joyCreateRequest, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
@@ -84,7 +86,6 @@ public class JoyService {
 
         JoyPutResponse joyPutResponse = null;
         if (joy.getUser().getUserId().equals(user.getUserId())) { // 내가 기록한 소확행
-            System.out.println("내가 기록한 소확행 수정");
             // 1. 단순 contents 수정
             joy.modifyContents(joyPutRequest.contents());
             joyPutResponse = new JoyPutResponse(joy.getJoyIconNum(), joy.getContents());
@@ -97,7 +98,6 @@ public class JoyService {
 
         } else { // 남이 기록한 소확행
             if (joy.getContents().equals(joyPutRequest.contents())) { // 내용 수정 X -> 남이 기록한 소확행 그대로, 저장되는 앨범만 변경
-                System.out.println("남이 기록한 소확행 내용 수정 X");
                 joyPutResponse = new JoyPutResponse(joy.getJoyIconNum(), joy.getContents());
 
                 // 1. 수정 전 - 소확행 포함 앨범 목록 -> 저장 취소
@@ -106,7 +106,6 @@ public class JoyService {
                 // 2. 수정 후 - 소확행 포함 앨범 목록 -> 저장
                 addToSavingJoy(joyId, joyPutRequest.afterAlbumIds());
             } else { // 내용 수정 O -> 내가 기록한 소확행 추가
-                System.out.println("남이 기록한 소확행 내용 수정 O");
                 // 1. 수정 전 -소확행 포함 앨범 목록 -> 저장 취소
                 deleteFromSavingJoy(joyId, joyPutRequest.beforeAlbumIds());
 
@@ -132,12 +131,13 @@ public class JoyService {
         final Joy joy = joyRepository.findById(joyId)
                 .orElseThrow(() -> CustomException.of(ErrorDetails.JOY_NOT_FOUND));
 
+        // 내가 기록한 소확행 & 남이 기록한 소확행 -> 저장 취소
+        List<Long> savedAlbumIds = albumQueryDslRepository.getSavedMyAlbums(joyId, user.getUserId());
+        System.out.println("savedAlbumIds: " + savedAlbumIds);
+        deleteFromSavingJoy(joyId, savedAlbumIds);
+
         if (joy.getUser().getUserId().equals(user.getUserId())) { // 내가 기록한 소확행
             joyRepository.delete(joy);
-        } else {
-            // 1. 북마크 해제 -> * 북마크 기능 후 구현 완료하기
-
         }
-
     }
 }

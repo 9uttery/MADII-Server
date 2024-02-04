@@ -21,4 +21,6 @@ public interface AlbumQueryDslRepository {
     List<AlbumGetMyAllResponse> getMyBookmarksInfo(Long userId);
 
     List<AlbumGetJoyAllResponse> getMyJoyAllAlbums(Long joyId, Long userId);
+
+    List<Long> getSavedMyAlbums(Long joyId, Long userId);
 }
