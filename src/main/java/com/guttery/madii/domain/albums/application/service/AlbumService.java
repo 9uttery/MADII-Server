@@ -22,6 +22,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,11 @@ import java.util.Random;
 @Service
 @Transactional
 public class AlbumService {
+    private static final String KEY_PREFIX = "recentAlbums:";
+    private static final String VALUE_PREFIX = "albumId:";
+    private static final int MAX_RECENT_ALBUMS = 10;
+    private final RedisTemplate<String, String> redisTemplate;
+
     private final AlbumRepository albumRepository;
     private final AlbumQueryDslRepository albumQueryDslRepository;
     private final UserRepository userRepository;
@@ -179,5 +186,35 @@ public class AlbumService {
 
         List<AlbumGetOthersResponse> getOthersResponseList = albumQueryDslRepository.getOtherAlbums(albumId, user.getUserId());
         return getOthersResponseList;
+    }
+
+    public void createRecentAlbums(Long albumId, UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+
+        // 앨범 소유자 확인
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
+        if (album.getUser().getUserId().equals(user.getUserId())) {
+            // 사용자가 만든 앨범인 경우 로직을 수행하지 않음
+            return;
+        }
+
+        String key = KEY_PREFIX + user.getUserId();
+        String value = VALUE_PREFIX + albumId;
+        ListOperations<String, String> listOps = redisTemplate.opsForList();
+
+        // 중복 제거
+        listOps.remove(key, 0, value);
+
+        // 앨범 ID 추가
+        listOps.leftPush(key, value);
+
+        // 리스트 크기 제한
+        if (listOps.size(key) > MAX_RECENT_ALBUMS) {
+            listOps.trim(key, 0, MAX_RECENT_ALBUMS - 1);
+        }
+
+        // Redis에서 해당 사용자의 최근 본 앨범 목록 조회
+//        return listOps.range(key, 0, -1); // 전체 리스트 반환
     }
 }
