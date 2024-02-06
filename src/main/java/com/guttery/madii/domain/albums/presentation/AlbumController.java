@@ -200,4 +200,20 @@ public class AlbumController {
                                                        @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         return albumService.getOtherAlbums(albumId, userPrincipal);
     }
+
+    @PostMapping("/recent/{albumId}")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "최근 본 소확행 앨범 등록 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "최근 본 소확행 앨범 등록 API", description = "최근 본 소확행 앨범 등록 API입니다.")
+    public void createRecentAlbums(@PathVariable Long albumId,
+                                   @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        albumService.createRecentAlbums(albumId, userPrincipal);
+    }
 }
