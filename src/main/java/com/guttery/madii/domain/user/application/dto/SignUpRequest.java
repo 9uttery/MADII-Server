@@ -13,8 +13,8 @@ public record SignUpRequest(
         @Schema(description = "비밀번호", example = "EjflEjfl1234", defaultValue = "EjflEjfl1234")
         String password,
 
-        @NotNull(message = "acceptsMarketing은 필수입니다.")
+        @NotNull(message = "agreesMarketing은 필수입니다.")
         @Schema(description = "마케팅 수신 동의", example = "true", defaultValue = "true")
-        Boolean acceptsMarketing
+        Boolean agreesMarketing
 ) {
 }

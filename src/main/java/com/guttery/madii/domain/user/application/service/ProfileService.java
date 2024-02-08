@@ -2,6 +2,7 @@ package com.guttery.madii.domain.user.application.service;
 
 import com.guttery.madii.domain.user.application.dto.ProfileReadResponse;
 import com.guttery.madii.domain.user.application.dto.ProfileUpdateRequest;
+import com.guttery.madii.domain.user.application.dto.UpdateMarketingAgreementRequest;
 import com.guttery.madii.domain.user.application.mapper.UserMapper;
 import com.guttery.madii.domain.user.domain.model.User;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
@@ -28,6 +29,12 @@ public class ProfileService {
     public void updateProfile(final ProfileUpdateRequest profileUpdateRequest, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
         user.updateUserProfile(profileUpdateRequest.nickname(), profileUpdateRequest.image());
+        userRepository.save(user);
+    }
+
+    public void updateMarketingAgreement(final UpdateMarketingAgreementRequest updateMarketingAgreementRequest, final UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+        user.updateMarketingAgreement(updateMarketingAgreementRequest.agreesMarketing());
         userRepository.save(user);
     }
 }
