@@ -2,12 +2,13 @@ package com.guttery.madii.domain.user.presentation;
 
 import com.guttery.madii.domain.user.application.dto.AppleLoginRequest;
 import com.guttery.madii.domain.user.application.dto.KakaoLoginRequest;
+import com.guttery.madii.domain.user.application.dto.LoginResponse;
 import com.guttery.madii.domain.user.application.dto.NormalLoginRequest;
 import com.guttery.madii.domain.user.application.dto.ProfileReadResponse;
 import com.guttery.madii.domain.user.application.dto.ProfileUpdateRequest;
+import com.guttery.madii.domain.user.application.dto.RefreshResponse;
 import com.guttery.madii.domain.user.application.dto.SignUpRequest;
 import com.guttery.madii.domain.user.application.dto.TokenRefreshRequest;
-import com.guttery.madii.domain.user.application.dto.TokenResponse;
 import com.guttery.madii.domain.user.application.dto.UpdateMarketingAgreementRequest;
 import com.guttery.madii.domain.user.application.service.LoginService;
 import com.guttery.madii.domain.user.application.service.ProfileService;
@@ -83,7 +84,7 @@ public class UserController {
             }
     )
     @Operation(summary = "일반 로그인 API", description = "일반 로그인 API입니다.")
-    public TokenResponse normalLogin(@Valid @RequestBody NormalLoginRequest normalLoginRequest) {
+    public LoginResponse normalLogin(@Valid @RequestBody NormalLoginRequest normalLoginRequest) {
         return loginService.normalLogin(normalLoginRequest);
     }
 
@@ -98,7 +99,7 @@ public class UserController {
             }
     )
     @Operation(summary = "카카오 로그인 API", description = "카카오 로그인 API입니다.")
-    public TokenResponse kakaoLogin(@Valid @RequestBody KakaoLoginRequest kakaoLoginRequest) {
+    public LoginResponse kakaoLogin(@Valid @RequestBody KakaoLoginRequest kakaoLoginRequest) {
         return loginService.kakaoLogin(kakaoLoginRequest);
     }
 
@@ -113,7 +114,7 @@ public class UserController {
             }
     )
     @Operation(summary = "애플 로그인 API", description = "애플 로그인 API입니다.")
-    public TokenResponse appleLogin(@Valid @RequestBody AppleLoginRequest appleLoginRequest) {
+    public LoginResponse appleLogin(@Valid @RequestBody AppleLoginRequest appleLoginRequest) {
         return loginService.appleLogin(appleLoginRequest);
     }
 
@@ -146,7 +147,7 @@ public class UserController {
             }
     )
     @Operation(summary = "토큰 리프레시 API", description = "토큰 리프레시 API입니다.")
-    public TokenResponse refresh(
+    public RefreshResponse refresh(
             TokenRefreshRequest tokenRefreshRequest
     ) {
         return loginService.refresh(tokenRefreshRequest);
