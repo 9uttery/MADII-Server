@@ -1,6 +1,12 @@
 package com.guttery.madii.domain.joy.presentation;
 
-import com.guttery.madii.domain.joy.application.dto.*;
+import com.guttery.madii.domain.joy.application.dto.JoyCreateRequest;
+import com.guttery.madii.domain.joy.application.dto.JoyCreateResponse;
+import com.guttery.madii.domain.joy.application.dto.JoyGetMyAllResponse;
+import com.guttery.madii.domain.joy.application.dto.JoyGetTodayResponse;
+import com.guttery.madii.domain.joy.application.dto.JoyPutRequest;
+import com.guttery.madii.domain.joy.application.dto.JoyPutResponse;
+import com.guttery.madii.domain.joy.application.service.JoyRecommendService;
 import com.guttery.madii.domain.joy.application.service.JoyService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,7 +17,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -22,6 +36,7 @@ import java.util.List;
 @Tag(name = "Joy", description = "Joy 관련 API")
 public class JoyController {
     private final JoyService joyService;
+    private final JoyRecommendService joyRecommendService;
 
     @PostMapping("")
     @ApiResponses(
@@ -86,4 +101,37 @@ public class JoyController {
                             @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         joyService.deleteMyJoy(joyId, userPrincipal);
     }
+
+    @PostMapping("/today/refresh")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "추천 소확행 갱신 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "이 달의 오늘의 소확행 갱신 API", description = "이 달의 오늘의 소확행 갱신 API입니다. 테스트용으로 사용해주세요.")
+    public void refreshRecommendJoy() {
+        joyRecommendService.createNewMonthlyRecommendedJoys();
+    }
+
+    @GetMapping("/today")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "추천 소확행 조회 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "오늘의 추천 소확행 조회 API", description = "오늘의 추천 소확행 조회 API입니다. date의 Value 값에 날짜를 넣으면 해당 날짜의 추천 소확행을 조회합니다. 날짜 형식은 yyyy-MM-dd입니다.")
+    public JoyGetTodayResponse getTodayJoy(
+            @RequestParam(required = false, value = "date") String date
+    ) {
+        return joyRecommendService.getTodayRecommendedJoy(date);
+    }
+
 }
