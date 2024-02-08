@@ -1,7 +1,10 @@
 package com.guttery.madii.domain.joy.infrastructure;
 
+import com.guttery.madii.common.util.OrderSpecifierUtils;
 import com.guttery.madii.domain.joy.application.dto.JoyGetMyAllResponse;
 import com.guttery.madii.domain.joy.application.dto.JoyGetMyOne;
+import com.guttery.madii.domain.joy.domain.model.Joy;
+import com.guttery.madii.domain.joy.domain.model.JoyType;
 import com.guttery.madii.domain.joy.domain.model.QJoy;
 import com.guttery.madii.domain.joy.domain.repository.JoyQueryDslRepository;
 import com.querydsl.core.types.Projections;
@@ -14,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
 
@@ -51,6 +55,18 @@ public class JoyRepositoryImpl implements JoyQueryDslRepository {
                                         joy.joyId,
                                         joy.joyIconNum,
                                         joy.contents)))));
+    }
+
+    @Override
+    public List<Joy> getRandomOfficialJoys(int amount) {
+        final QJoy joy = QJoy.joy;
+
+        return queryFactory
+                .selectFrom(joy)
+                .where(joy.joyType.eq(JoyType.OFFICIAL))
+                .orderBy(OrderSpecifierUtils.makeRandom())
+                .limit(amount)
+                .fetch();
     }
 
 }
