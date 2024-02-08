@@ -69,4 +69,12 @@ public class User extends BaseTimeEntity {
     public String getEncryptedPassword() {
         return loginInfo.getPassword();
     }
+
+    public boolean agreedMarketing() {
+        return agreesMarketing;
+    }
+
+    public boolean hasProfile() {
+        return userProfile != null;
+    }
 }
