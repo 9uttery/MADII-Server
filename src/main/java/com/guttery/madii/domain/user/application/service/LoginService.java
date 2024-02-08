@@ -5,10 +5,11 @@ import com.guttery.madii.common.exception.ErrorDetails;
 import com.guttery.madii.common.jwt.JwtProvider;
 import com.guttery.madii.domain.user.application.dto.AppleLoginRequest;
 import com.guttery.madii.domain.user.application.dto.KakaoLoginRequest;
+import com.guttery.madii.domain.user.application.dto.LoginResponse;
 import com.guttery.madii.domain.user.application.dto.NormalLoginRequest;
 import com.guttery.madii.domain.user.application.dto.OidcDecodePayload;
+import com.guttery.madii.domain.user.application.dto.RefreshResponse;
 import com.guttery.madii.domain.user.application.dto.TokenRefreshRequest;
-import com.guttery.madii.domain.user.application.dto.TokenResponse;
 import com.guttery.madii.domain.user.domain.model.SocialInfo;
 import com.guttery.madii.domain.user.domain.model.SocialProvider;
 import com.guttery.madii.domain.user.domain.model.User;
@@ -33,7 +34,7 @@ public class LoginService {
     private final AppleIdTokenDecodeService appleIdTokenDecodeService;
 
     @Transactional(readOnly = true)
-    public TokenResponse normalLogin(final NormalLoginRequest normalLoginRequest) {
+    public LoginResponse normalLogin(final NormalLoginRequest normalLoginRequest) {
         final User user = userRepository.findUserByLoginId(normalLoginRequest.loginId())
                 .orElseThrow(() -> CustomException.of(ErrorDetails.USER_NOT_FOUND));
 
@@ -41,18 +42,18 @@ public class LoginService {
 //            throw CustomException.of(ErrorDetails.USER_NOT_FOUND);
 //        }
 
-        return new TokenResponse(jwtProvider.generateAccessToken(user.getUserId(), user.getRole()), jwtProvider.generateRefreshToken(user.getUserId(), user.getRole()));
+        return new LoginResponse(jwtProvider.generateAccessToken(user.getUserId(), user.getRole()), jwtProvider.generateRefreshToken(user.getUserId(), user.getRole()), user.getAgreesMarketing(), user.hasProfile());
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public TokenResponse kakaoLogin(final KakaoLoginRequest kakaoLoginRequest) {
+    public LoginResponse kakaoLogin(final KakaoLoginRequest kakaoLoginRequest) {
         // ID 토큰으로 찾아온 유저 정보
         final OidcDecodePayload oidcDecodePayload = kakaoIdTokenDecodeService.getPayloadFromIdToken(kakaoLoginRequest.idToken());
 
         final User user = userRepository.findUserBySocialInfo(new SocialInfo(oidcDecodePayload.sub(), SocialProvider.KAKAO))
                 .orElseGet(() -> createNewKakaoUser(oidcDecodePayload));
 
-        return new TokenResponse(jwtProvider.generateAccessToken(user.getUserId(), user.getRole()), jwtProvider.generateRefreshToken(user.getUserId(), user.getRole()));
+        return new LoginResponse(jwtProvider.generateAccessToken(user.getUserId(), user.getRole()), jwtProvider.generateRefreshToken(user.getUserId(), user.getRole()), user.getAgreesMarketing(), user.hasProfile());
     }
 
     private User createNewKakaoUser(final OidcDecodePayload oidcDecodePayload) {
@@ -64,14 +65,14 @@ public class LoginService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public TokenResponse appleLogin(final AppleLoginRequest appleLoginRequest) {
+    public LoginResponse appleLogin(final AppleLoginRequest appleLoginRequest) {
         // ID 토큰으로 찾아온 유저 정보
         final OidcDecodePayload oidcDecodePayload = appleIdTokenDecodeService.getPayloadFromIdToken(appleLoginRequest.idToken());
 
         final User user = userRepository.findUserBySocialInfo(new SocialInfo(oidcDecodePayload.sub(), SocialProvider.APPLE))
                 .orElseGet(() -> createNewAppleUser(oidcDecodePayload));
 
-        return new TokenResponse(jwtProvider.generateAccessToken(user.getUserId(), user.getRole()), jwtProvider.generateRefreshToken(user.getUserId(), user.getRole()));
+        return new LoginResponse(jwtProvider.generateAccessToken(user.getUserId(), user.getRole()), jwtProvider.generateRefreshToken(user.getUserId(), user.getRole()), user.getAgreesMarketing(), user.hasProfile());
     }
 
     private User createNewAppleUser(final OidcDecodePayload oidcDecodePayload) {
@@ -80,7 +81,7 @@ public class LoginService {
         return userRepository.save(newUser);
     }
 
-    public TokenResponse refresh(final TokenRefreshRequest tokenRefreshRequest) {
-        return new TokenResponse(jwtProvider.reIssueAccessToken(tokenRefreshRequest.refreshToken()), jwtProvider.reIssueRefreshToken(tokenRefreshRequest.refreshToken()));
+    public RefreshResponse refresh(final TokenRefreshRequest tokenRefreshRequest) {
+        return new RefreshResponse(jwtProvider.reIssueAccessToken(tokenRefreshRequest.refreshToken()), jwtProvider.reIssueRefreshToken(tokenRefreshRequest.refreshToken()));
     }
 }
