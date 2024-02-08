@@ -8,6 +8,7 @@ import com.guttery.madii.domain.user.application.dto.ProfileUpdateRequest;
 import com.guttery.madii.domain.user.application.dto.SignUpRequest;
 import com.guttery.madii.domain.user.application.dto.TokenRefreshRequest;
 import com.guttery.madii.domain.user.application.dto.TokenResponse;
+import com.guttery.madii.domain.user.application.dto.UpdateMarketingAgreementRequest;
 import com.guttery.madii.domain.user.application.service.LoginService;
 import com.guttery.madii.domain.user.application.service.ProfileService;
 import com.guttery.madii.domain.user.application.service.SignUpService;
@@ -23,6 +24,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -113,6 +115,24 @@ public class UserController {
     @Operation(summary = "애플 로그인 API", description = "애플 로그인 API입니다.")
     public TokenResponse appleLogin(@Valid @RequestBody AppleLoginRequest appleLoginRequest) {
         return loginService.appleLogin(appleLoginRequest);
+    }
+
+    @PutMapping("/marketing-agreement")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "마케팅 수신 동의 변경 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "마케팅 수신 동의 변경 API", description = "마케팅 수신 동의 변경 API입니다.")
+    public void updateMarketingAgreement(
+            @Valid @RequestBody UpdateMarketingAgreementRequest updateMarketingAgreementRequest,
+            @AuthenticationPrincipal final UserPrincipal userPrincipal
+    ) {
+        profileService.updateMarketingAgreement(updateMarketingAgreementRequest, userPrincipal);
     }
 
     @PostMapping("/refresh")

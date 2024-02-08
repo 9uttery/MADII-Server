@@ -23,7 +23,7 @@ public class SignUpService {
             throw CustomException.of(ErrorDetails.DUPLICATED_LOGIN_ID);
         }
 
-        final User user = User.createNormalUser(signUpRequest.loginId(), signUpRequest.password());
+        final User user = User.createNormalUser(signUpRequest.loginId(), signUpRequest.password(), signUpRequest.agreesMarketing());
 
         userRepository.save(user);
     }

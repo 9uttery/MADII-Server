@@ -30,26 +30,32 @@ public class User extends BaseTimeEntity {
     private SocialInfo socialInfo;
     @Embedded
     private UserProfile userProfile;
+    private Boolean agreesMarketing;
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private User(LoginInfo loginInfo, SocialInfo socialInfo, UserProfile userProfile, Role role) {
+    private User(LoginInfo loginInfo, SocialInfo socialInfo, UserProfile userProfile, Boolean agreesMarketing, Role role) {
         this.loginInfo = loginInfo;
         this.socialInfo = socialInfo;
         this.userProfile = userProfile;
+        this.agreesMarketing = agreesMarketing;
         this.role = role;
     }
 
-    public static User createNormalUser(String loginId, String password) {
-        return new User(new LoginInfo(loginId, password), null, null, Role.ROLE_USER);
+    public static User createNormalUser(String loginId, String password, Boolean agreesMarketing) {
+        return new User(new LoginInfo(loginId, password), null, null, agreesMarketing, Role.ROLE_USER);
     }
 
     public static User createSocialUser(String socialId, SocialProvider provider) {
-        return new User(null, new SocialInfo(socialId, provider), null, Role.ROLE_USER);
+        return new User(null, new SocialInfo(socialId, provider), null, false, Role.ROLE_USER);
     }
 
     public void updateUserProfile(String nickname, String profileImage) {
         this.userProfile = new UserProfile(nickname, profileImage);
+    }
+
+    public void updateMarketingAgreement(Boolean agreesMarketing) {
+        this.agreesMarketing = agreesMarketing;
     }
 
     public void linkSocialInfo(SocialInfo socialInfo) {
