@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -41,7 +42,6 @@ public class AlbumService {
     private static final String VALUE_PREFIX = "albumId:";
     private static final int MAX_RECENT_ALBUMS = 10;
     private final RedisTemplate<String, String> redisTemplate;
-
     private final AlbumRepository albumRepository;
     private final AlbumQueryDslRepository albumQueryDslRepository;
     private final UserRepository userRepository;
@@ -213,8 +213,29 @@ public class AlbumService {
         if (listOps.size(key) > MAX_RECENT_ALBUMS) {
             listOps.trim(key, 0, MAX_RECENT_ALBUMS - 1);
         }
+    }
 
-        // Redis에서 해당 사용자의 최근 본 앨범 목록 조회
-//        return listOps.range(key, 0, -1); // 전체 리스트 반환
+    private Album getAlbumByAlbumId(Long albumId) {
+        return albumRepository.findById(albumId)
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
+    }
+
+    @Transactional(readOnly = true)
+    public List<AlbumGetRecentResponse> getRecentAlbums(UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+
+        String key = KEY_PREFIX + user.getUserId();
+        ListOperations<String, String> listOps = redisTemplate.opsForList();
+        List<String> albumIdsInRedis = listOps.range(key, 0, -1);
+//        System.out.println("Redis -> " + albumIdsInRedis);
+
+        List<AlbumGetRecentResponse> albumGetRecentResponseList = albumIdsInRedis.stream()
+                .map(s -> s.replace("albumId:", ""))
+                .map(Long::parseLong)
+                .map(this::getAlbumByAlbumId)
+                .map(album -> new AlbumGetRecentResponse(album.getAlbumId(), album.getAlbumInfo().getAlbumIconNum(), album.getAlbumInfo().getAlbumColorNum(), album.getName()))
+                .collect(Collectors.toList());
+
+        return albumGetRecentResponseList;
     }
 }
