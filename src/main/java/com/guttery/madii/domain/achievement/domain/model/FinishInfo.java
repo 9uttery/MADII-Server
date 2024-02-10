@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,5 +27,18 @@ public class FinishInfo {
 
     public static FinishInfo createFinished(Satisfaction satisfaction) {
         return new FinishInfo(true, LocalDateTime.now(), satisfaction);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FinishInfo that = (FinishInfo) o;
+        return Objects.equals(isFinished, that.isFinished) && Objects.equals(finishedAt, that.finishedAt) && satisfaction == that.satisfaction;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isFinished, finishedAt, satisfaction);
     }
 }
