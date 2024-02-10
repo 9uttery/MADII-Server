@@ -24,11 +24,7 @@ public class FinishInfo {
         return new FinishInfo(false, null, null);
     }
 
-    public static FinishInfo createFinished() {
-        return new FinishInfo(true, LocalDateTime.now(), null);
-    }
-
-    public static FinishInfo createdRated(Satisfaction satisfaction) {
+    public static FinishInfo createFinished(Satisfaction satisfaction) {
         return new FinishInfo(true, LocalDateTime.now(), satisfaction);
     }
 }
