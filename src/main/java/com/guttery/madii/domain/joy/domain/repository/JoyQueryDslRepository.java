@@ -1,6 +1,8 @@
 package com.guttery.madii.domain.joy.domain.repository;
 
 import com.guttery.madii.domain.joy.application.dto.JoyGetMyAllResponse;
+import com.guttery.madii.domain.joy.application.dto.JoyGetRecommendRequest;
+import com.guttery.madii.domain.joy.application.dto.JoyGetRecommendResponse;
 import com.guttery.madii.domain.joy.domain.model.Joy;
 
 import java.util.List;
@@ -10,4 +12,5 @@ public interface JoyQueryDslRepository {
 
     List<Joy> getRandomOfficialJoys(int amount);
 
+    List<JoyGetRecommendResponse> getJoyRecommend(JoyGetRecommendRequest joyGetRecommendRequest);
 }
