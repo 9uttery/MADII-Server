@@ -129,7 +129,7 @@ public class JoyController {
         return joyRecommendService.getTodayRecommendedJoy(date);
     }
 
-    @GetMapping("/recommend")
+    @PostMapping("/recommend")
     @ApiResponses(
             value = {
                     @ApiResponse(
