@@ -140,4 +140,10 @@ public class JoyService {
             joyRepository.delete(joy);
         }
     }
+
+    @Transactional(readOnly = true)
+    public List<JoyGetRecommendResponse> getJoyRecommend(JoyGetRecommendRequest joyGetRecommendRequest, UserPrincipal userPrincipal) {
+        List<JoyGetRecommendResponse> joyGetRecommendResponseList = joyQueryDslRepository.getJoyRecommend(joyGetRecommendRequest);
+        return joyGetRecommendResponseList;
+    }
 }

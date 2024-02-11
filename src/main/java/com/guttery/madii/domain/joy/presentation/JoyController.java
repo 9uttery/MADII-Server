@@ -1,11 +1,6 @@
 package com.guttery.madii.domain.joy.presentation;
 
-import com.guttery.madii.domain.joy.application.dto.JoyCreateRequest;
-import com.guttery.madii.domain.joy.application.dto.JoyCreateResponse;
-import com.guttery.madii.domain.joy.application.dto.JoyGetMyAllResponse;
-import com.guttery.madii.domain.joy.application.dto.JoyGetTodayResponse;
-import com.guttery.madii.domain.joy.application.dto.JoyPutRequest;
-import com.guttery.madii.domain.joy.application.dto.JoyPutResponse;
+import com.guttery.madii.domain.joy.application.dto.*;
 import com.guttery.madii.domain.joy.application.service.JoyRecommendService;
 import com.guttery.madii.domain.joy.application.service.JoyService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
@@ -132,6 +127,22 @@ public class JoyController {
             @RequestParam(required = false, value = "date") String date
     ) {
         return joyRecommendService.getTodayRecommendedJoy(date);
+    }
+
+    @GetMapping("/recommend")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "취향저격 소확행 조회 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "취향저격 소확행 조회 API", description = "취향저격 소확행 조회 API입니다.")
+    public List<JoyGetRecommendResponse> getJoyRecommend(@Valid @RequestBody JoyGetRecommendRequest joyGetRecommendRequest,
+                                                         @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        return joyService.getJoyRecommend(joyGetRecommendRequest, userPrincipal);
     }
 
 }
