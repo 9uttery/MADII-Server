@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SavingJoyRepository extends JpaRepository<SavingJoy, Long> {
 
     SavingJoy findByJoyAndAlbum(Joy joy, Album album);
+
+    void deleteByAlbumAlbumId(Long albumId);
 }
