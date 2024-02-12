@@ -231,4 +231,20 @@ public class AlbumController {
     public List<AlbumGetRecentResponse> getRecentAlbums(@AuthenticationPrincipal final UserPrincipal userPrincipal) {
         return albumService.getRecentAlbums(userPrincipal);
     }
+
+    @DeleteMapping("/{albumId}")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "앨범 삭제 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "앨범 삭제 API", description = "앨범 삭제 API입니다.")
+    public void deleteAlbum(@PathVariable Long albumId,
+                            @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        albumService.deleteAlbum(albumId, userPrincipal);
+    }
 }

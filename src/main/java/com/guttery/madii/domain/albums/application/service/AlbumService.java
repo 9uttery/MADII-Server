@@ -238,4 +238,18 @@ public class AlbumService {
 
         return albumGetRecentResponseList;
     }
+
+    public void deleteAlbum(Long albumId, UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
+        if (!album.getUser().getUserId().equals(user.getUserId())) {
+            throw CustomException.of(ErrorDetails.NOT_MY_ALBUM);
+        }
+
+        savingAlbumRepository.deleteByAlbumAlbumId(albumId);
+        savingJoyRepository.deleteByAlbumAlbumId(albumId);
+        albumRepository.deleteById(albumId);
+    }
 }
