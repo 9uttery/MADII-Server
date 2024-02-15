@@ -148,7 +148,7 @@ public class UserController {
     )
     @Operation(summary = "토큰 리프레시 API", description = "토큰 리프레시 API입니다.")
     public RefreshResponse refresh(
-            TokenRefreshRequest tokenRefreshRequest
+            @Valid @RequestBody TokenRefreshRequest tokenRefreshRequest
     ) {
         return loginService.refresh(tokenRefreshRequest);
     }
