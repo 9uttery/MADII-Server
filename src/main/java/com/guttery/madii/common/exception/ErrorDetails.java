@@ -57,7 +57,9 @@ public enum ErrorDetails {
     NOT_FOUND_BOOKMARK("A003", HttpStatus.BAD_REQUEST.value(), "저장한 앨범이 아닙니다."),
     NOT_MY_ALBUM("A004", HttpStatus.BAD_REQUEST.value(), "내가 만든 앨범이 아닙니다."),
 
-    JOY_NOT_FOUND_IN_TODAY_PLAYLIST("P001", HttpStatus.NOT_FOUND.value(), "오늘의 플레이리스트에서 해당 소확행을 찾을 수 없습니다."),
+    ACHIEVEMENT_NOT_FOUND("P001", HttpStatus.NOT_FOUND.value(), "오늘의 플레이리스트에서 해당 실천을 찾을 수 없습니다."),
+    INVALID_SATISFACTION_ENUM("P002", HttpStatus.BAD_REQUEST.value(), "만족도 ENUM이 유효하지 않습니다. BAD, SO_SO, GOOD, GREAT, EXCELLENT 중 하나여야 합니다."),
+    ACHIEVEMENT_ACHIEVER_NOT_MATCH("P003", HttpStatus.FORBIDDEN.value(), "해당 실천을 만든 사용자가 아닙니다."),
 
     FILE_UPLOAD_FAILED("F001", HttpStatus.INTERNAL_SERVER_ERROR.value(), "파일 업로드에 실패했습니다."),
 
