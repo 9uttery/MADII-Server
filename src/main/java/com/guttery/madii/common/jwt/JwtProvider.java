@@ -122,6 +122,10 @@ public class JwtProvider {
         return generateAccessToken(userPrincipal.id(), userPrincipal.role());
     }
 
+    public String reIssueAccessToken(final UserPrincipal userPrincipal) {
+        return generateAccessToken(userPrincipal.id(), userPrincipal.role());
+    }
+
     public String reIssueRefreshToken(final String refreshToken) {
         validateRefreshToken(refreshToken);
         final UserPrincipal userPrincipal = getUserPrincipalFromRedis(refreshToken);
@@ -130,7 +134,13 @@ public class JwtProvider {
         return generateRefreshToken(userPrincipal.id(), userPrincipal.role());
     }
 
-    private UserPrincipal getUserPrincipalFromRedis(final String refreshToken) {
+    public String reIssueRefreshToken(final UserPrincipal userPrincipal, final String refreshToken) {
+        redisTemplate.delete(refreshToken);
+
+        return generateRefreshToken(userPrincipal.id(), userPrincipal.role());
+    }
+
+    public UserPrincipal getUserPrincipalFromRedis(final String refreshToken) {
         final String authenticationInfo = Optional.ofNullable(redisTemplate.opsForValue().get(refreshToken)).orElseThrow(
                 () -> CustomException.of(ErrorDetails.INVALID_REFRESH_TOKEN) // 리프레시 토큰이 저장소에 존재하지 않을 경우 Error 리턴
         );
