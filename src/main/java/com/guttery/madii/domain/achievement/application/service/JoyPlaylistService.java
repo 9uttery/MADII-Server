@@ -2,6 +2,7 @@ package com.guttery.madii.domain.achievement.application.service;
 
 import com.guttery.madii.domain.achievement.application.dto.AddAchievementRequest;
 import com.guttery.madii.domain.achievement.application.dto.JoyPlaylistResponse;
+import com.guttery.madii.domain.achievement.application.dto.MoveAchievementToTodayRequest;
 import com.guttery.madii.domain.achievement.domain.model.Achievement;
 import com.guttery.madii.domain.achievement.domain.model.FinishInfo;
 import com.guttery.madii.domain.achievement.domain.repository.AchievementRepository;
@@ -44,4 +45,17 @@ public class JoyPlaylistService {
         return achievementRepository.getAchievementsInPlaylist(user.getUserId(), LocalDate.now());
     }
 
+    @Transactional
+    public void deleteAchievementInPlaylist(final Long achievementId, final UserPrincipal userPrincipal) {
+        final Achievement foundAchievement = AchievementServiceHelper.findValidAchievement(achievementRepository, achievementId, userPrincipal);
+
+        achievementRepository.delete(foundAchievement);
+    }
+
+    @Transactional
+    public void moveAchievementInPlaylist(final MoveAchievementToTodayRequest moveAchievementToTodayRequest, final UserPrincipal userPrincipal) {
+        final Achievement foundAchievement = AchievementServiceHelper.findValidAchievement(achievementRepository, moveAchievementToTodayRequest.achievementId(), userPrincipal);
+
+        achievementRepository.delete(foundAchievement);
+    }
 }

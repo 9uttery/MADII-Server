@@ -4,6 +4,7 @@ import com.guttery.madii.common.exception.CustomException;
 import com.guttery.madii.common.exception.ErrorDetails;
 import com.guttery.madii.domain.achievement.domain.model.Achievement;
 import com.guttery.madii.domain.achievement.domain.repository.AchievementRepository;
+import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -18,5 +19,12 @@ public class AchievementServiceHelper {
         if (!achievement.isAchievedBy(userId)) {
             throw CustomException.of(ErrorDetails.ACHIEVEMENT_ACHIEVER_NOT_MATCH);
         }
+    }
+
+    public static Achievement findValidAchievement(final AchievementRepository achievementRepository, final Long achievementId, final UserPrincipal userPrincipal) {
+        final Achievement foundAchievement = findExistingAchievement(achievementRepository, achievementId);
+        validateAchievementAchiever(foundAchievement, userPrincipal.id());
+
+        return foundAchievement;
     }
 }
