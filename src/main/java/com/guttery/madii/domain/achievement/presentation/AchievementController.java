@@ -1,11 +1,13 @@
 package com.guttery.madii.domain.achievement.presentation;
 
 import com.guttery.madii.domain.achievement.application.dto.AddAchievementRequest;
+import com.guttery.madii.domain.achievement.application.dto.CalenderAchievementColorResponse;
 import com.guttery.madii.domain.achievement.application.dto.CancelAchievementRequest;
 import com.guttery.madii.domain.achievement.application.dto.FinishAchievementRequest;
 import com.guttery.madii.domain.achievement.application.dto.JoyPlaylistResponse;
 import com.guttery.madii.domain.achievement.application.dto.MoveAchievementToTodayRequest;
 import com.guttery.madii.domain.achievement.application.dto.RateAchievementRequest;
+import com.guttery.madii.domain.achievement.application.service.CalenderService;
 import com.guttery.madii.domain.achievement.application.service.JoyPlaylistService;
 import com.guttery.madii.domain.achievement.application.service.UpdateAchievementStatusService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
@@ -16,6 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/achievements")
@@ -35,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AchievementController {
     private final JoyPlaylistService joyPlaylistService;
     private final UpdateAchievementStatusService updateAchievementStatusService;
+    private final CalenderService calenderService;
 
     @GetMapping
     @ApiResponses(
@@ -171,5 +177,24 @@ public class AchievementController {
         joyPlaylistService.moveAchievementInPlaylist(moveAchievementToTodayRequest, userPrincipal);
 
         return joyPlaylistService.getAchievementsInPlaylist(userPrincipal);
+    }
+
+    @GetMapping("/calender")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "캘린더 조회 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "특정 기간 캘린더 조회 API", description = "특정 기간 캘린더 조회 API입니다.")
+    public CalenderAchievementColorResponse getAchievementsInCalendar(
+            @NotNull @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") final LocalDate startDate,
+            @NotNull @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") final LocalDate endDate,
+            @NotNull @AuthenticationPrincipal final UserPrincipal userPrincipal
+    ) {
+        return calenderService.getAchievementColorInfos(startDate, endDate, userPrincipal);
     }
 }
