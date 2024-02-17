@@ -3,7 +3,9 @@ package com.guttery.madii.domain.achievement.infrastructure;
 import com.guttery.madii.common.domain.repository.BaseQueryDslRepository;
 import com.guttery.madii.domain.achievement.application.dto.AchievementColorInfo;
 import com.guttery.madii.domain.achievement.application.dto.CalenderAchievementColorResponse;
+import com.guttery.madii.domain.achievement.application.dto.CalenderDailyJoyAchievementResponse;
 import com.guttery.madii.domain.achievement.application.dto.DailyAchievementColorInfos;
+import com.guttery.madii.domain.achievement.application.dto.DailyJoyAchievementInfo;
 import com.guttery.madii.domain.achievement.application.dto.DailyJoyPlaylist;
 import com.guttery.madii.domain.achievement.application.dto.JoyAchievementInfo;
 import com.guttery.madii.domain.achievement.application.dto.JoyPlaylistResponse;
@@ -88,5 +90,21 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
                                 )
                         )
                 );
+    }
+
+
+    @Override
+    public CalenderDailyJoyAchievementResponse getDailyJoyAchievementInfos(final Long userId, final LocalDate date) {
+        final LocalDateTime startOfDay = date.atStartOfDay();
+        final LocalDateTime endOfDay = date.atStartOfDay().plusDays(1).minusSeconds(1);
+
+        final List<DailyJoyAchievementInfo> dailyJoyAchievementInfos = select(DailyJoyAchievementInfo.class, joy.joyId, achievement.achievementId, joy.joyIconNum, joy.contents, achievement.finishInfo.satisfaction)
+                .from(achievement)
+                .join(achievement.joy, joy)
+                .join(achievement.achiever, user)
+                .where(achievement.achiever.userId.eq(userId), achievement.createdAt.between(startOfDay, endOfDay), achievement.finishInfo.isFinished.isTrue())
+                .fetch();
+
+        return new CalenderDailyJoyAchievementResponse(dailyJoyAchievementInfos);
     }
 }

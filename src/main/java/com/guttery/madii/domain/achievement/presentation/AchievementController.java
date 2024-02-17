@@ -2,6 +2,7 @@ package com.guttery.madii.domain.achievement.presentation;
 
 import com.guttery.madii.domain.achievement.application.dto.AddAchievementRequest;
 import com.guttery.madii.domain.achievement.application.dto.CalenderAchievementColorResponse;
+import com.guttery.madii.domain.achievement.application.dto.CalenderDailyJoyAchievementResponse;
 import com.guttery.madii.domain.achievement.application.dto.CancelAchievementRequest;
 import com.guttery.madii.domain.achievement.application.dto.FinishAchievementRequest;
 import com.guttery.madii.domain.achievement.application.dto.JoyPlaylistResponse;
@@ -197,4 +198,23 @@ public class AchievementController {
     ) {
         return calenderService.getAchievementColorInfos(startDate, endDate, userPrincipal);
     }
+
+    @GetMapping("/calender/detail")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "캘린더 상세 조회 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "특정 날짜 캘린더 상세 조회 API", description = "특정 날짜 캘린더 상세 조회 API입니다.")
+    public CalenderDailyJoyAchievementResponse getAchievementsInCalendarDetail(
+            @NotNull @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") final LocalDate date,
+            @NotNull @AuthenticationPrincipal final UserPrincipal userPrincipal
+    ) {
+        return calenderService.getDailyJoyAchievementInfos(date, userPrincipal);
+    }
+
 }
