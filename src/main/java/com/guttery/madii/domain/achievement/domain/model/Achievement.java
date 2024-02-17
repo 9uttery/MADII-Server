@@ -58,4 +58,8 @@ public class Achievement extends BaseTimeEntity {
     public boolean isAchievedBy(final Long userId) {
         return this.achiever.matchesUserId(userId);
     }
+
+    public Achievement copyForMove() {
+        return new Achievement(this.achiever, this.joy, FinishInfo.createNotFinished());
+    }
 }

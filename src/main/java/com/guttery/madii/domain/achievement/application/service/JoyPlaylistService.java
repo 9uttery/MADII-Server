@@ -32,7 +32,6 @@ public class JoyPlaylistService {
     public void addAchievementInPlaylist(final AddAchievementRequest addAchievementRequest, final UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
         final Joy joy = JoyServiceHelper.findExistingJoy(joyRepository, addAchievementRequest.joyId());
-
         final Achievement newAchievement = Achievement.create(user, joy, FinishInfo.createNotFinished());
 
         achievementRepository.save(newAchievement);
@@ -55,7 +54,9 @@ public class JoyPlaylistService {
     @Transactional
     public void moveAchievementInPlaylist(final MoveAchievementToTodayRequest moveAchievementToTodayRequest, final UserPrincipal userPrincipal) {
         final Achievement foundAchievement = AchievementServiceHelper.findValidAchievement(achievementRepository, moveAchievementToTodayRequest.achievementId(), userPrincipal);
+        final Achievement newAchievement = foundAchievement.copyForMove();
 
         achievementRepository.delete(foundAchievement);
+        achievementRepository.save(newAchievement);
     }
 }
