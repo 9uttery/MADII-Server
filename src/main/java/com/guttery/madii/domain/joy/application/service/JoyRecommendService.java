@@ -3,6 +3,7 @@ package com.guttery.madii.domain.joy.application.service;
 import com.guttery.madii.common.exception.CustomException;
 import com.guttery.madii.common.exception.ErrorDetails;
 import com.guttery.madii.domain.joy.application.dto.JoyGetTodayResponse;
+import com.guttery.madii.domain.joy.domain.model.DailyJoy;
 import com.guttery.madii.domain.joy.domain.model.Joy;
 import com.guttery.madii.domain.joy.domain.model.RecommendedJoys;
 import com.guttery.madii.domain.joy.domain.repository.JoyQueryDslRepository;
@@ -27,7 +28,7 @@ public class JoyRecommendService {
     private final JoyQueryDslRepository joyQueryDslRepository;
     private final RecommendedJoysRepository recommendedJoysRepository;
 
-    @Scheduled(cron = "0 0 0 1 * ?")
+    @Scheduled(cron = "0 0 0 1 * ?") // 매월 1일 0시 0분 0초에 실행
     public void createNewMonthlyRecommendedJoys() {
         final YearMonth yearMonth = YearMonth.now();
         final List<Joy> joys = pickRandomJoysForSpecificMonth(yearMonth);
@@ -62,7 +63,7 @@ public class JoyRecommendService {
             throw CustomException.of(ErrorDetails.TODAY_JOY_NOT_FOUND);
         }
 
-        final RecommendedJoys.DailyJoy foundTargetDateRecommendedJoy = foundRecommendedJoys.getDailyJoys().get(targetDate.getDayOfMonth() - 1);
+        final DailyJoy foundTargetDateRecommendedJoy = foundRecommendedJoys.getDailyJoys().get(targetDate.getDayOfMonth() - 1);
 
         return JoyGetTodayResponse.of(foundTargetDateRecommendedJoy);
     }
