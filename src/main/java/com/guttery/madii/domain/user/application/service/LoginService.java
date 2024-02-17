@@ -13,6 +13,7 @@ import com.guttery.madii.domain.user.application.dto.TokenRefreshRequest;
 import com.guttery.madii.domain.user.domain.model.SocialInfo;
 import com.guttery.madii.domain.user.domain.model.SocialProvider;
 import com.guttery.madii.domain.user.domain.model.User;
+import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import com.guttery.madii.domain.user.domain.repository.UserRepository;
 import com.guttery.madii.domain.user.domain.service.AppleIdTokenDecodeService;
 import com.guttery.madii.domain.user.domain.service.KakaoIdTokenDecodeService;
@@ -82,6 +83,10 @@ public class LoginService {
     }
 
     public RefreshResponse refresh(final TokenRefreshRequest tokenRefreshRequest) {
-        return new RefreshResponse(jwtProvider.reIssueAccessToken(tokenRefreshRequest.refreshToken()), jwtProvider.reIssueRefreshToken(tokenRefreshRequest.refreshToken()));
+        final UserPrincipal userPrincipal = jwtProvider.getUserPrincipalFromRedis(tokenRefreshRequest.refreshToken());
+        final User user = userRepository.findById(userPrincipal.id())
+                .orElseThrow(() -> CustomException.of(ErrorDetails.USER_NOT_FOUND));
+
+        return new RefreshResponse(jwtProvider.reIssueAccessToken(userPrincipal), jwtProvider.reIssueRefreshToken(userPrincipal, tokenRefreshRequest.refreshToken()), user.agreedMarketing(), user.hasProfile());
     }
 }
