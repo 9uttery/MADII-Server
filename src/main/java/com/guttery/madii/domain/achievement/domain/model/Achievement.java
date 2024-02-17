@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "t_album")
+@Table(name = "t_achievement")
 @Access(AccessType.FIELD)
 public class Achievement extends BaseTimeEntity {
     @Id
@@ -49,5 +49,9 @@ public class Achievement extends BaseTimeEntity {
 
     public void cancel() {
         this.finishInfo = FinishInfo.createNotFinished();
+    }
+
+    public boolean isAchievedBy(final Long userId) {
+        return this.achiever.matchesUserId(userId);
     }
 }
