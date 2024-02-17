@@ -39,7 +39,7 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
         final LocalDateTime startOfDay = date.atStartOfDay();
         final LocalDateTime endOfDay = date.atStartOfDay().plusDays(1).minusSeconds(1);
 
-        return select(JoyAchievementInfo.class, joy.joyId, joy.joyIconNum, joy.contents, achievement.finishInfo.isFinished, achievement.finishInfo.satisfaction)
+        return select(JoyAchievementInfo.class, joy.joyId, achievement.achievementId, joy.joyIconNum, joy.contents, achievement.finishInfo.isFinished, achievement.finishInfo.satisfaction)
                 .from(achievement)
                 .join(achievement.joy, joy)
                 .join(achievement.achiever, user)
