@@ -56,6 +56,8 @@ public enum ErrorDetails {
     ALREADY_EXIST_BOOKMARK("A002", HttpStatus.BAD_REQUEST.value(), "이미 저장한 앨범입니다."),
     NOT_FOUND_BOOKMARK("A003", HttpStatus.BAD_REQUEST.value(), "저장한 앨범이 아닙니다."),
 
+    JOY_NOT_FOUND_IN_TODAY_PLAYLIST("P001", HttpStatus.NOT_FOUND.value(), "오늘의 플레이리스트에서 해당 소확행을 찾을 수 없습니다."),
+
     FILE_UPLOAD_FAILED("F001", HttpStatus.INTERNAL_SERVER_ERROR.value(), "파일 업로드에 실패했습니다."),
 
     ;
