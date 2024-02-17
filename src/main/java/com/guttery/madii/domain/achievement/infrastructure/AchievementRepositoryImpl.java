@@ -44,7 +44,7 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
                 .join(achievement.joy, joy)
                 .join(achievement.achiever, user)
                 .where(achievement.achiever.userId.eq(userId), achievement.createdAt.between(startOfDay, endOfDay))
-                .orderBy(achievement.finishInfo.isFinished.asc(), achievement.createdAt.desc())
+                .orderBy(achievement.finishInfo.isFinished.asc(), achievement.createdAt.asc())
                 .fetch();
     }
 }
