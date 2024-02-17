@@ -77,4 +77,8 @@ public class User extends BaseTimeEntity {
     public boolean hasProfile() {
         return userProfile != null;
     }
+
+    public boolean matchesUserId(final Long userId) {
+        return this.userId.equals(userId);
+    }
 }
