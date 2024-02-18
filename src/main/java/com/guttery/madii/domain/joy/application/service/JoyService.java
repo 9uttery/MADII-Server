@@ -38,11 +38,12 @@ public class JoyService {
     public JoyCreateResponse createJoy(final JoyCreateRequest joyCreateRequest, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
 
-        // 소확행 썸네일 아이콘 번호 0 ~ 17 중 랜덤 생성
+        // 소확행 썸네일 아이콘 번호 1 ~ 24 중 랜덤 생성
         Random random = new Random();
-        int bound = 18;
+        int bound = 24;
 
-        final Joy joy = Joy.createPersonalJoy(user, random.nextInt(bound), joyCreateRequest.contents());
+        // 랜덤 값에 1을 더해 1부터 24까지의 값을 얻음
+        final Joy joy = Joy.createPersonalJoy(user, 1 + random.nextInt(bound), joyCreateRequest.contents());
         joyRepository.save(joy);
 
         JoyCreateResponse joyCreateResponse = new JoyCreateResponse(joy.getJoyIconNum(), joy.getContents());
