@@ -11,8 +11,8 @@ import com.guttery.madii.domain.achievement.application.dto.JoyAchievementInfo;
 import com.guttery.madii.domain.achievement.application.dto.JoyPlaylistResponse;
 import com.guttery.madii.domain.achievement.domain.repository.AchievementQueryDslRepository;
 import com.guttery.madii.domain.achievement.domain.repository.AchievementRepository;
-import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
@@ -25,11 +25,15 @@ import static com.guttery.madii.domain.achievement.domain.model.QAchievement.ach
 import static com.guttery.madii.domain.joy.domain.model.QJoy.joy;
 import static com.guttery.madii.domain.user.domain.model.QUser.user;
 import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
 import static com.querydsl.core.types.dsl.Expressions.stringTemplate;
 
 
 @Repository
 public class AchievementRepositoryImpl extends BaseQueryDslRepository<AchievementRepository> implements AchievementQueryDslRepository {
+    private static final int MAX_COLOR_NUM = 6;
+    private static final int COLOR_CATEGORY_OFFSET = 1;
+
     public AchievementRepositoryImpl(JPAQueryFactory queryFactory) {
         super(queryFactory);
     }
@@ -68,30 +72,31 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
     private List<DailyAchievementColorInfos> queryAchievementColorInfos(final Long userId, final LocalDate startDate, final LocalDate endDate) {
         final LocalDateTime startOfDay = startDate.atStartOfDay();
         final LocalDateTime endOfDay = endDate.atStartOfDay().plusDays(1).minusSeconds(1);
-        StringExpression finishedAtToDate = stringTemplate("DATE_FORMAT({0}, {1})", achievement.finishInfo.finishedAt, "%Y-%m-%d");
+        final StringExpression finishedAtToDate = stringTemplate("DATE_FORMAT({0}, {1})", achievement.finishInfo.finishedAt, "%Y-%m-%d");
+        final NumberExpression<Integer> calculatedJoyIconNum = joy.joyIconNum.divide(MAX_COLOR_NUM).add(COLOR_CATEGORY_OFFSET);
 
-        return select(achievement)
+        final var result = select(achievement)
                 .from(achievement)
                 .join(achievement.joy, joy)
                 .join(achievement.achiever, user)
                 .where(achievement.achiever.userId.eq(userId), achievement.finishInfo.isFinished.isTrue(), achievement.finishInfo.finishedAt.between(startOfDay, endOfDay))
-                .groupBy(finishedAtToDate)
+//                .limit(DAILY_ACHIEVEMENT_COLOR_INFO_MAX_NUM)
+                .orderBy(achievement.finishInfo.finishedAt.asc())
                 .transform(
                         groupBy(finishedAtToDate).list(
                                 Projections.constructor(DailyAchievementColorInfos.class,
                                         finishedAtToDate,
-                                        GroupBy.list(
+                                        list(
                                                 Projections.constructor(
-                                                        AchievementColorInfo.class,
-                                                        joy.joyId,
-                                                        joy.joyIconNum
+                                                        AchievementColorInfo.class, calculatedJoyIconNum
                                                 )
                                         )
                                 )
                         )
                 );
-    }
 
+        return result;
+    }
 
     @Override
     public CalenderDailyJoyAchievementResponse getDailyJoyAchievementInfos(final Long userId, final LocalDate date) {
