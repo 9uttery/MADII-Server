@@ -69,8 +69,8 @@ public class UserController {
             }
     )
     @Operation(summary = "회원가입 API", description = "회원가입 API입니다.")
-    public void signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
-        signUpService.signUp(signUpRequest);
+    public LoginResponse signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
+        return signUpService.signUp(signUpRequest);
     }
 
     @PostMapping("/login/normal")
