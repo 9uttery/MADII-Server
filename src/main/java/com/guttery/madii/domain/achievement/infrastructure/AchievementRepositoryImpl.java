@@ -1,7 +1,6 @@
 package com.guttery.madii.domain.achievement.infrastructure;
 
 import com.guttery.madii.common.domain.repository.BaseQueryDslRepository;
-import com.guttery.madii.domain.achievement.application.dto.AchievementColorInfo;
 import com.guttery.madii.domain.achievement.application.dto.CalenderAchievementColorResponse;
 import com.guttery.madii.domain.achievement.application.dto.CalenderDailyJoyAchievementResponse;
 import com.guttery.madii.domain.achievement.application.dto.DailyAchievementColorInfos;
@@ -13,6 +12,7 @@ import com.guttery.madii.domain.achievement.domain.repository.AchievementQueryDs
 import com.guttery.madii.domain.achievement.domain.repository.AchievementRepository;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
@@ -30,6 +30,10 @@ import static com.querydsl.core.types.dsl.Expressions.stringTemplate;
 
 @Repository
 public class AchievementRepositoryImpl extends BaseQueryDslRepository<AchievementRepository> implements AchievementQueryDslRepository {
+    private static final int DAILY_ACHIEVEMENT_COLOR_INFO_MAX_NUM = 9;
+    private static final int MAX_COLOR_NUM = 6;
+    private static final int COLOR_CATEGORY_OFFSET = 1;
+
     public AchievementRepositoryImpl(JPAQueryFactory queryFactory) {
         super(queryFactory);
     }
@@ -68,7 +72,8 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
     private List<DailyAchievementColorInfos> queryAchievementColorInfos(final Long userId, final LocalDate startDate, final LocalDate endDate) {
         final LocalDateTime startOfDay = startDate.atStartOfDay();
         final LocalDateTime endOfDay = endDate.atStartOfDay().plusDays(1).minusSeconds(1);
-        StringExpression finishedAtToDate = stringTemplate("DATE_FORMAT({0}, {1})", achievement.finishInfo.finishedAt, "%Y-%m-%d");
+        final StringExpression finishedAtToDate = stringTemplate("DATE_FORMAT({0}, {1})", achievement.finishInfo.finishedAt, "%Y-%m-%d");
+        final NumberExpression<Integer> calculatedJoyIconNum = joy.joyIconNum.divide(MAX_COLOR_NUM).add(COLOR_CATEGORY_OFFSET);
 
         return select(achievement)
                 .from(achievement)
@@ -76,17 +81,13 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
                 .join(achievement.achiever, user)
                 .where(achievement.achiever.userId.eq(userId), achievement.finishInfo.isFinished.isTrue(), achievement.finishInfo.finishedAt.between(startOfDay, endOfDay))
                 .groupBy(finishedAtToDate)
+                .limit(DAILY_ACHIEVEMENT_COLOR_INFO_MAX_NUM)
+                .orderBy(achievement.finishInfo.finishedAt.asc())
                 .transform(
                         groupBy(finishedAtToDate).list(
                                 Projections.constructor(DailyAchievementColorInfos.class,
                                         finishedAtToDate,
-                                        GroupBy.list(
-                                                Projections.constructor(
-                                                        AchievementColorInfo.class,
-                                                        joy.joyId,
-                                                        joy.joyIconNum
-                                                )
-                                        )
+                                        GroupBy.list(calculatedJoyIconNum)
                                 )
                         )
                 );

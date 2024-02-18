@@ -9,6 +9,6 @@ public record DailyAchievementColorInfos(
         @Schema(description = "날짜", example = "2021-10-01")
         String date,
         @Schema(description = "소확행 색상 정보 리스트")
-        List<AchievementColorInfo> achievementColorInfos
+        List<Integer> achievementColorInfos
 ) {
 }
