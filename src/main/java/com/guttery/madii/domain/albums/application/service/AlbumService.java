@@ -12,6 +12,8 @@ import com.guttery.madii.domain.albums.domain.repository.SavingAlbumRepository;
 import com.guttery.madii.domain.albums.domain.repository.SavingJoyRepository;
 import com.guttery.madii.domain.joy.domain.model.Joy;
 import com.guttery.madii.domain.joy.domain.repository.JoyRepository;
+import com.guttery.madii.domain.report.domain.model.Report;
+import com.guttery.madii.domain.report.domain.repository.ReportRepository;
 import com.guttery.madii.domain.user.application.service.UserServiceHelper;
 import com.guttery.madii.domain.user.domain.model.User;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
@@ -48,6 +50,7 @@ public class AlbumService {
     private final JoyRepository joyRepository;
     private final SavingAlbumRepository savingAlbumRepository;
     private final SavingJoyRepository savingJoyRepository;
+    private final ReportRepository reportRepository;
 
     public List<AlbumCreateResponse> createAlbum(AlbumCreateRequest albumCreateRequest, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
@@ -281,5 +284,14 @@ public class AlbumService {
 
         List<AlbumGetCreatedResponse> albumGetCreatedResponseList = albumQueryDslRepository.getMyAlbumsCreated(user.getUserId());
         return albumGetCreatedResponseList;
+    }
+
+    public void reportAlbum(AlbumReportRequest albumReportRequest, Long albumId, UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
+
+        final Report report = Report.createReport(user, album, albumReportRequest.contents());
+        reportRepository.save(report);
     }
 }

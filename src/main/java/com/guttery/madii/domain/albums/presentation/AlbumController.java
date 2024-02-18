@@ -262,4 +262,22 @@ public class AlbumController {
                             @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         albumService.deleteAlbum(albumId, userPrincipal);
     }
+
+    @PostMapping("/{albumId}/report")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "앨범 신고 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "앨범 신고 API", description = "앨범 신고 API입니다.")
+    public void reportAlbum(@Valid @RequestBody AlbumReportRequest albumReportRequest,
+                            @PathVariable Long albumId,
+                            @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        albumService.reportAlbum(albumReportRequest, albumId, userPrincipal);
+    }
+
 }
