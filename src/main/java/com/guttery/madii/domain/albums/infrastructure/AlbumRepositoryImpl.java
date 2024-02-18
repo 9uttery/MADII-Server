@@ -161,8 +161,7 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
                         album.albumId,
                         album.albumInfo.albumIconNum,
                         album.albumInfo.albumColorNum,
-                        album.name,
-                        album.user.userProfile.nickname))
+                        album.name))
                 .from(album)
                 .where(predicate)
                 .orderBy(album.albumId.desc())
@@ -187,8 +186,7 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
                         album.albumId,
                         album.albumInfo.albumIconNum,
                         album.albumInfo.albumColorNum,
-                        album.name,
-                        album.user.userProfile.nickname))
+                        album.name))
                 .from(album)
                 .where(album.albumId.in(randomIds))
                 .fetch();
