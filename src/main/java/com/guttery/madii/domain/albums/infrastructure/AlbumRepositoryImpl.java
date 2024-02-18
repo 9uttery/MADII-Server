@@ -122,6 +122,18 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
     }
 
     @Override
+    public List<AlbumGetCreatedResponse> getMyAlbumsCreated(Long userId) {
+        return queryFactory
+                .select(Projections.constructor(AlbumGetCreatedResponse.class,
+                        album.albumId,
+                        album.name))
+                .from(album)
+                .where(album.user.userId.eq(userId))
+                .orderBy(album.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
     public List<AlbumGetJoyAllResponse> getMyJoyAllAlbums(Long joyId, Long userId) {
         return queryFactory
                 .select(Projections.constructor(AlbumGetJoyAllResponse.class,
