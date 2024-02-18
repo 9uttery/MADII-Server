@@ -153,6 +153,21 @@ public class AlbumController {
         return albumService.getMyAllAlbums(userPrincipal);
     }
 
+    @GetMapping("/created")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "내가 만든 앨범 목록 조회 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "내가 만든 앨범 목록 조회 API", description = "내가 만든 앨범 목록 조회 API입니다.")
+    public List<AlbumGetCreatedResponse> getCreatedAlbums(@AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        return albumService.getCreatedAlbums(userPrincipal);
+    }
+
     @GetMapping("/joy/{joyId}")
     @ApiResponses(
             value = {

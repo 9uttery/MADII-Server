@@ -275,4 +275,11 @@ public class AlbumService {
         savingJoyRepository.deleteByAlbumAlbumId(albumId);
         albumRepository.deleteById(albumId);
     }
+
+    public List<AlbumGetCreatedResponse> getCreatedAlbums(UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+
+        List<AlbumGetCreatedResponse> albumGetCreatedResponseList = albumQueryDslRepository.getMyAlbumsCreated(user.getUserId());
+        return albumGetCreatedResponseList;
+    }
 }
