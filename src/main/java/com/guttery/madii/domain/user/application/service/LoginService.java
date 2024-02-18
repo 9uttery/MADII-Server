@@ -60,7 +60,7 @@ public class LoginService {
     private User createNewKakaoUser(final OidcDecodePayload oidcDecodePayload) {
         final User newUser = User.createSocialUser(oidcDecodePayload.sub(), SocialProvider.KAKAO);
 
-        newUser.updateUserProfile(oidcDecodePayload.nickname(), oidcDecodePayload.picture());
+//        newUser.updateUserProfile(oidcDecodePayload.nickname(), oidcDecodePayload.picture()); 카카오 프로필 정보 가져오기 제거
 
         return userRepository.save(newUser);
     }
