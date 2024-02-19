@@ -46,7 +46,7 @@ public class JoyService {
         final Joy joy = Joy.createPersonalJoy(user, 1 + random.nextInt(bound), joyCreateRequest.contents());
         joyRepository.save(joy);
 
-        JoyCreateResponse joyCreateResponse = new JoyCreateResponse(joy.getJoyIconNum(), joy.getContents());
+        JoyCreateResponse joyCreateResponse = new JoyCreateResponse(joy.getJoyId(), joy.getJoyIconNum(), joy.getContents());
         return joyCreateResponse;
     }
 
