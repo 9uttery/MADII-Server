@@ -1,7 +1,37 @@
 package com.guttery.madii.domain.joy.domain.repository;
 
+import com.guttery.madii.domain.joy.application.dto.MostAchievedJoyInfoProjection;
 import com.guttery.madii.domain.joy.domain.model.Joy;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface JoyRepository extends JpaRepository<Joy, Long> {
+    String getMostAchievedJoyQuery =
+            "SELECT " +
+                    "    joyIconNum, " +
+                    "    contents, " +
+                    "    achieveCount, " +
+                    "    achieveRank " +
+                    "FROM ( " +
+                    "    SELECT " +
+                    "        j.joy_icon_num AS joyIconNum, " +
+                    "        j.contents AS contents, " +
+                    "        COUNT(a.achievement_id) AS achieveCount, " +
+                    "        DENSE_RANK() OVER (ORDER BY COUNT(a.achievement_id) DESC) AS achieveRank " +
+                    "    FROM " +
+                    "        t_joy j " +
+                    "    LEFT JOIN " +
+                    "        t_achievement a ON j.joy_id = a.joy_joy_id " +
+                    "    WHERE " +
+                    "        a.achiever_user_id = :userId " +
+                    "    GROUP BY " +
+                    "        j.joy_id " +
+                    ") AS rankedJoys " +
+                    "WHERE " +
+                    "    achieveRank <= 5;";
+
+    @Query(nativeQuery = true, value = getMostAchievedJoyQuery)
+    List<MostAchievedJoyInfoProjection> getMostAchievedJoy(Long userId);
 }

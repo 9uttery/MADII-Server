@@ -1,6 +1,14 @@
 package com.guttery.madii.domain.joy.presentation;
 
-import com.guttery.madii.domain.joy.application.dto.*;
+import com.guttery.madii.domain.joy.application.dto.JoyCreateRequest;
+import com.guttery.madii.domain.joy.application.dto.JoyCreateResponse;
+import com.guttery.madii.domain.joy.application.dto.JoyGetMostAchievedResponse;
+import com.guttery.madii.domain.joy.application.dto.JoyGetMyAllResponse;
+import com.guttery.madii.domain.joy.application.dto.JoyGetRecommendRequest;
+import com.guttery.madii.domain.joy.application.dto.JoyGetRecommendResponse;
+import com.guttery.madii.domain.joy.application.dto.JoyGetTodayResponse;
+import com.guttery.madii.domain.joy.application.dto.JoyPutRequest;
+import com.guttery.madii.domain.joy.application.dto.JoyPutResponse;
 import com.guttery.madii.domain.joy.application.service.JoyRecommendService;
 import com.guttery.madii.domain.joy.application.service.JoyService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
@@ -9,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -143,6 +152,21 @@ public class JoyController {
     public List<JoyGetRecommendResponse> getJoyRecommend(@Valid @RequestBody JoyGetRecommendRequest joyGetRecommendRequest,
                                                          @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         return joyService.getJoyRecommend(joyGetRecommendRequest, userPrincipal);
+    }
+
+    @GetMapping("/most")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "많이 실천한 소확행 조회 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "많이 실천한 소확행 조회 API", description = "많이 실천한 소확행 조회 API입니다.")
+    public JoyGetMostAchievedResponse getMostJoy(@NotNull @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        return joyService.getMostAchievedJoy(userPrincipal);
     }
 
 }
