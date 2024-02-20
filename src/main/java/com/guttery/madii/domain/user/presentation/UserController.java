@@ -1,6 +1,7 @@
 package com.guttery.madii.domain.user.presentation;
 
 import com.guttery.madii.domain.user.application.dto.AppleLoginRequest;
+import com.guttery.madii.domain.user.application.dto.BeforeWithdrawInfoResponse;
 import com.guttery.madii.domain.user.application.dto.KakaoLoginRequest;
 import com.guttery.madii.domain.user.application.dto.LoginResponse;
 import com.guttery.madii.domain.user.application.dto.LogoutRequest;
@@ -195,7 +196,24 @@ public class UserController {
         profileService.updateProfile(profileUpdateRequest, userPrincipal);
     }
 
-    @DeleteMapping
+    @GetMapping("/stat")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "탈퇴 전 사용자 정보 조회 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "탈퇴 전 사용자 정보 조회 API", description = "탈퇴 전 사용자 정보 조회 API입니다.")
+    public BeforeWithdrawInfoResponse getBeforeWithdrawInfo(
+            @NotNull @AuthenticationPrincipal final UserPrincipal userPrincipal
+    ) {
+        return withdrawService.getBeforeWithdrawInfo(userPrincipal);
+    }
+
+    @DeleteMapping("/profile")
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -229,4 +247,6 @@ public class UserController {
     ) {
         logoutService.logout(logoutRequest, userPrincipal);
     }
+
+
 }
