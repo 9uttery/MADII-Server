@@ -28,7 +28,8 @@ public class SecurityConstant {
             "/users/id-check/**",
             "/users/refresh/**",
             "/joy/today/**",
-            "/albums/all/**"
+            "/albums/all/**",
+            "/notices"
 
             // TODO: 인증 필요 없는 API 엔드포인트 추가
     );
