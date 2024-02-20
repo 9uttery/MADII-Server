@@ -7,7 +7,15 @@ import com.guttery.madii.domain.albums.domain.model.SavingJoy;
 import com.guttery.madii.domain.albums.domain.repository.AlbumQueryDslRepository;
 import com.guttery.madii.domain.albums.domain.repository.AlbumRepository;
 import com.guttery.madii.domain.albums.domain.repository.SavingJoyRepository;
-import com.guttery.madii.domain.joy.application.dto.*;
+import com.guttery.madii.domain.joy.application.dto.JoyCreateRequest;
+import com.guttery.madii.domain.joy.application.dto.JoyCreateResponse;
+import com.guttery.madii.domain.joy.application.dto.JoyGetMostAchievedResponse;
+import com.guttery.madii.domain.joy.application.dto.JoyGetMyAllResponse;
+import com.guttery.madii.domain.joy.application.dto.JoyGetRecommendRequest;
+import com.guttery.madii.domain.joy.application.dto.JoyGetRecommendResponse;
+import com.guttery.madii.domain.joy.application.dto.JoyPutRequest;
+import com.guttery.madii.domain.joy.application.dto.JoyPutResponse;
+import com.guttery.madii.domain.joy.application.dto.MostAchievedJoyInfo;
 import com.guttery.madii.domain.joy.domain.model.Joy;
 import com.guttery.madii.domain.joy.domain.repository.JoyQueryDslRepository;
 import com.guttery.madii.domain.joy.domain.repository.JoyRepository;
@@ -146,5 +154,12 @@ public class JoyService {
     public List<JoyGetRecommendResponse> getJoyRecommend(JoyGetRecommendRequest joyGetRecommendRequest, UserPrincipal userPrincipal) {
         List<JoyGetRecommendResponse> joyGetRecommendResponseList = joyQueryDslRepository.getJoyRecommend(joyGetRecommendRequest);
         return joyGetRecommendResponseList;
+    }
+
+    @Transactional(readOnly = true)
+    public JoyGetMostAchievedResponse getMostAchievedJoy(final UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+
+        return new JoyGetMostAchievedResponse(joyRepository.getMostAchievedJoy(user.getUserId()).stream().map(MostAchievedJoyInfo::fromProjection).toList());
     }
 }
