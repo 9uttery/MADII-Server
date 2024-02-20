@@ -45,5 +45,13 @@ public class UserRepositoryImpl extends BaseQueryDslRepository<User> implements 
                 .fetchFirst() != null;
     }
 
+    @Override
+    public boolean existsByUserId(Long userId) {
+        return select(user)
+                .from(user)
+                .where(user.userId.eq(userId))
+                .fetchFirst() != null;
+    }
+
 
 }
