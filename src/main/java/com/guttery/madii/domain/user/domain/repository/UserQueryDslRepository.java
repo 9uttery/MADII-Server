@@ -11,4 +11,6 @@ public interface UserQueryDslRepository {
     Optional<User> findUserBySocialInfo(SocialInfo socialInfo);
 
     boolean existsByLoginId(String loginId);
+
+    boolean existsByUserId(Long userId);
 }

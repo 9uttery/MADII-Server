@@ -3,6 +3,7 @@ package com.guttery.madii.domain.user.presentation;
 import com.guttery.madii.domain.user.application.dto.AppleLoginRequest;
 import com.guttery.madii.domain.user.application.dto.KakaoLoginRequest;
 import com.guttery.madii.domain.user.application.dto.LoginResponse;
+import com.guttery.madii.domain.user.application.dto.LogoutRequest;
 import com.guttery.madii.domain.user.application.dto.NormalLoginRequest;
 import com.guttery.madii.domain.user.application.dto.ProfileReadResponse;
 import com.guttery.madii.domain.user.application.dto.ProfileUpdateRequest;
@@ -11,6 +12,7 @@ import com.guttery.madii.domain.user.application.dto.SignUpRequest;
 import com.guttery.madii.domain.user.application.dto.TokenRefreshRequest;
 import com.guttery.madii.domain.user.application.dto.UpdateMarketingAgreementRequest;
 import com.guttery.madii.domain.user.application.service.LoginService;
+import com.guttery.madii.domain.user.application.service.LogoutService;
 import com.guttery.madii.domain.user.application.service.ProfileService;
 import com.guttery.madii.domain.user.application.service.SignUpService;
 import com.guttery.madii.domain.user.application.service.WithdrawService;
@@ -21,6 +23,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -43,6 +46,7 @@ public class UserController {
     private final LoginService loginService;
     private final ProfileService profileService;
     private final WithdrawService withdrawService;
+    private final LogoutService logoutService;
 
     @GetMapping("/id-check")
     @ApiResponses(
@@ -203,8 +207,26 @@ public class UserController {
     )
     @Operation(summary = "회원 탈퇴 API", description = "회원 탈퇴 API입니다.")
     public void withdraw(
-            @AuthenticationPrincipal final UserPrincipal userPrincipal
+            @NotNull @AuthenticationPrincipal final UserPrincipal userPrincipal
     ) {
         withdrawService.withdraw(userPrincipal);
+    }
+
+    @DeleteMapping("/logout")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "로그아웃 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "로그아웃 API", description = "로그아웃 API입니다.")
+    public void logout(
+            @NotNull @AuthenticationPrincipal final UserPrincipal userPrincipal,
+            @Valid @RequestBody final LogoutRequest logoutRequest
+    ) {
+        logoutService.logout(logoutRequest, userPrincipal);
     }
 }
