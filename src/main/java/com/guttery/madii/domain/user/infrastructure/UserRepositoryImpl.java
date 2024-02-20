@@ -1,14 +1,19 @@
 package com.guttery.madii.domain.user.infrastructure;
 
 import com.guttery.madii.common.domain.repository.BaseQueryDslRepository;
+import com.guttery.madii.domain.user.application.dto.BeforeWithdrawInfoResponse;
 import com.guttery.madii.domain.user.domain.model.SocialInfo;
 import com.guttery.madii.domain.user.domain.model.User;
 import com.guttery.madii.domain.user.domain.repository.UserQueryDslRepository;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.guttery.madii.domain.achievement.domain.model.QAchievement.achievement;
 import static com.guttery.madii.domain.user.domain.model.QUser.user;
 
 @Repository
@@ -51,6 +56,18 @@ public class UserRepositoryImpl extends BaseQueryDslRepository<User> implements 
                 .from(user)
                 .where(user.userId.eq(userId))
                 .fetchFirst() != null;
+    }
+
+    @Override
+    public BeforeWithdrawInfoResponse getBeforeWithdrawInfo(Long userId, LocalDateTime date) {
+        final NumberExpression<Integer> activeDays = Expressions.numberTemplate(Integer.class, "DATEDIFF({0}, {1})", date, user.createdAt).as("activeDays");
+
+        return select(BeforeWithdrawInfoResponse.class, user.userProfile.nickname, activeDays, achievement.joy.joyId.countDistinct(), achievement.achievementId.countDistinct())
+                .from(user)
+                .leftJoin(achievement).on(achievement.achiever.eq(user))
+                .where(user.userId.eq(userId))
+                .groupBy(user.userId)
+                .fetchOne();
     }
 
 

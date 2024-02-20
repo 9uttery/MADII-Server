@@ -1,8 +1,10 @@
 package com.guttery.madii.domain.user.domain.repository;
 
+import com.guttery.madii.domain.user.application.dto.BeforeWithdrawInfoResponse;
 import com.guttery.madii.domain.user.domain.model.SocialInfo;
 import com.guttery.madii.domain.user.domain.model.User;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface UserQueryDslRepository {
@@ -13,4 +15,6 @@ public interface UserQueryDslRepository {
     boolean existsByLoginId(String loginId);
 
     boolean existsByUserId(Long userId);
+
+    BeforeWithdrawInfoResponse getBeforeWithdrawInfo(Long userId, LocalDateTime now);
 }
