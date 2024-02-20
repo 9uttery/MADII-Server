@@ -13,6 +13,7 @@ import com.guttery.madii.domain.user.application.dto.UpdateMarketingAgreementReq
 import com.guttery.madii.domain.user.application.service.LoginService;
 import com.guttery.madii.domain.user.application.service.ProfileService;
 import com.guttery.madii.domain.user.application.service.SignUpService;
+import com.guttery.madii.domain.user.application.service.WithdrawService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,6 +24,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -40,6 +42,7 @@ public class UserController {
     private final SignUpService signUpService;
     private final LoginService loginService;
     private final ProfileService profileService;
+    private final WithdrawService withdrawService;
 
     @GetMapping("/id-check")
     @ApiResponses(
@@ -186,5 +189,22 @@ public class UserController {
             @AuthenticationPrincipal final UserPrincipal userPrincipal
     ) {
         profileService.updateProfile(profileUpdateRequest, userPrincipal);
+    }
+
+    @DeleteMapping
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "회원 탈퇴 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "회원 탈퇴 API", description = "회원 탈퇴 API입니다.")
+    public void withdraw(
+            @AuthenticationPrincipal final UserPrincipal userPrincipal
+    ) {
+        withdrawService.withdraw(userPrincipal);
     }
 }
