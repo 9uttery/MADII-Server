@@ -41,3 +41,6 @@ application-dev.yml
 application-prod.yml
 application-jwt.yml
 application-secret.yml
+
+### Secret files ###
+**/main/resources/**/*.json
