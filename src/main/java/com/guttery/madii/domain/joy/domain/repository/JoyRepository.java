@@ -10,16 +10,20 @@ import java.util.List;
 public interface JoyRepository extends JpaRepository<Joy, Long> {
     String getMostAchievedJoyQuery =
             "SELECT " +
+                    "    joyId, " +
                     "    joyIconNum, " +
                     "    contents, " +
+                    "    isCreatedByMe, " +
                     "    achieveCount, " +
                     "    achieveRank " +
                     "FROM ( " +
                     "    SELECT " +
-                    "        j.joy_icon_num AS joyIconNum, " +
-                    "        j.contents AS contents, " +
-                    "        COUNT(a.achievement_id) AS achieveCount, " +
-                    "        DENSE_RANK() OVER (ORDER BY COUNT(a.achievement_id) DESC) AS achieveRank " +
+                    "        j.joy_id                                                       AS joyId, " +
+                    "        j.joy_icon_num                                                 AS joyIconNum, " +
+                    "        j.contents                                                     AS contents, " +
+                    "        IF(j.creator_id = :userId, true, false)                        AS isCreatedByMe, " +
+                    "        COUNT(a.achievement_id)                                        AS achieveCount, " +
+                    "        DENSE_RANK() OVER (ORDER BY COUNT(a.achievement_id) DESC)      AS achieveRank " +
                     "    FROM " +
                     "        t_joy j " +
                     "    LEFT JOIN " +

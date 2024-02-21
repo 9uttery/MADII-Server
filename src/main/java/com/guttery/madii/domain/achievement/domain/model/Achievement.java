@@ -48,7 +48,7 @@ public class Achievement extends BaseTimeEntity {
     }
 
     public void rate(final Satisfaction satisfaction) {
-        this.finishInfo = FinishInfo.createFinished(satisfaction);
+        this.finishInfo = FinishInfo.updateSatisfaction(this.finishInfo, satisfaction);
     }
 
     public void cancel() {

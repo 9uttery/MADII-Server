@@ -29,6 +29,10 @@ public class FinishInfo {
         return new FinishInfo(true, LocalDateTime.now(), satisfaction);
     }
 
+    public static FinishInfo updateSatisfaction(FinishInfo finishInfo, Satisfaction satisfaction) {
+        return new FinishInfo(finishInfo.isFinished, finishInfo.finishedAt, satisfaction);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
