@@ -63,6 +63,8 @@ public enum ErrorDetails {
 
     FILE_UPLOAD_FAILED("F001", HttpStatus.INTERNAL_SERVER_ERROR.value(), "파일 업로드에 실패했습니다."),
 
+    FIREBASE_INTEGRATION_FAILED("FI001", HttpStatus.INTERNAL_SERVER_ERROR.value(), "Firebase 연동 중 오류가 발생했습니다. 다시 시도해 주세요."),
+
     ;
 
     private final String code;
