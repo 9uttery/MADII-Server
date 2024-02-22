@@ -34,7 +34,7 @@ public interface JoyRepository extends JpaRepository<Joy, Long> {
                     "        j.joy_id " +
                     ") AS rankedJoys " +
                     "WHERE " +
-                    "    achieveRank <= 5;";
+                    "    achieveRank <= 5 AND achieveCount >= 2;";
 
     @Query(nativeQuery = true, value = getMostAchievedJoyQuery)
     List<MostAchievedJoyInfoProjection> getMostAchievedJoy(Long userId);

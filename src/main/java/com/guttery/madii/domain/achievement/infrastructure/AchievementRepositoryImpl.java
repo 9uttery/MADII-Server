@@ -73,14 +73,13 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
         final LocalDateTime startOfDay = startDate.atStartOfDay();
         final LocalDateTime endOfDay = endDate.atStartOfDay().plusDays(1).minusSeconds(1);
         final StringExpression finishedAtToDate = stringTemplate("DATE_FORMAT({0}, {1})", achievement.finishInfo.finishedAt, "%Y-%m-%d");
-        final NumberExpression<Integer> calculatedJoyIconNum = joy.joyIconNum.divide(MAX_COLOR_NUM).add(COLOR_CATEGORY_OFFSET);
+        final NumberExpression<Integer> calculatedJoyIconNum = joy.joyIconNum.subtract(COLOR_CATEGORY_OFFSET).divide(MAX_COLOR_NUM).add(COLOR_CATEGORY_OFFSET);
 
-        final var result = select(achievement)
+        return select(achievement)
                 .from(achievement)
                 .join(achievement.joy, joy)
                 .join(achievement.achiever, user)
                 .where(achievement.achiever.userId.eq(userId), achievement.finishInfo.isFinished.isTrue(), achievement.finishInfo.finishedAt.between(startOfDay, endOfDay))
-//                .limit(DAILY_ACHIEVEMENT_COLOR_INFO_MAX_NUM)
                 .orderBy(achievement.finishInfo.finishedAt.asc())
                 .transform(
                         groupBy(finishedAtToDate).list(
@@ -94,8 +93,6 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
                                 )
                         )
                 );
-
-        return result;
     }
 
     @Override
