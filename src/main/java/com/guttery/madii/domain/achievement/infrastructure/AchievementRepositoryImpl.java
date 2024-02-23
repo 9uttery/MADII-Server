@@ -104,7 +104,7 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
                 .from(achievement)
                 .join(achievement.joy, joy)
                 .join(achievement.achiever, user)
-                .where(achievement.achiever.userId.eq(userId), achievement.createdAt.between(startOfDay, endOfDay), achievement.finishInfo.isFinished.isTrue())
+                .where(achievement.achiever.userId.eq(userId), achievement.finishInfo.finishedAt.between(startOfDay, endOfDay), achievement.finishInfo.isFinished.isTrue())
                 .fetch();
 
         return new CalenderDailyJoyAchievementResponse(dailyJoyAchievementInfos);
