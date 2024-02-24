@@ -38,4 +38,8 @@ public class AlbumStatus {
         return new AlbumStatus(isOfficial, this.isBlocked, this.isDeleted);
     }
 
+    public AlbumStatus withBlocked(Boolean isBlocked) {
+        return new AlbumStatus(this.isOfficial, isBlocked, this.isDeleted);
+    }
+
 }

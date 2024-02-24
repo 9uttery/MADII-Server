@@ -293,5 +293,6 @@ public class AlbumService {
 
         final Report report = Report.createReport(user, album, albumReportRequest.contents());
         reportRepository.save(report);
+        album.makeBlocked();
     }
 }

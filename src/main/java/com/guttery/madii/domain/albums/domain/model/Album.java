@@ -57,4 +57,8 @@ public class Album extends BaseTimeEntity {
         this.albumStatus = this.albumStatus.withOfficial(false);
     }
 
+    public void makeBlocked() {
+        this.albumStatus = this.albumStatus.withBlocked(true);
+    }
+
 }
