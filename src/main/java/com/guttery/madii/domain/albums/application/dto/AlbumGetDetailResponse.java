@@ -6,6 +6,8 @@ import java.util.List;
 
 @Schema(description = "앨범 상세 조회 응답")
 public record AlbumGetDetailResponse(
+        @Schema(description = "앨범 공개 여부", example = "true(1)")
+        Boolean isAlbumOfficial,
         @Schema(description = "앨범 썸네일 아이콘 번호", example = "3")
         Integer albumIconNum,
         @Schema(description = "앨범 썸네일 배경 번호", example = "2")
