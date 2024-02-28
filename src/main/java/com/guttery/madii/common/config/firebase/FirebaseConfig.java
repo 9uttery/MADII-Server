@@ -34,6 +34,7 @@ public class FirebaseConfig {
                 FirebaseApp.initializeApp(options);
             }
         } catch (final Exception e) {
+            e.printStackTrace();
             throw CustomException.of(ErrorDetails.FIREBASE_INTEGRATION_FAILED);
         }
     }
