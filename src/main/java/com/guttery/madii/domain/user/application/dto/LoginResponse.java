@@ -9,8 +9,8 @@ public record LoginResponse(
         @Schema(description = "리프레시 토큰", example = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIs", defaultValue = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIs")
         String refreshToken,
         @Schema(description = "마케팅 수신 동의 여부", example = "true", defaultValue = "true")
-        boolean agreedMarketing,
+        Boolean agreedMarketing,
         @Schema(description = "프로필 등록 여부", example = "true", defaultValue = "true")
-        boolean hasProfile
+        Boolean hasProfile
 ) {
 }
