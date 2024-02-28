@@ -45,6 +45,14 @@ jobs:
         run: echo ${{ secrets.FIREBASE_KEY_BASE64 }} | base64 --decode > ./src/main/resources/madii-app-firebase-adminsdk-uriyk-c04677456f.json
         shell: bash
 
+      - name: create madii-app-firebase-adminsdk-uriyk-c04677456f.json
+        id: create-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "madii-app-firebase-adminsdk-uriyk-c04677456f.json"
+          json: ${{ secrets.FIREBASE_KEY_JSON }}
+          dir: "src/main/resources/"
+
       - name: Gradle Caching
         uses: actions/cache@v3
         with:

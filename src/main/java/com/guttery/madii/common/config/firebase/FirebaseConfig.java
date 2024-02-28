@@ -5,7 +5,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.guttery.madii.common.exception.CustomException;
 import com.guttery.madii.common.exception.ErrorDetails;
-import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,14 +13,18 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 @Configuration
-public class FirebaseConfig {
+public class FirebaseConfig implements InitializingBean {
     @Value("${firebase.config}")
     private String firebaseKeyFilePath;
     @Value("${firebase.project-id}")
     private String firebaseProjectId;
 
-    @PostConstruct
-    public void initialize() {
+    @Override
+    public void afterPropertiesSet() {
+        initialize();
+    }
+
+    private void initialize() {
         try (
                 final InputStream serviceAccount = new FileInputStream(firebaseKeyFilePath)
         ) {
