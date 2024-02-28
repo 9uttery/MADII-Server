@@ -63,7 +63,7 @@ public class User extends BaseTimeEntity {
     }
 
     public static User createSocialUser(String socialId, SocialProvider provider) {
-        return new User(null, new SocialInfo(socialId, provider), null, null, Role.ROLE_USER);
+        return new User(null, new SocialInfo(socialId, provider), null, false, Role.ROLE_USER);
     }
 
     public void updateUserProfile(String nickname, String profileImage) {
