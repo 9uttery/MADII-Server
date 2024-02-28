@@ -1,8 +1,13 @@
 package com.guttery.madii.domain.user.domain.model;
 
 import com.guttery.madii.common.domain.model.BaseTimeEntity;
+import com.guttery.madii.domain.achievement.domain.model.Achievement;
+import com.guttery.madii.domain.albums.domain.model.SavingAlbum;
+import com.guttery.madii.domain.joy.domain.model.Joy;
+import com.guttery.madii.domain.notification.domain.model.Notification;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,10 +15,13 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,6 +41,14 @@ public class User extends BaseTimeEntity {
     private Boolean agreesMarketing;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Joy> joys;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SavingAlbum> savingAlbums;
+    @OneToMany(mappedBy = "achiever", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Achievement> achievements;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Notification> notifications;
 
     private User(LoginInfo loginInfo, SocialInfo socialInfo, UserProfile userProfile, Boolean agreesMarketing, Role role) {
         this.loginInfo = loginInfo;

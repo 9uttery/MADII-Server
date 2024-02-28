@@ -1,6 +1,8 @@
 package com.guttery.madii.domain.notification.presentation;
 
+import com.guttery.madii.domain.notification.application.dto.NotificationListResponse;
 import com.guttery.madii.domain.notification.application.dto.SaveTokenRequest;
+import com.guttery.madii.domain.notification.application.service.NotificationService;
 import com.guttery.madii.domain.notification.application.service.UserTokenService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -9,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Notification", description = "Notification 관련 API입니다.")
 public class NotificationController {
     private final UserTokenService userTokenService;
+    private final NotificationService notificationService;
 
     @PostMapping("/token")
     public void saveUserToken(
@@ -28,5 +32,12 @@ public class NotificationController {
             @NotNull @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
         userTokenService.saveUserToken(request, userPrincipal);
+    }
+
+    @GetMapping
+    public NotificationListResponse getNotificationList(
+            @NotNull @AuthenticationPrincipal UserPrincipal userPrincipal
+    ) {
+        return notificationService.getNotificationList(userPrincipal);
     }
 }
