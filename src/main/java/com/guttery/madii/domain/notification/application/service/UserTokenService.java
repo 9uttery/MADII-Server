@@ -11,6 +11,7 @@ import com.guttery.madii.domain.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -19,18 +20,21 @@ public class UserTokenService {
     private final UserTokensRepository userTokensRepository;
     private final UserRepository userRepository;
 
-    public void saveUserToken(final SaveTokenRequest saveTokenRequest, UserPrincipal userPrincipal) {
+    @Transactional
+    public void saveUserToken(final SaveTokenRequest saveTokenRequest, final UserPrincipal userPrincipal) {
         UserServiceHelper.findExistingUser(userRepository, userPrincipal);
-        final UserTokens foundUserTokens = userTokensRepository.findById(userPrincipal.id())
-                .orElseGet(() -> UserTokens.createEmpty(userPrincipal.id()));
+
+        final UserTokens foundUserTokens = userTokensRepository.findById(userPrincipal.id().toString())
+                .orElseGet(() -> UserTokens.createEmpty(userPrincipal.id().toString()));
 
         foundUserTokens.addToken(saveTokenRequest.token());
         userTokensRepository.save(foundUserTokens);
     }
 
-    public void deleteUserToken(final String token, UserPrincipal userPrincipal) {
+    @Transactional
+    public void deleteUserToken(final String token, final UserPrincipal userPrincipal) {
         UserServiceHelper.findExistingUser(userRepository, userPrincipal);
-        final UserTokens foundUserTokens = userTokensRepository.findById(userPrincipal.id())
+        final UserTokens foundUserTokens = userTokensRepository.findById(userPrincipal.id().toString())
                 .orElseThrow(() -> CustomException.of(ErrorDetails.USER_TOKEN_INFORMATION_NOT_EXISTS));
 
         foundUserTokens.removeToken(token);

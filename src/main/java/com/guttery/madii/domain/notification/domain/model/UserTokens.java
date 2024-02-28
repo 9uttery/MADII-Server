@@ -4,7 +4,6 @@ import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,17 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Document(collection = "usertokens")
 public class UserTokens {
     @Id
     @BsonProperty("_id")
-    private Long userId;
-
+    private String _id;
     private List<String> tokens;
 
-    public static UserTokens createEmpty(Long userId) {
+    public static UserTokens createEmpty(String userId) {
         return new UserTokens(userId, new ArrayList<>());
     }
 
