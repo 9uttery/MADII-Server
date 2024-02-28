@@ -8,8 +8,8 @@ import com.guttery.madii.common.exception.ErrorDetails;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 @Configuration
@@ -26,7 +26,7 @@ public class FirebaseConfig implements InitializingBean {
 
     private void initialize() {
         try (
-                final InputStream serviceAccount = new FileInputStream(firebaseKeyFilePath)
+                final InputStream serviceAccount = new ClassPathResource(firebaseKeyFilePath).getInputStream();
         ) {
             final FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
