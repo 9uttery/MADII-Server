@@ -7,8 +7,8 @@ import lombok.Getter;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -17,10 +17,10 @@ public class UserTokens {
     @Id
     @BsonProperty("_id")
     private String _id;
-    private List<String> tokens;
+    private Set<String> tokens;
 
     public static UserTokens createEmpty(String userId) {
-        return new UserTokens(userId, new ArrayList<>());
+        return new UserTokens(userId, new HashSet<>());
     }
 
     public void addToken(String token) {
