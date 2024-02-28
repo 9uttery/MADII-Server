@@ -26,4 +26,8 @@ public class RecommendedJoys {
     public void updateDailyJoys(List<Joy> joys) {
         this.dailyJoys = joys.stream().map(DailyJoy::createFromJoy).toList();
     }
+
+    public String getDailyJoyContentsByDay(final int day) {
+        return dailyJoys.get(day - 1).getContents();
+    }
 }

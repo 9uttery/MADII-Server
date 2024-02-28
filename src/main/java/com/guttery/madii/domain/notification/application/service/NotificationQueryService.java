@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class NotificationService {
+public class NotificationQueryService {
     private static final int DATE_CRITERIA_OFFSET = 30;
 
     private final NotificationRepository notificationRepository;
