@@ -33,6 +33,7 @@ import static com.querydsl.core.types.dsl.Expressions.stringTemplate;
 public class AchievementRepositoryImpl extends BaseQueryDslRepository<AchievementRepository> implements AchievementQueryDslRepository {
     private static final int MAX_COLOR_NUM = 6;
     private static final int COLOR_CATEGORY_OFFSET = 1;
+    private static final int TODAY_PLAYLIST_TIME_OFFSET = 1;
 
     public AchievementRepositoryImpl(JPAQueryFactory queryFactory) {
         super(queryFactory);
@@ -50,8 +51,8 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
     }
 
     private List<JoyAchievementInfo> queryJoyAchievementInfos(final Long userId, final LocalDate date) {
-        final LocalDateTime startOfDay = date.atStartOfDay();
-        final LocalDateTime endOfDay = date.atStartOfDay().plusDays(1).minusSeconds(1);
+        final LocalDateTime startOfDay = date.atStartOfDay().plusHours(TODAY_PLAYLIST_TIME_OFFSET);
+        final LocalDateTime endOfDay = date.atStartOfDay().plusDays(1).plusHours(TODAY_PLAYLIST_TIME_OFFSET).minusSeconds(1);
 
         return select(JoyAchievementInfo.class, joy.joyId, achievement.achievementId, joy.joyIconNum, joy.contents, achievement.finishInfo.isFinished, achievement.finishInfo.satisfaction)
                 .from(achievement)
