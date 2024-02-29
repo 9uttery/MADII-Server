@@ -25,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class NotificationSendService {
+public class TodayJoyNotificationSendService {
     private static final String TODAY_JOY_NOTIFICATION_TITLE = "오늘의 소확행";
 
     private final UserRepository userRepository;

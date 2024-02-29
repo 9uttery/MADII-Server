@@ -3,7 +3,7 @@ package com.guttery.madii.domain.notification.presentation;
 import com.guttery.madii.domain.notification.application.dto.NotificationListResponse;
 import com.guttery.madii.domain.notification.application.dto.SaveTokenRequest;
 import com.guttery.madii.domain.notification.application.service.NotificationQueryService;
-import com.guttery.madii.domain.notification.application.service.NotificationSendService;
+import com.guttery.madii.domain.notification.application.service.TodayJoyNotificationSendService;
 import com.guttery.madii.domain.notification.application.service.UserTokenService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class NotificationController {
     private final UserTokenService userTokenService;
     private final NotificationQueryService notificationQueryService;
-    private final NotificationSendService notificationSendService;
+    private final TodayJoyNotificationSendService todayJoyNotificationSendService;
 
     @PostMapping("/token")
     @ApiResponses(
@@ -78,6 +78,6 @@ public class NotificationController {
     )
     @Operation(summary = "오늘의 소확행 알림 발송 테스트 API", description = "오늘의 소확행 알림 발송 테스트 API입니다.")
     public void sendNotification() {
-        notificationSendService.sendAndSaveTodayJoyNotifications();
+        todayJoyNotificationSendService.sendAndSaveTodayJoyNotifications();
     }
 }
