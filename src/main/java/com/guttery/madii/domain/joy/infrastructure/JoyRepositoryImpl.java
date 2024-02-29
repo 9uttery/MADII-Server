@@ -87,9 +87,13 @@ public class JoyRepositoryImpl implements JoyQueryDslRepository {
         Set<Long> whichJoyIds = new HashSet<>(getJoyIdsByTagType(TagType.WHICH, request.which()));
 
         // 교집합 찾기
-        Set<Long> resultJoyIds = new HashSet<>(whenJoyIds);
-        if (!whoJoyIds.isEmpty()) resultJoyIds.retainAll(whoJoyIds);
-        if (!whichJoyIds.isEmpty()) resultJoyIds.retainAll(whichJoyIds);
+        // 결과 Joy ID 집합 초기화
+        Set<Long> resultJoyIds = new HashSet<>();
+
+        // 각 리스트가 비어 있지 않은 경우에만 결과 Joy ID 집합에 추가
+        if (!whenJoyIds.isEmpty()) resultJoyIds.addAll(whenJoyIds);
+        if (!whoJoyIds.isEmpty()) resultJoyIds.addAll(whoJoyIds);
+        if (!whichJoyIds.isEmpty()) resultJoyIds.addAll(whichJoyIds);
 
         // 결과 Joy 객체 조회
         List<Joy> allRecommendations = queryFactory
