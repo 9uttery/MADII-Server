@@ -217,13 +217,13 @@ public class AlbumService {
     public void createRecentAlbums(Long albumId, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
 
-        // 앨범 소유자 확인
-        Album album = albumRepository.findById(albumId)
-                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
-        if (album.getUser().getUserId().equals(user.getUserId())) {
-            // 사용자가 만든 앨범인 경우 로직을 수행하지 않음
-            return;
-        }
+        // 앨범 소유자 확인 -> 230305 최근 본 소확행 앨범에 본인의 앨범도 포함됨
+//        Album album = albumRepository.findById(albumId)
+//                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
+//        if (album.getUser().getUserId().equals(user.getUserId())) {
+//            // 사용자가 만든 앨범인 경우 로직을 수행하지 않음
+//            return;
+//        }
 
         String key = KEY_PREFIX + user.getUserId();
         String value = VALUE_PREFIX + albumId;
