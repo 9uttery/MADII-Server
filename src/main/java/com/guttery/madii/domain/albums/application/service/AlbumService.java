@@ -29,10 +29,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -96,7 +93,7 @@ public class AlbumService {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
 
         for (Long albumId : albumSaveJoyRequest.albumIds()) {
-            final Joy joy =  joyRepository.findById(joyId)
+            final Joy joy = joyRepository.findById(joyId)
                     .orElseThrow(() -> CustomException.of(ErrorDetails.JOY_NOT_FOUND));
             final Album album = albumRepository.findById(albumId)
                     .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
@@ -217,14 +214,6 @@ public class AlbumService {
     public void createRecentAlbums(Long albumId, UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
 
-        // 앨범 소유자 확인 -> 230305 최근 본 소확행 앨범에 본인의 앨범도 포함됨
-//        Album album = albumRepository.findById(albumId)
-//                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
-//        if (album.getUser().getUserId().equals(user.getUserId())) {
-//            // 사용자가 만든 앨범인 경우 로직을 수행하지 않음
-//            return;
-//        }
-
         String key = KEY_PREFIX + user.getUserId();
         String value = VALUE_PREFIX + albumId;
         ListOperations<String, String> listOps = redisTemplate.opsForList();
@@ -253,7 +242,6 @@ public class AlbumService {
         String key = KEY_PREFIX + user.getUserId();
         ListOperations<String, String> listOps = redisTemplate.opsForList();
         List<String> albumIdsInRedis = listOps.range(key, 0, -1);
-//        System.out.println("Redis -> " + albumIdsInRedis);
 
         List<AlbumGetRecentResponse> albumGetRecentResponseList = albumIdsInRedis.stream()
                 .map(s -> s.replace("albumId:", ""))
@@ -272,6 +260,21 @@ public class AlbumService {
                 .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
         if (!album.getUser().getUserId().equals(user.getUserId())) {
             throw CustomException.of(ErrorDetails.NOT_MY_ALBUM);
+        }
+
+        // 최근 본 앨범 레디스 캐싱에서도 삭제
+        // Redis의 모든 키를 가져와서 해당 패턴을 가진 키들을 찾음
+        Set<String> keys = redisTemplate.keys(KEY_PREFIX + "*");
+
+        // 각 키에 대해 작업을 수행
+        for (String key : keys) {
+            ListOperations<String, String> listOps = redisTemplate.opsForList();
+            List<String> albumIds = listOps.range(key, 0, -1);
+
+            // 특정 앨범 ID를 포함하고 있는지 확인하고 포함하고 있다면 삭제
+            if (albumIds.contains("albumId:" + albumId)) {
+                listOps.remove(key, 0, "albumId:" + albumId);
+            }
         }
 
         savingAlbumRepository.deleteByAlbumAlbumId(albumId);
