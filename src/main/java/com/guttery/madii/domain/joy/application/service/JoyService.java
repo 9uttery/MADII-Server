@@ -17,6 +17,7 @@ import com.guttery.madii.domain.joy.application.dto.JoyPutRequest;
 import com.guttery.madii.domain.joy.application.dto.JoyPutResponse;
 import com.guttery.madii.domain.joy.application.dto.MostAchievedJoyInfo;
 import com.guttery.madii.domain.joy.domain.model.Joy;
+import com.guttery.madii.domain.joy.domain.model.JoyType;
 import com.guttery.madii.domain.joy.domain.repository.JoyQueryDslRepository;
 import com.guttery.madii.domain.joy.domain.repository.JoyRepository;
 import com.guttery.madii.domain.user.application.service.UserServiceHelper;
@@ -85,6 +86,11 @@ public class JoyService {
                     .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
             final SavingJoy savingJoy = SavingJoy.createSavingJoy(joy, album);
             savingJoyRepository.save(savingJoy);
+
+            // 앨범은 공개, 소확행은 비공개일 때 -> 소확행 공개로 변경
+            if (album.getAlbumStatus().getIsOfficial() && joy.getJoyType().equals(JoyType.PERSONAL)) {
+                joy.makeOfficial();
+            }
         }
     }
 
@@ -93,7 +99,7 @@ public class JoyService {
         final Joy joy = joyRepository.findById(joyId)
                 .orElseThrow(() -> CustomException.of(ErrorDetails.JOY_NOT_FOUND));
 
-        JoyPutResponse joyPutResponse = null;
+        JoyPutResponse joyPutResponse;
         if (joy.getUser().getUserId().equals(user.getUserId())) { // 내가 기록한 소확행
             // 1. 단순 contents 수정
             joy.modifyContents(joyPutRequest.contents());
