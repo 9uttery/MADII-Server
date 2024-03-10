@@ -39,4 +39,8 @@ public class Joy extends BaseTimeEntity {
     public void modifyContents(String contents) {
         this.contents = contents;
     }
+
+    public void makeOfficial() {
+        this.joyType = JoyType.OFFICIAL;
+    }
 }
