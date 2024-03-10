@@ -9,8 +9,6 @@ import com.guttery.madii.domain.joy.domain.model.Joy;
 import com.guttery.madii.domain.joy.domain.model.JoyType;
 import com.guttery.madii.domain.joy.domain.model.QJoy;
 import com.guttery.madii.domain.joy.domain.repository.JoyQueryDslRepository;
-import com.guttery.madii.domain.joytag.domain.model.QJoyTag;
-import com.guttery.madii.domain.tag.domain.model.QTag;
 import com.guttery.madii.domain.tag.domain.model.TagType;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
@@ -28,6 +26,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.guttery.madii.domain.joy.domain.model.QJoy.joy;
+import static com.guttery.madii.domain.joytag.domain.model.QJoyTag.joyTag;
+import static com.guttery.madii.domain.tag.domain.model.QTag.tag;
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
 
@@ -81,19 +81,36 @@ public class JoyRepositoryImpl implements JoyQueryDslRepository {
 
     @Override
     public List<JoyGetRecommendResponse> getJoyRecommend(JoyGetRecommendRequest request) {
-        // 태그 유형별로 조건을 만족하는 Joy ID 목록을 조회
-        Set<Long> whenJoyIds = new HashSet<>(getJoyIdsByTagType(TagType.WHEN, request.when()));
-        Set<Long> whoJoyIds = new HashSet<>(getJoyIdsByTagType(TagType.WHO, request.who()));
-        Set<Long> whichJoyIds = new HashSet<>(getJoyIdsByTagType(TagType.WHICH, request.which()));
 
-        // 교집합 찾기
-        // 결과 Joy ID 집합 초기화
         Set<Long> resultJoyIds = new HashSet<>();
 
-        // 각 리스트가 비어 있지 않은 경우에만 결과 Joy ID 집합에 추가
-        if (!whenJoyIds.isEmpty()) resultJoyIds.addAll(whenJoyIds);
-        if (!whoJoyIds.isEmpty()) resultJoyIds.addAll(whoJoyIds);
-        if (!whichJoyIds.isEmpty()) resultJoyIds.addAll(whichJoyIds);
+        // when에 해당하는 Joy ID 목록 조회
+        if (!request.when().isEmpty()) {
+            Set<Long> whenJoyIds = getJoyIdsByTagType(TagType.WHEN, request.when());
+            resultJoyIds.addAll(whenJoyIds);
+        }
+
+        // who에 해당하는 Joy ID 목록 조회
+        if (!request.who().isEmpty()) {
+            Set<Long> whoJoyIds = getJoyIdsByTagType(TagType.WHO, request.who());
+            // 최초에 resultJoyIds가 비어있다면 그냥 할당해주고, 아니면 교집합을 구함
+            if (resultJoyIds.isEmpty()) {
+                resultJoyIds.addAll(whoJoyIds);
+            } else {
+                resultJoyIds.retainAll(whoJoyIds);
+            }
+        }
+
+        // which에 해당하는 Joy ID 목록 조회
+        if (!request.which().isEmpty()) {
+            Set<Long> whichJoyIds = getJoyIdsByTagType(TagType.WHICH, request.which());
+            // 최초에 resultJoyIds가 비어있다면 그냥 할당해주고, 아니면 교집합을 구함
+            if (resultJoyIds.isEmpty()) {
+                resultJoyIds.addAll(whichJoyIds);
+            } else {
+                resultJoyIds.retainAll(whichJoyIds);
+            }
+        }
 
         // 결과 Joy 객체 조회
         List<Joy> allRecommendations = queryFactory
@@ -111,18 +128,17 @@ public class JoyRepositoryImpl implements JoyQueryDslRepository {
                 .collect(Collectors.toList());
     }
 
-    private List<Long> getJoyIdsByTagType(TagType tagType, List<Long> tagIds) {
-        if (tagIds == null || tagIds.isEmpty()) return Collections.emptyList();
+    private Set<Long> getJoyIdsByTagType(TagType tagType, List<Long> tagIds) {
+        if (tagIds == null || tagIds.isEmpty()) {
+            return Collections.emptySet();
+        }
 
-        QJoyTag qJoyTag = QJoyTag.joyTag;
-        QTag qTag = QTag.tag;
-
-        return queryFactory
-                .select(qJoyTag.joy.joyId)
-                .from(qJoyTag)
-                .join(qJoyTag.tag, qTag)
-                .where(qTag.tagType.eq(tagType).and(qTag.tagId.in(tagIds)))
-                .fetch();
+        return new HashSet<>(queryFactory
+                .select(joyTag.joy.joyId)
+                .from(joyTag)
+                .join(joyTag.tag, tag)
+                .where(tag.tagType.eq(tagType).and(tag.tagId.in(tagIds)))
+                .fetch());
     }
 
 }
