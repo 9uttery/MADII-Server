@@ -30,6 +30,8 @@ public interface JoyRepository extends JpaRepository<Joy, Long> {
                     "        t_achievement a ON j.joy_id = a.joy_joy_id " +
                     "    WHERE " +
                     "        a.achiever_user_id = :userId " +
+                    "        AND" +
+                    "        a.is_finished = true         " +
                     "    GROUP BY " +
                     "        j.joy_id " +
                     ") AS rankedJoys " +
