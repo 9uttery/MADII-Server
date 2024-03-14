@@ -1,5 +1,6 @@
 package com.guttery.madii.domain.notice.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,8 @@ public record NoticeInfo(
         @Schema(description = "공지사항 내용", example = "공지사항 내용")
         String contents,
         @Schema(description = "공지사항 작성일자", example = "2021-10-01")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy.MM.dd", timezone = "Asia/Seoul")
         LocalDateTime createdAt
 ) {
+
 }

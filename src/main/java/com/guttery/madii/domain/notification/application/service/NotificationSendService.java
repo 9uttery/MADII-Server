@@ -54,7 +54,7 @@ public class NotificationSendService {
 
     private void sendNotifications(final NotificationData notificationData, final List<UserTokens> allUserTokens) {
         final List<String> allTokens = allUserTokens.stream()
-                .flatMap(userTokens -> userTokens.getTokens().stream())
+                .flatMap(userTokens -> userTokens.getAllUserTokens().stream())
                 .toList();
 
         notificationClient.sendNotificationForAll(notificationData, allTokens);

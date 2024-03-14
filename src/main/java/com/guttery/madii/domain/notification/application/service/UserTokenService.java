@@ -27,7 +27,7 @@ public class UserTokenService {
         final UserTokens foundUserTokens = userTokensRepository.findById(userPrincipal.id().toString())
                 .orElseGet(() -> UserTokens.createEmpty(userPrincipal.id().toString()));
 
-        foundUserTokens.addToken(saveTokenRequest.token());
+        foundUserTokens.addToken(saveTokenRequest.deviceId(), saveTokenRequest.token());
         userTokensRepository.save(foundUserTokens);
     }
 

@@ -25,6 +25,7 @@ public class NoticeRepositoryImpl extends BaseQueryDslRepository<Notice> impleme
         final List<NoticeInfo> foundNotices = select(NoticeInfo.class, notice.noticeId, notice.title, notice.contents, notice.createdAt)
                 .from(notice)
                 .where(notice.createdAt.after(startOfDay.minusDays(30)))
+                .orderBy(notice.createdAt.desc())
                 .fetch();
 
         return new RecentNoticesResponse(foundNotices);

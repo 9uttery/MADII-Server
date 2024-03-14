@@ -7,8 +7,9 @@ import lombok.Getter;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -16,18 +17,22 @@ import java.util.Set;
 public class UserTokens {
     @Id
     @BsonProperty("_id")
-    private String _id;
-    private Set<String> tokens;
+    private String id;
+    private Map<String, String> tokenByDeviceId;
 
     public static UserTokens createEmpty(String userId) {
-        return new UserTokens(userId, new HashSet<>());
+        return new UserTokens(userId, new HashMap<>());
     }
 
-    public void addToken(String token) {
-        tokens.add(token);
+    public void addToken(final String deviceId, final String token) {
+        tokenByDeviceId.put(deviceId, token);
     }
 
-    public void removeToken(String token) {
-        tokens.remove(token);
+    public void removeToken(final String token) {
+        tokenByDeviceId.remove(token);
+    }
+
+    public List<String> getAllUserTokens() {
+        return List.copyOf(tokenByDeviceId.values());
     }
 }

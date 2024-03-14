@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface JoyRepository extends JpaRepository<Joy, Long> {
-    String getMostAchievedJoyQuery =
+    String GET_MOST_ACHIEVED_JOY_QUERY =
             "SELECT " +
                     "    joyId, " +
                     "    joyIconNum, " +
@@ -30,12 +30,14 @@ public interface JoyRepository extends JpaRepository<Joy, Long> {
                     "        t_achievement a ON j.joy_id = a.joy_joy_id " +
                     "    WHERE " +
                     "        a.achiever_user_id = :userId " +
+                    "        AND" +
+                    "        a.is_finished = true         " +
                     "    GROUP BY " +
                     "        j.joy_id " +
                     ") AS rankedJoys " +
                     "WHERE " +
                     "    achieveRank <= 5 AND achieveCount >= 2;";
 
-    @Query(nativeQuery = true, value = getMostAchievedJoyQuery)
+    @Query(nativeQuery = true, value = GET_MOST_ACHIEVED_JOY_QUERY)
     List<MostAchievedJoyInfoProjection> getMostAchievedJoy(Long userId);
 }
