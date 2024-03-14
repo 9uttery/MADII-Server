@@ -8,5 +8,5 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
-    List<Notification> findAllByUserAndCreatedAtIsAfter(User user, LocalDateTime createdAt);
+    List<Notification> findAllByUserAndCreatedAtIsAfterOrderByCreatedAtDesc(User user, LocalDateTime createdAt);
 }
