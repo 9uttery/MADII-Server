@@ -13,7 +13,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,15 +27,24 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class JwtProvider {
     public static final long ACCESS_TOKEN_PERIOD = 1000 * 60 * 60 * 24L; // 1일
     public static final long REFRESH_TOKEN_PERIOD = 1000 * 60 * 60 * 24 * 14L; // 14일
     private static final String ROLE = "role";
+
     private final RedisTemplate<String, String> redisTemplate;
     private final UserPrincipalSerializer userPrincipalSerializer;
-    @Value("${jwt.secret}")
-    private String secret;
+    private final String secret;
+
+    public JwtProvider(
+            RedisTemplate<String, String> redisTemplate,
+            UserPrincipalSerializer userPrincipalSerializer,
+            @Value("${jwt.secret}") String secret
+    ) {
+        this.redisTemplate = redisTemplate;
+        this.userPrincipalSerializer = userPrincipalSerializer;
+        this.secret = secret;
+    }
 
     private Key getSecretKey() {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));

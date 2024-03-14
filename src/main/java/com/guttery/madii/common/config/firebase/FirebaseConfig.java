@@ -15,10 +15,18 @@ import java.io.InputStream;
 
 @Configuration
 public class FirebaseConfig {
-    @Value("${firebase.config}")
-    private String firebaseKeyFilePath;
-    @Value("${firebase.project-id}")
-    private String firebaseProjectId;
+
+    private final String firebaseKeyFilePath;
+
+    private final String firebaseProjectId;
+
+    public FirebaseConfig(
+            @Value("${firebase.config}") String firebaseKeyFilePath,
+            @Value("${firebase.project-id}") String firebaseProjectId
+    ) {
+        this.firebaseKeyFilePath = firebaseKeyFilePath;
+        this.firebaseProjectId = firebaseProjectId;
+    }
 
     @Bean
     public FirebaseMessaging firebaseMessaging(FirebaseApp firebaseApp) {
