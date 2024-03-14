@@ -6,9 +6,9 @@ import com.guttery.madii.domain.joy.domain.model.RecommendedJoys;
 import com.guttery.madii.domain.joy.domain.repository.RecommendedJoysRepository;
 import com.guttery.madii.domain.notification.application.dto.NotificationData;
 import com.guttery.madii.domain.notification.domain.model.Notification;
-import com.guttery.madii.domain.notification.domain.model.UserTokens;
+import com.guttery.madii.domain.notification.domain.model.NotificationTokens;
 import com.guttery.madii.domain.notification.domain.repository.NotificationRepository;
-import com.guttery.madii.domain.notification.domain.repository.UserTokensRepository;
+import com.guttery.madii.domain.notification.domain.repository.NotificationTokensRepository;
 import com.guttery.madii.domain.notification.domain.service.NotificationClient;
 import com.guttery.madii.domain.user.domain.model.User;
 import com.guttery.madii.domain.user.domain.repository.UserRepository;
@@ -30,7 +30,7 @@ public class TodayJoyNotificationSendService {
 
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
-    private final UserTokensRepository userTokensRepository;
+    private final NotificationTokensRepository notificationTokensRepository;
     private final RecommendedJoysRepository recommendedJoysRepository;
     private final NotificationClient notificationClient;
 
@@ -39,9 +39,9 @@ public class TodayJoyNotificationSendService {
     public void sendAndSaveTodayJoyNotifications() {
         final NotificationData createdNotificationData = createNotificationData(LocalDate.now());
         // 유저 토큰 한번에 다 가져오는 거 만들기 (몽고 템플릿 안 쓰고 가능한가..?)
-        final List<UserTokens> allUserTokens = userTokensRepository.findAll();
+        final List<NotificationTokens> allNotificationTokens = notificationTokensRepository.findAll();
 
-        sendNotifications(createdNotificationData, allUserTokens);
+        sendNotifications(createdNotificationData, allNotificationTokens);
         saveNotifications(createdNotificationData);
     }
 
@@ -52,9 +52,9 @@ public class TodayJoyNotificationSendService {
         return new NotificationData(TODAY_JOY_NOTIFICATION_TITLE, foundRecommendedJoys.getDailyJoyContentsByDay(today.getDayOfMonth()));
     }
 
-    private void sendNotifications(final NotificationData notificationData, final List<UserTokens> allUserTokens) {
-        final List<String> allTokens = allUserTokens.stream()
-                .flatMap(userTokens -> userTokens.getAllUserTokens().stream())
+    private void sendNotifications(final NotificationData notificationData, final List<NotificationTokens> allNotificationTokens) {
+        final List<String> allTokens = allNotificationTokens.stream()
+                .flatMap(notificationTokens -> notificationTokens.getAllNotificationTokens().stream())
                 .toList();
 
         notificationClient.sendNotificationForAll(notificationData, allTokens);

@@ -3,8 +3,8 @@ package com.guttery.madii.domain.notification.presentation;
 import com.guttery.madii.domain.notification.application.dto.NotificationListResponse;
 import com.guttery.madii.domain.notification.application.dto.SaveTokenRequest;
 import com.guttery.madii.domain.notification.application.service.NotificationQueryService;
+import com.guttery.madii.domain.notification.application.service.NotificationTokenService;
 import com.guttery.madii.domain.notification.application.service.TodayJoyNotificationSendService;
-import com.guttery.madii.domain.notification.application.service.UserTokenService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @Tag(name = "Notification", description = "Notification 관련 API입니다.")
 public class NotificationController {
-    private final UserTokenService userTokenService;
+    private final NotificationTokenService notificationTokenService;
     private final NotificationQueryService notificationQueryService;
     private final TodayJoyNotificationSendService todayJoyNotificationSendService;
 
@@ -42,11 +42,11 @@ public class NotificationController {
             }
     )
     @Operation(summary = "FCM 토큰 저장 API", description = "FCM 토큰을 저장하는 API입니다.")
-    public void saveUserToken(
+    public void saveNotificationToken(
             @RequestBody @Valid SaveTokenRequest request,
             @NotNull @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
-        userTokenService.saveUserToken(request, userPrincipal);
+        notificationTokenService.saveNotificationToken(request, userPrincipal);
     }
 
     @GetMapping
