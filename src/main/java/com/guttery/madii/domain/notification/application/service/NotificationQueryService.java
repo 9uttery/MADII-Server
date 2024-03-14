@@ -27,7 +27,7 @@ public class NotificationQueryService {
     public NotificationListResponse getNotificationList(final UserPrincipal userPrincipal) {
         final User foundUser = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
         final LocalDateTime dateCriteria = LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(DATE_CRITERIA_OFFSET);
-        final List<NotificationInfo> notificationInfos = notificationRepository.findAllByUserAndCreatedAtIsAfter(foundUser, dateCriteria)
+        final List<NotificationInfo> notificationInfos = notificationRepository.findAllByUserAndCreatedAtIsAfterOrderByCreatedAtDesc(foundUser, dateCriteria)
                 .stream()
                 .map(NotificationMapper::toNotificationInfo)
                 .toList();
