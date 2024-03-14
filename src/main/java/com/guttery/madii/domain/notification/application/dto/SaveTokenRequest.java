@@ -7,6 +7,10 @@ import jakarta.validation.constraints.NotBlank;
 public record SaveTokenRequest(
         @NotBlank
         @Schema(description = "토큰", example = "fcm_token_value")
-        String token
+        String token,
+
+        @NotBlank
+        @Schema(description = "기기 ID", example = "device_id_value")
+        String deviceId
 ) {
 }
