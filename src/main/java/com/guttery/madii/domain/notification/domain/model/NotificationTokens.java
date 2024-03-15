@@ -1,11 +1,10 @@
 package com.guttery.madii.domain.notification.domain.model;
 
-import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,10 +12,9 @@ import java.util.Map;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Document(collection = "usertokens")
+@Document(collection = "notificationtokens")
 public class NotificationTokens {
-    @Id
-    @BsonProperty("_id")
+    @MongoId
     private String id;
     private Map<String, String> tokenByDeviceId;
 
