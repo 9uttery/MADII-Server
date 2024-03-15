@@ -5,6 +5,7 @@ import com.guttery.madii.domain.notification.application.dto.SaveTokenRequest;
 import com.guttery.madii.domain.notification.application.service.NotificationQueryService;
 import com.guttery.madii.domain.notification.application.service.NotificationTokenService;
 import com.guttery.madii.domain.notification.application.service.TodayJoyNotificationSendService;
+import com.guttery.madii.domain.notification.application.service.UnfinishedAchievementNotificationSendService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,6 +31,7 @@ public class NotificationController {
     private final NotificationTokenService notificationTokenService;
     private final NotificationQueryService notificationQueryService;
     private final TodayJoyNotificationSendService todayJoyNotificationSendService;
+    private final UnfinishedAchievementNotificationSendService unfinishedAchievementNotificationSendService;
 
     @PostMapping("/token")
     @ApiResponses(
@@ -79,5 +81,21 @@ public class NotificationController {
     @Operation(summary = "오늘의 소확행 알림 발송 테스트 API", description = "오늘의 소확행 알림 발송 테스트 API입니다.")
     public void sendNotification() {
         todayJoyNotificationSendService.sendAndSaveTodayJoyNotifications();
+    }
+
+
+    @PostMapping("/test/playlist")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "플레이리스트 알림 발송 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "플레이리스트 미완료 알림 발송 테스트 API", description = "플레이리스트 미완료 알림 발송 테스트 API입니다.")
+    public void sendPlaylistNotification() {
+        unfinishedAchievementNotificationSendService.sendUnfinishedAchievementNotifications();
     }
 }
