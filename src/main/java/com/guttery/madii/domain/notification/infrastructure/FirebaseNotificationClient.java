@@ -23,6 +23,10 @@ public class FirebaseNotificationClient implements NotificationClient {
 
     @Override
     public void sendNotification(final NotificationData notificationData, final String token) {
+        if (token == null) {
+            return;
+        }
+
         try {
             final Message message = Message.builder()
                     .setToken(token)
@@ -39,6 +43,10 @@ public class FirebaseNotificationClient implements NotificationClient {
 
     @Override
     public void sendNotificationForAll(final NotificationData notificationData, List<String> tokens) {
+        if (isEmpty(tokens)) {
+            return;
+        }
+
         try {
             final MulticastMessage message = MulticastMessage.builder()
                     .addAllTokens(tokens)
@@ -50,6 +58,10 @@ public class FirebaseNotificationClient implements NotificationClient {
             log.error("전체 알림 전송 에러", e);
             throw CustomException.of(ErrorDetails.FIREBASE_NOTIFICATION_SEND_ERROR);
         }
+    }
+
+    private boolean isEmpty(final List<String> tokens) {
+        return tokens == null || tokens.isEmpty();
     }
 
     private Notification createNotification(final NotificationData notificationData) {
