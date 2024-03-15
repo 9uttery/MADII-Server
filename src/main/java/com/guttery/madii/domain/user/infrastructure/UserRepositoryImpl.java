@@ -11,6 +11,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static com.guttery.madii.domain.achievement.domain.model.QAchievement.achievement;
@@ -18,6 +19,8 @@ import static com.guttery.madii.domain.user.domain.model.QUser.user;
 
 @Repository
 public class UserRepositoryImpl extends BaseQueryDslRepository<User> implements UserQueryDslRepository {
+    private static final int TODAY_PLAYLIST_TIME_OFFSET = 1;
+
     public UserRepositoryImpl(JPAQueryFactory queryFactory) {
         super(queryFactory);
     }
@@ -43,7 +46,7 @@ public class UserRepositoryImpl extends BaseQueryDslRepository<User> implements 
     }
 
     @Override
-    public boolean existsByLoginId(String loginId) {
+    public boolean existsByLoginId(final String loginId) {
         return select(user)
                 .from(user)
                 .where(user.loginInfo.loginId.eq(loginId))
@@ -51,7 +54,7 @@ public class UserRepositoryImpl extends BaseQueryDslRepository<User> implements 
     }
 
     @Override
-    public boolean existsByUserId(Long userId) {
+    public boolean existsByUserId(final Long userId) {
         return select(user)
                 .from(user)
                 .where(user.userId.eq(userId))
@@ -59,7 +62,7 @@ public class UserRepositoryImpl extends BaseQueryDslRepository<User> implements 
     }
 
     @Override
-    public BeforeWithdrawInfoResponse getBeforeWithdrawInfo(Long userId, LocalDateTime date) {
+    public BeforeWithdrawInfoResponse getBeforeWithdrawInfo(final Long userId, final LocalDateTime date) {
         final NumberExpression<Integer> activeDays = Expressions.numberTemplate(Integer.class, "DATEDIFF({0}, {1})", date, user.createdAt).as("activeDays");
 
         return select(BeforeWithdrawInfoResponse.class, user.userProfile.nickname, activeDays, achievement.joy.joyId.countDistinct(), achievement.achievementId.countDistinct())
@@ -68,6 +71,20 @@ public class UserRepositoryImpl extends BaseQueryDslRepository<User> implements 
                 .where(user.userId.eq(userId))
                 .groupBy(user.userId)
                 .fetchOne();
+    }
+
+    @Override
+    public List<User> findUsersWithUnfinishedAchievements(final LocalDateTime dateTime) {
+        final LocalDateTime startOfDay = dateTime.toLocalDate().atStartOfDay().plusHours(TODAY_PLAYLIST_TIME_OFFSET);
+        final LocalDateTime endOfDay = dateTime.toLocalDate().atStartOfDay().plusDays(1).plusHours(TODAY_PLAYLIST_TIME_OFFSET).minusSeconds(1);
+
+        return select(user)
+                .from(user)
+                .join(achievement).on(achievement.achiever.eq(user))
+                .fetchJoin()
+                .where(achievement.createdAt.between(startOfDay, endOfDay))
+                .where(achievement.finishInfo.isFinished.isFalse())
+                .fetch();
     }
 
 
