@@ -1,6 +1,7 @@
 package com.guttery.madii.domain.notification.infrastructure;
 
-import com.guttery.madii.domain.notification.application.dto.NotificationTokenDto;
+import com.guttery.madii.domain.notification.application.dto.FlattedNotificationTokenDto;
+import com.guttery.madii.domain.notification.application.dto.NotificationDtos;
 import com.guttery.madii.domain.notification.domain.repository.NotificationTokensCustomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -45,14 +46,47 @@ public class NotificationTokensRepositoryImpl implements NotificationTokensCusto
                 projectTokensStage
         );
 
-        final AggregationResults<NotificationTokenDto> aggregateResults = mongoOperations.aggregate(
-                aggregation, "notificationtokens", NotificationTokenDto.class);
+        final AggregationResults<NotificationDtos> aggregateResults = mongoOperations.aggregate(
+                aggregation, "notificationtokens", NotificationDtos.class);
 
-        final List<NotificationTokenDto> resultList = aggregateResults.getMappedResults();
+        final List<NotificationDtos> resultList = aggregateResults.getMappedResults();
         if (resultList.isEmpty()) {
             return Collections.emptyList();
         }
 
         return resultList.get(0).tokensList();
+    }
+
+    @Override
+    public List<FlattedNotificationTokenDto> getAllFlatted() {
+        final MatchOperation matchStage = Aggregation.match(Criteria.where("tokenByDeviceId").exists(true));
+
+        final ProjectionOperation projectStage = Aggregation.project()
+                .andExclude("_id")
+                .and("$_id").as("userId")
+                .andExpression("{$objectToArray: '$tokenByDeviceId'}").as("tokenArray");
+
+        final UnwindOperation unwindStage = Aggregation.unwind("tokenArray");
+
+        final GroupOperation groupStage = Aggregation.group("userId")
+                .push("tokenArray.v").as("tokens");
+
+        final ProjectionOperation projectFinalStage = Aggregation.project()
+                .andExclude("_id")
+                .and("_id").as("userId")
+                .andInclude("tokens");
+
+        final Aggregation aggregation = Aggregation.newAggregation(
+                matchStage,
+                projectStage,
+                unwindStage,
+                groupStage,
+                projectFinalStage
+        );
+
+        final AggregationResults<FlattedNotificationTokenDto> results = mongoOperations.aggregate(
+                aggregation, "notificationtokens", FlattedNotificationTokenDto.class);
+
+        return results.getMappedResults();
     }
 }
