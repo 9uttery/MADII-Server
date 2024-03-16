@@ -56,7 +56,7 @@ public class UnfinishedAchievementNotificationSendService {
     }
 
     private void sendNotifications(final NotificationData notificationData, final List<String> tokens) {
-        notificationClient.sendNotificationForAll(notificationData, tokens);
+        notificationClient.sendSameNotificationForUsers(notificationData, tokens);
     }
 
     private void saveNotifications(final List<User> users, final NotificationData notificationData) {
