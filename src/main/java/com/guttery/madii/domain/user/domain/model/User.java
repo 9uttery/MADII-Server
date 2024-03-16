@@ -83,15 +83,19 @@ public class User extends BaseTimeEntity {
     }
 
     public String getEncryptedPassword() {
-        return loginInfo.getPassword();
+        return this.loginInfo.getPassword();
+    }
+
+    public String getNickname() {
+        return this.userProfile.getNickname();
     }
 
     public boolean agreedMarketing() {
-        return agreesMarketing;
+        return this.agreesMarketing;
     }
 
     public boolean hasProfile() {
-        return userProfile != null;
+        return this.userProfile != null;
     }
 
     public boolean matchesUserId(final Long userId) {

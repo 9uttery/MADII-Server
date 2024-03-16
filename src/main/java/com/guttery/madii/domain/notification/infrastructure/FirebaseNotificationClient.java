@@ -7,6 +7,7 @@ import com.google.firebase.messaging.MulticastMessage;
 import com.google.firebase.messaging.Notification;
 import com.guttery.madii.common.exception.CustomException;
 import com.guttery.madii.common.exception.ErrorDetails;
+import com.guttery.madii.domain.notification.application.dto.MessageData;
 import com.guttery.madii.domain.notification.application.dto.NotificationData;
 import com.guttery.madii.domain.notification.domain.service.NotificationClient;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,14 @@ public class FirebaseNotificationClient implements NotificationClient {
 
     @Override
     public void sendNotification(final NotificationData notificationData, final String token) {
+        if (token == null) {
+            return;
+        }
+
         try {
             final Message message = Message.builder()
                     .setToken(token)
-                    .setNotification(createNotification(notificationData))
+                    .setNotification(createNotification(notificationData.title(), notificationData.contents()))
                     .build();
 
             firebaseMessaging.send(message);
@@ -38,11 +43,15 @@ public class FirebaseNotificationClient implements NotificationClient {
     }
 
     @Override
-    public void sendNotificationForAll(final NotificationData notificationData, List<String> tokens) {
+    public void sendSameNotificationForUsers(final NotificationData notificationData, List<String> tokens) {
+        if (isEmpty(tokens)) {
+            return;
+        }
+
         try {
             final MulticastMessage message = MulticastMessage.builder()
                     .addAllTokens(tokens)
-                    .setNotification(createNotification(notificationData))
+                    .setNotification(createNotification(notificationData.title(), notificationData.contents()))
                     .build();
 
             firebaseMessaging.sendEachForMulticast(message);
@@ -52,10 +61,32 @@ public class FirebaseNotificationClient implements NotificationClient {
         }
     }
 
-    private Notification createNotification(final NotificationData notificationData) {
+    private boolean isEmpty(final List<String> tokens) {
+        return tokens == null || tokens.isEmpty();
+    }
+
+    private Notification createNotification(final String title, final String contents) {
         return Notification.builder()
-                .setTitle(notificationData.title())
-                .setBody(notificationData.contents())
+                .setTitle(title)
+                .setBody(contents)
                 .build();
+    }
+
+
+    @Override
+    public void sendDifferentNotificationForUsers(List<MessageData> messageDatas) {
+        List<Message> messages = messageDatas.stream()
+                .map(messageData -> Message.builder()
+                        .setToken(messageData.token())
+                        .setNotification(createNotification(messageData.title(), messageData.contents()))
+                        .build())
+                .toList();
+
+        try {
+            firebaseMessaging.sendEach(messages);
+        } catch (FirebaseMessagingException e) {
+            log.error("다수 알림 전송 에러", e);
+            throw CustomException.of(ErrorDetails.FIREBASE_NOTIFICATION_SEND_ERROR);
+        }
     }
 }

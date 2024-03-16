@@ -3,8 +3,9 @@ package com.guttery.madii.domain.notification.presentation;
 import com.guttery.madii.domain.notification.application.dto.NotificationListResponse;
 import com.guttery.madii.domain.notification.application.dto.SaveTokenRequest;
 import com.guttery.madii.domain.notification.application.service.NotificationQueryService;
-import com.guttery.madii.domain.notification.application.service.NotificationSendService;
-import com.guttery.madii.domain.notification.application.service.UserTokenService;
+import com.guttery.madii.domain.notification.application.service.NotificationTokenService;
+import com.guttery.madii.domain.notification.application.service.TodayJoyNotificationSendService;
+import com.guttery.madii.domain.notification.application.service.UnfinishedAchievementNotificationSendService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,9 +28,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @Tag(name = "Notification", description = "Notification 관련 API입니다.")
 public class NotificationController {
-    private final UserTokenService userTokenService;
+    private final NotificationTokenService notificationTokenService;
     private final NotificationQueryService notificationQueryService;
-    private final NotificationSendService notificationSendService;
+    private final TodayJoyNotificationSendService todayJoyNotificationSendService;
+    private final UnfinishedAchievementNotificationSendService unfinishedAchievementNotificationSendService;
 
     @PostMapping("/token")
     @ApiResponses(
@@ -42,11 +44,11 @@ public class NotificationController {
             }
     )
     @Operation(summary = "FCM 토큰 저장 API", description = "FCM 토큰을 저장하는 API입니다.")
-    public void saveUserToken(
+    public void saveNotificationToken(
             @RequestBody @Valid SaveTokenRequest request,
             @NotNull @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
-        userTokenService.saveUserToken(request, userPrincipal);
+        notificationTokenService.saveNotificationToken(request, userPrincipal);
     }
 
     @GetMapping
@@ -78,6 +80,22 @@ public class NotificationController {
     )
     @Operation(summary = "오늘의 소확행 알림 발송 테스트 API", description = "오늘의 소확행 알림 발송 테스트 API입니다.")
     public void sendNotification() {
-        notificationSendService.sendAndSaveTodayJoyNotifications();
+        todayJoyNotificationSendService.sendAndSaveTodayJoyNotifications();
+    }
+
+
+    @PostMapping("/test/playlist")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "플레이리스트 알림 발송 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "플레이리스트 미완료 알림 발송 테스트 API", description = "플레이리스트 미완료 알림 발송 테스트 API입니다.")
+    public void sendPlaylistNotification() {
+        unfinishedAchievementNotificationSendService.sendUnfinishedAchievementNotifications();
     }
 }

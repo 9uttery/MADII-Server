@@ -1,12 +1,11 @@
 package com.guttery.madii.domain.placeholder.domain.model;
 
-import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,8 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Placeholders {
     public static final String FIXED_DOCUMENT_ID = "MADII_PLACEHOLDERS_DOCUMENT_ID";
 
-    @Id
-    @BsonProperty("_id")
+    @MongoId
     private String id; // MongoDB 문서 ID
     private String contents;
 

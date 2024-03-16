@@ -3,7 +3,6 @@ package com.guttery.madii.domain.file.application.service;
 import com.guttery.madii.common.exception.CustomException;
 import com.guttery.madii.common.exception.ErrorDetails;
 import com.guttery.madii.domain.file.application.dto.FileUploadResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 
-@RequiredArgsConstructor
 @Slf4j
 @Service
 public class FileUploadService {
@@ -23,10 +21,18 @@ public class FileUploadService {
 
     private final S3Client s3Client;
 
-    @Value("${spring.cloud.aws.s3.bucket}")
-    private String bucketName;
-    @Value("${spring.cdn.url}")
-    private String cloudFrontUrl;
+    private final String bucketName;
+    private final String cloudFrontUrl;
+
+    public FileUploadService(
+            S3Client s3Client,
+            @Value("${spring.cloud.aws.s3.bucket}") String bucketName,
+            @Value("${spring.cdn.url}") String cloudFrontUrl
+    ) {
+        this.s3Client = s3Client;
+        this.bucketName = bucketName;
+        this.cloudFrontUrl = cloudFrontUrl;
+    }
 
     public FileUploadResponse uploadFileFromMultipartFile(final MultipartFile multipartFile) {
 

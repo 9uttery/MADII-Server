@@ -1,5 +1,5 @@
 package com.guttery.madii.domain.user.domain.repository;
 
-public interface UserTokenStore {
+public interface UserTokenRepository {
     void removeToken(String token);
 }
