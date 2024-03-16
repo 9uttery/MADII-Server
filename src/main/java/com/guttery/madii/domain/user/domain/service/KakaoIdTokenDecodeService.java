@@ -23,7 +23,7 @@ public class KakaoIdTokenDecodeService {
     public KakaoIdTokenDecodeService(
             KakaoOidcKeyClient kakaoOidcKeyClient,
             @Value("${oauth.kakao.iss}") String iss,
-            @Value("${oauth.kakao.iss}") String clientId
+            @Value("${oauth.kakao.client-id}") String clientId
     ) {
         this.kakaoOidcKeyClient = kakaoOidcKeyClient;
         this.iss = iss;
