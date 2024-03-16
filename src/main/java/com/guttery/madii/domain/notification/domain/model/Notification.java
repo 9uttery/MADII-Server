@@ -52,6 +52,13 @@ public class Notification {
                 .toList();
     }
 
+    public static List<Notification> createdBulkFormatted(List<User> users, String title, String joyName, String formattedContents) {
+        return users.stream()
+                .filter(User::hasProfile)
+                .map(user -> new Notification(user, title, String.format(formattedContents, user.getNickname(), joyName), false))
+                .toList();
+    }
+
     public Long getUserId() {
         return this.user.getUserId();
     }
