@@ -27,10 +27,10 @@ sudo service nginx reload
 echo "> Nginx reloaded."
 
 # CURRENT_PORT에 연결된 WAS의 PID 찾기
-CURRENT_PID=$(lsof -Fp -i TCP:${CURRENT_PORT} | grep -Po 'p[0-9]+' | grep -Po '[0-9]+')
+CURRENT_PID=$(lsof -Fp -i TCP:"${CURRENT_PORT}" | grep -Po 'p[0-9]+' | grep -Po '[0-9]+')
 
 # CURRENT_PORT에서 실행 중인 WAS 종료
 if [ -n "${CURRENT_PID}" ]; then
   echo "> Kill WAS running at ${CURRENT_PORT}."
-  sudo kill ${CURRENT_PID}
+  sudo kill "${CURRENT_PID}"
 fi
