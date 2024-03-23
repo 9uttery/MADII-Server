@@ -212,3 +212,37 @@ INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`
 INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (204,now(),now(),'SNS 프로필 새단장하기',1,'OFFICIAL',1);
 INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (205,now(),now(),'친구랑 영상통화하기',19,'OFFICIAL',1);
 INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (206,now(),now(),'새로운 유튜브 채널 발견하기',13,'OFFICIAL',1);
+
+
+-- 0323 추가
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (207,now(),now(),'분위기 좋은 곳에서 브런치 먹기',1,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (208,now(),now(),'일상 속에서 영감 얻기',2,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (209,now(),now(),'가족들과 맛있는 거 먹기',3,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (210,now(),now(),'유행하는 요리 릴스 따라해보기',4,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (211,now(),now(),'요거트에 그래놀라 넣어서 먹기',5,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (212,now(),now(),'출퇴근길에 한강 보기',6,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (213,now(),now(),'지나다가다 마음에 드는 공간 발견하기',7,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (214,now(),now(),'사랑하는 사람들과 힐링음악 들으면서 놀기',8,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (215,now(),now(),'점심시간에 꽃구경 하기',9,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (216,now(),now(),'출근 전에 마실 거 챙겨서 출근하기',10,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (217,now(),now(),'등교길에 식빵 굽는 고양이 발견하기',11,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (218,now(),now(),'취침 10분 전에 오늘 하루를 되돌아보기',12,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (219,now(),now(),'부모님과 경치 좋은 곳에서 커피 한 잔 하기',13,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (220,now(),now(),'가족들과 삼겹살 파티하기',14,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (221,now(),now(),'맛있는 간식과 커피 한잔으로 느긋한 여유 즐기기',15,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (222,now(),now(),'캠핑장에서 불멍하기',16,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (223,now(),now(),'추운 날에 따뜻한 선물 교환식 하기',17,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (224,now(),now(),'출퇴근길에 취향에 맞는 노래 발견하기',18,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (225,now(),now(),'알람 없이 기상하며 늦잠 자기',19,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (226,now(),now(),'대학교 캠퍼스 산책하기',20,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (227,now(),now(),'좋아하는 카페에서 달달한 디저트 먹기',21,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (228,now(),now(),'월급날에 삼겹살에 소맥 한잔 하기',22,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (229,now(),now(),'반려동물과 집에서 뒹굴거리기',23,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (230,now(),now(),'반려동물과 산책하기',24,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (231,now(),now(),'맛있는 거 만들어 먹으며 하루종일 반려동물과 집에서 쉬기',23,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (232,now(),now(),'가족들이랑 외식하기',22,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (233,now(),now(),'출퇴근길에 맛있는 커피 한잔 들고 가기',21,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (234,now(),now(),'시원한 바다 보러 가기',20,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (235,now(),now(),'선물 받은 예쁜 컵에 스프 담아먹기',19,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (236,now(),now(),'취향에 꼭 맞는 플레이리스트 발견하기',18,'OFFICIAL',1);
+INSERT INTO t_joy (`joy_id`,`created_at`,`modified_at`,`contents`,`joy_icon_num`,`joy_type`,`creator_id`) VALUES (237,now(),now(),'머리스타일 변화주기',17,'OFFICIAL',1);

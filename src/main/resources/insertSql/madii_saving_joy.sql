@@ -268,3 +268,35 @@ INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,
 INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (250, now(), now(), 29, 206);
 
 
+-- 0323 추가
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (251, now(), now(), 10, 207);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (252, now(), now(), 16, 208);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (253, now(), now(), 6, 209);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (254, now(), now(), 26, 210);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (255, now(), now(), 13, 211);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (256, now(), now(), 31, 212);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (257, now(), now(), 31, 213);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (258, now(), now(), 7, 214);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (259, now(), now(), 11, 215);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (260, now(), now(), 31, 216);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (261, now(), now(), 31, 217);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (262, now(), now(), 12, 218);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (263, now(), now(), 6, 219);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (264, now(), now(), 6, 220);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (265, now(), now(), 26, 221);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (266, now(), now(), 14, 222);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (267, now(), now(), 7, 223);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (268, now(), now(), 31, 224);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (269, now(), now(), 10, 225);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (270, now(), now(), 19, 226);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (271, now(), now(), 20, 227);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (272, now(), now(), 26, 228);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (273, now(), now(), 32, 229);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (274, now(), now(), 32, 230);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (275, now(), now(), 32, 231);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (276, now(), now(), 6, 232);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (277, now(), now(), 31, 233);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (278, now(), now(), 2, 234);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (279, now(), now(), 13, 235);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (280, now(), now(), 27, 236);
+INSERT INTO t_saving_joy (`saving_joy_id`,`created_at`,`modified_at`,`album_id`,`joy_id`) VALUES (281, now(), now(), 3, 237);
