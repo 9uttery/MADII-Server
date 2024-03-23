@@ -165,6 +165,21 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
     }
 
     @Override
+    public List<AlbumGetAllResponse> getAllIsOfficialAlbums() {
+
+        return queryFactory
+                .select(Projections.constructor(AlbumGetAllResponse.class,
+                        album.albumId,
+                        album.albumInfo.albumIconNum,
+                        album.albumInfo.albumColorNum,
+                        album.name))
+                .from(album)
+                .where(album.albumStatus.isOfficial.eq(true))
+                .orderBy(album.albumId.desc())
+                .fetch();
+    }
+
+    @Override
     public List<AlbumGetAllResponse> getAllAlbums(Long cursorId, int size) {
         BooleanExpression predicate = (cursorId == null) ? null : album.albumId.lt(cursorId);
 
@@ -175,7 +190,7 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
                         album.albumInfo.albumColorNum,
                         album.name))
                 .from(album)
-                .where(predicate.and(album.albumStatus.isOfficial.eq(true)))
+                .where(predicate)
                 .orderBy(album.albumId.desc())
                 .limit(size + 1)
                 .fetch();
@@ -183,11 +198,13 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
 
     @Override
     public List<AlbumGetOthersResponse> getOtherAlbums(Long albumId, Long userId) {
+
         List<Long> albumIds = queryFactory
                 .select(album.albumId)
                 .from(album)
                 .where(album.albumId.ne(albumId)
-                        .and(album.user.userId.ne(userId)))
+                        .and(album.user.userId.ne(userId))
+                        .and(album.albumStatus.isOfficial.eq(true)))
                 .fetch();
 
         Collections.shuffle(albumIds);
@@ -200,8 +217,7 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
                         album.albumInfo.albumColorNum,
                         album.name))
                 .from(album)
-                .where(album.albumId.in(randomIds)
-                        .and(album.albumStatus.isOfficial.eq(true)))
+                .where(album.albumId.in(randomIds))
                 .fetch();
     }
 }
