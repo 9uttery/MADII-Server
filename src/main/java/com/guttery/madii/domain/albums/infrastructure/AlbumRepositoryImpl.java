@@ -175,7 +175,7 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
                         album.albumInfo.albumColorNum,
                         album.name))
                 .from(album)
-                .where(predicate)
+                .where(predicate.and(album.albumStatus.isOfficial.eq(true)))
                 .orderBy(album.albumId.desc())
                 .limit(size + 1)
                 .fetch();
@@ -200,7 +200,8 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
                         album.albumInfo.albumColorNum,
                         album.name))
                 .from(album)
-                .where(album.albumId.in(randomIds))
+                .where(album.albumId.in(randomIds)
+                        .and(album.albumStatus.isOfficial.eq(true)))
                 .fetch();
     }
 }
