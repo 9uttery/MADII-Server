@@ -22,8 +22,13 @@ import java.util.List;
 @Service
 public class UnfinishedAchievementNotificationSendService {
     private static final int UNFINISHED_ACHIEVEMENT_NOTIFICATION_TIME = 20;
-    private static final String UNFINISHED_ACHIEVEMENT_NOTIFICATION_TITLE = "미완료 소확행 알림";
-    private static final String UNFINISHED_ACHIEVEMENT_NOTIFICATION_MESSAGE = "오늘의 소확행을 완료하지 못했어요. 얼른 완료해보세요!";
+    private static final String UNFINISHED_ACHIEVEMENT_NOTIFICATION_TITLE = "어제 실천하지 못한 소확행이 있어요";
+    private static final List<String> UNFINISHED_ACHIEVEMENT_NOTIFICATION_MESSAGES =
+            List.of(
+                    "오늘 잊지 말고 실천해 보세요 \uD83D\uDE09",
+                    "오늘 이어서 실천해 보세요 \uD83C\uDFB6",
+                    "오늘 실천해 보시는 건 어때요? ☺"
+            );
 
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
@@ -36,7 +41,7 @@ public class UnfinishedAchievementNotificationSendService {
     public void sendUnfinishedAchievementNotifications() {
         final List<User> users = getUsersWithUnfinishedAchievements();
         final List<String> tokens = getTokensByUserIds(users.stream().map(user -> user.getUserId().toString()).toList());
-        final NotificationData notificationData = createNotificationData();
+        final NotificationData notificationData = createNotificationData(LocalDate.now().toEpochDay() % UNFINISHED_ACHIEVEMENT_NOTIFICATION_MESSAGES.size());
         sendNotifications(notificationData, tokens);
         saveNotifications(users, notificationData);
     }
@@ -51,8 +56,10 @@ public class UnfinishedAchievementNotificationSendService {
         return notificationTokensRepository.getTokensByUserIds(userIds);
     }
 
-    private NotificationData createNotificationData() {
-        return new NotificationData(UNFINISHED_ACHIEVEMENT_NOTIFICATION_TITLE, UNFINISHED_ACHIEVEMENT_NOTIFICATION_MESSAGE);
+    private NotificationData createNotificationData(final long days) {
+        return new NotificationData(UNFINISHED_ACHIEVEMENT_NOTIFICATION_TITLE, UNFINISHED_ACHIEVEMENT_NOTIFICATION_MESSAGES.get(
+                (int) days - 1
+        ));
     }
 
     private void sendNotifications(final NotificationData notificationData, final List<String> tokens) {
