@@ -198,10 +198,17 @@ public class AlbumService {
     }
 
     @Transactional(readOnly = true)
+    public List<AlbumGetAllResponse> getAllIsOfficialAlbums() {
+        List<AlbumGetAllResponse> getAllResponseList = albumQueryDslRepository.getAllIsOfficialAlbums();
+        return getAllResponseList;
+    }
+
+    @Transactional(readOnly = true)
     public Slice<AlbumGetAllResponse> getAllAlbums(Long albumId, int size) {
         List<AlbumGetAllResponse> getAllResponseList = albumQueryDslRepository.getAllAlbums(albumId, size);
         return toSlice(getAllResponseList, PageRequest.of(0, size));
     }
+
 
     @Transactional(readOnly = true)
     public List<AlbumGetOthersResponse> getOtherAlbums(Long albumId, UserPrincipal userPrincipal) {
@@ -298,4 +305,5 @@ public class AlbumService {
         reportRepository.save(report);
         album.makeBlocked();
     }
+
 }
