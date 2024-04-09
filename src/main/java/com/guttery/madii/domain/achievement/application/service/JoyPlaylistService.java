@@ -33,7 +33,6 @@ public class JoyPlaylistService {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
         final Joy joy = JoyServiceHelper.findExistingJoy(joyRepository, addAchievementRequest.joyId());
         final Achievement newAchievement = Achievement.create(user, joy, FinishInfo.createNotFinished());
-        // TODO: 중복 추가 방지를 위한 로직 필요 -> 테스트 이후에 구현 (복합 unique key 고려 중)
 
         achievementRepository.save(newAchievement);
     }

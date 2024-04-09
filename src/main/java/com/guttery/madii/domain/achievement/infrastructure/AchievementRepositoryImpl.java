@@ -9,6 +9,7 @@ import com.guttery.madii.domain.achievement.application.dto.DailyJoyAchievementI
 import com.guttery.madii.domain.achievement.application.dto.DailyJoyPlaylist;
 import com.guttery.madii.domain.achievement.application.dto.JoyAchievementInfo;
 import com.guttery.madii.domain.achievement.application.dto.JoyPlaylistResponse;
+import com.guttery.madii.domain.achievement.domain.model.Achievement;
 import com.guttery.madii.domain.achievement.domain.repository.AchievementQueryDslRepository;
 import com.guttery.madii.domain.achievement.domain.repository.AchievementRepository;
 import com.querydsl.core.types.Projections;
@@ -109,5 +110,17 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
                 .fetch();
 
         return new CalenderDailyJoyAchievementResponse(dailyJoyAchievementInfos);
+    }
+
+    @Override
+    public Achievement getJoyAlreadyInPlaylist(Long userId, Long joyId, LocalDate date) {
+        return select(achievement)
+                .from(achievement)
+                .join(achievement.joy, joy)
+                .fetchJoin()
+                .join(achievement.achiever, user)
+                .fetchJoin()
+                .where(achievement.achiever.userId.eq(userId), joy.joyId.eq(joyId), achievement.createdAt.between(date.atStartOfDay().plusHours(TODAY_PLAYLIST_TIME_OFFSET), date.atStartOfDay().plusDays(1).minusSeconds(1).plusHours(TODAY_PLAYLIST_TIME_OFFSET)))
+                .fetchFirst();
     }
 }
