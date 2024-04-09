@@ -7,6 +7,7 @@ import com.guttery.madii.domain.user.domain.model.User;
 import com.guttery.madii.domain.user.domain.repository.UserQueryDslRepository;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
@@ -87,5 +88,19 @@ public class UserRepositoryImpl extends BaseQueryDslRepository<User> implements 
                 .fetch();
     }
 
+    @Override
+    public List<User> findUsersWithNoJoyAchievementsForDays(final int days) {
+        final LocalDateTime dayCriteria = LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(days);
 
+        return select(user)
+                .from(user)
+                .where(user.userId.notIn(
+                        JPAExpressions
+                                .select(achievement.achiever.userId)
+                                .from(achievement)
+                                .where(achievement.createdAt.after(dayCriteria))
+                ))
+                .distinct()
+                .fetch();
+    }
 }

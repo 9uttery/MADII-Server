@@ -20,4 +20,6 @@ public interface UserQueryDslRepository {
     BeforeWithdrawInfoResponse getBeforeWithdrawInfo(Long userId, LocalDateTime now);
 
     List<User> findUsersWithUnfinishedAchievements(LocalDateTime dateTime);
+
+    List<User> findUsersWithNoJoyAchievementsForDays(int days);
 }
