@@ -19,7 +19,6 @@ import com.guttery.madii.domain.user.domain.service.AppleIdTokenDecodeService;
 import com.guttery.madii.domain.user.domain.service.KakaoIdTokenDecodeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class LoginService {
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final KakaoIdTokenDecodeService kakaoIdTokenDecodeService;
     private final AppleIdTokenDecodeService appleIdTokenDecodeService;
 
@@ -39,9 +37,9 @@ public class LoginService {
         final User user = userRepository.findUserByLoginId(normalLoginRequest.loginId())
                 .orElseThrow(() -> CustomException.of(ErrorDetails.USER_NOT_FOUND));
 
-//        if (!bCryptPasswordEncoder.matches(normalLoginRequest.password(), user.getEncryptedPassword())) {
-//            throw CustomException.of(ErrorDetails.USER_NOT_FOUND);
-//        }
+        if (!user.matchesPassword(normalLoginRequest.password())) {
+            throw CustomException.of(ErrorDetails.PASSWORD_NOT_MATCH);
+        }
 
         return new LoginResponse(jwtProvider.generateAccessToken(user.getUserId(), user.getRole()), jwtProvider.generateRefreshToken(user.getUserId(), user.getRole()), user.getAgreesMarketing(), user.hasProfile());
     }
