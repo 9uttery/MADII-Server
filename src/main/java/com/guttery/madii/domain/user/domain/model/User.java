@@ -82,10 +82,6 @@ public class User extends BaseTimeEntity {
         this.socialInfo = null;
     }
 
-    public String getEncryptedPassword() {
-        return this.loginInfo.getPassword();
-    }
-
     public String getNickname() {
         return this.userProfile.getNickname();
     }
@@ -100,5 +96,9 @@ public class User extends BaseTimeEntity {
 
     public boolean matchesUserId(final Long userId) {
         return this.userId.equals(userId);
+    }
+
+    public boolean matchesPassword(final String password) {
+        return this.loginInfo.getPassword().equals(password);
     }
 }
