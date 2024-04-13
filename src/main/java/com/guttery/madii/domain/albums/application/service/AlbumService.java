@@ -55,34 +55,34 @@ public class AlbumService {
         Random random = new Random();
 
         // 앨범 썸네일 아이콘 번호 1 ~ 24 중 랜덤 생성
-        int iconNum = 1 + random.nextInt(24); // 1부터 24까지
-        int colorNum;
+        int albumIconNum = 1 + random.nextInt(24); // 1부터 24까지
+        int albumColorNum;
 
-        // iconNum의 범위에 따라 colorNum 결정
-        if (iconNum >= 1 && iconNum <= 6) {
-            // colorNum이 2, 3, 4 중 하나여야 함
-            int[] colors = {2, 3, 4};
-            colorNum = colors[random.nextInt(colors.length)];
-        } else if (iconNum >= 7 && iconNum <= 12) {
-            // colorNum이 1, 3, 4 중 하나여야 함
+        // albumIconNum 범위에 따라 albumColorNum 결정
+        if (albumIconNum >= 1 && albumIconNum <= 6) {
+            // albumColorNum 2, 3 중 하나여야 함 (주황 아이콘일 때 분홍 배경 제외)
+            int[] colors = {2, 3};
+            albumColorNum = colors[random.nextInt(colors.length)];
+        } else if (albumIconNum >= 7 && albumIconNum <= 12) {
+            // albumColorNum 1, 3, 4 중 하나여야 함
             int[] colors = {1, 3, 4};
-            colorNum = colors[random.nextInt(colors.length)];
-        } else if (iconNum >= 13 && iconNum <= 18) {
-            // colorNum이 1, 2, 4 중 하나여야 함
+            albumColorNum = colors[random.nextInt(colors.length)];
+        } else if (albumIconNum >= 13 && albumIconNum <= 18) {
+            // albumColorNum 1, 2, 4 중 하나여야 함
             int[] colors = {1, 2, 4};
-            colorNum = colors[random.nextInt(colors.length)];
-        } else if (iconNum >= 19 && iconNum <= 24) {
-            // colorNum이 1, 2, 3 중 하나여야 함
-            int[] colors = {1, 2, 3};
-            colorNum = colors[random.nextInt(colors.length)];
+            albumColorNum = colors[random.nextInt(colors.length)];
+        } else if (albumIconNum >= 19 && albumIconNum <= 24) {
+            // albumColorNum 2, 3 중 하나여야 함 (분홍 아이콘일 때 주황 배경 제외)
+            int[] colors = {2, 3};
+            albumColorNum = colors[random.nextInt(colors.length)];
         } else {
             // 기본값 설정
-            colorNum = 1;
+            albumColorNum = 1;
         }
 
         // 여기서 Album 객체 생성 및 나머지 로직 처리
         final Album album = Album.createAlbum(user, albumCreateRequest.name(), albumCreateRequest.description(),
-                false, false, false, iconNum, colorNum);
+                false, false, false, albumIconNum, albumColorNum);
         albumRepository.save(album);
 
         List<AlbumCreateResponse> albumCreateResponseList = albumQueryDslRepository.getMyAlbums(user.getUserId());
