@@ -134,8 +134,12 @@ public class AlbumService {
             joyInfoList = albumQueryDslRepository.getMyAlbumJoys(albumId);
             albumGetDetailResponse = new AlbumGetDetailResponse(album.getAlbumStatus().getIsOfficial(), album.getAlbumInfo().getAlbumIconNum(), album.getAlbumInfo().getAlbumColorNum(), null, album.getName(), null, album.getDescription(), joyInfoList);
         } else { // 남 앨범
-            joyInfoList = albumQueryDslRepository.getAlbumJoys(albumId, user.getUserId());
             Boolean isAlbumSaved = albumQueryDslRepository.getIsAlbumSaved(albumId, user.getUserId());
+            if (isAlbumSaved) { // 저장 -> joyInfoList 속 isJoySaved 전부 true
+                joyInfoList = albumQueryDslRepository.getSavedAlbumJoys(albumId, user.getUserId());
+            } else {
+                joyInfoList = albumQueryDslRepository.getAlbumJoys(albumId, user.getUserId());
+            }
             albumGetDetailResponse = new AlbumGetDetailResponse(album.getAlbumStatus().getIsOfficial(), album.getAlbumInfo().getAlbumIconNum(), album.getAlbumInfo().getAlbumColorNum(), isAlbumSaved, album.getName(), album.getUser().getUserProfile().getNickname(), album.getDescription(), joyInfoList);
         }
 

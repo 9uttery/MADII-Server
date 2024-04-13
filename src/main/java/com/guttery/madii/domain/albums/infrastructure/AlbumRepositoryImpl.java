@@ -1,11 +1,11 @@
 package com.guttery.madii.domain.albums.infrastructure;
 
 import com.guttery.madii.domain.albums.application.dto.*;
-import com.guttery.madii.domain.albums.domain.model.QSavingJoy;
 import com.guttery.madii.domain.albums.domain.repository.AlbumQueryDslRepository;
 import com.querydsl.core.types.NullExpression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -60,7 +60,6 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
     @Override
     public List<JoyGetInfo> getAlbumJoys(Long albumId, Long userId) {
         // 사용자의 앨범에 저장된 joys
-        QSavingJoy userSavedJoys = new QSavingJoy("userSavedJoy");
         JPQLQuery<Boolean> isJoySavedSubQuery = JPAExpressions
                 .select(savingJoy.isNotNull())
                 .from(savingJoy)
@@ -73,6 +72,26 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
                         joy.joyIconNum,
                         joy.contents,
                         isJoySavedSubQuery.exists()))
+                .from(joy)
+                .join(savingJoy)
+                .on(savingJoy.joy.joyId.eq(joy.joyId)
+                        .and(savingJoy.album.albumId.eq(albumId)))
+                .orderBy(savingJoy.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<JoyGetInfo> getSavedAlbumJoys(Long albumId, Long userId) {
+
+//        Boolean isJoySavedValue = true;  // 고정된 값(true) 설정
+
+        return queryFactory
+                .select(Projections.constructor(JoyGetInfo.class,
+                        joy.joyId,
+                        joy.joyIconNum,
+                        joy.contents,
+                        Expressions.asBoolean(true)))
+//                        new Expression<>(Boolean.class)))
                 .from(joy)
                 .join(savingJoy)
                 .on(savingJoy.joy.joyId.eq(joy.joyId)
