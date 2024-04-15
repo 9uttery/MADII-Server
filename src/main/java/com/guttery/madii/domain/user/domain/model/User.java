@@ -2,6 +2,7 @@ package com.guttery.madii.domain.user.domain.model;
 
 import com.guttery.madii.common.domain.model.BaseTimeEntity;
 import com.guttery.madii.domain.achievement.domain.model.Achievement;
+import com.guttery.madii.domain.albums.domain.model.Album;
 import com.guttery.madii.domain.albums.domain.model.SavingAlbum;
 import com.guttery.madii.domain.joy.domain.model.Joy;
 import com.guttery.madii.domain.notification.domain.model.Notification;
@@ -45,6 +46,8 @@ public class User extends BaseTimeEntity {
     private List<Joy> joys;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SavingAlbum> savingAlbums;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Album> createdAlbums;
     @OneToMany(mappedBy = "achiever", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Achievement> achievements;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
