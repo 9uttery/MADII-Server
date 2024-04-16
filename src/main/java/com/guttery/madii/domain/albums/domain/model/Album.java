@@ -2,10 +2,25 @@ package com.guttery.madii.domain.albums.domain.model;
 
 import com.guttery.madii.common.domain.model.BaseTimeEntity;
 import com.guttery.madii.domain.user.domain.model.User;
-import jakarta.persistence.*;
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,6 +42,8 @@ public class Album extends BaseTimeEntity {
     private AlbumStatus albumStatus; // 공개 여부, 신고 정지 여부, 삭제 여부
     @Embedded
     private AlbumInfo albumInfo; // 앨범 썸네일 아이콘 번호, 배경 번호
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SavingAlbum> savingAlbums;
 
     public Album(User user, String name, String description, AlbumStatus albumStatus, AlbumInfo albumInfo) {
         this.user = user;
