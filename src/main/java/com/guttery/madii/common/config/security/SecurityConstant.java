@@ -23,13 +23,13 @@ public class SecurityConstant {
             "/api-docs/**",
             "/health/**",
             "/favicon.ico",
-            "/users/login/**",
-            "/users/sign-up/**",
-            "/users/id-check/**",
-            "/users/refresh/**",
-            "/joy/today/**",
-            "/albums/all/**",
-            "/notices",
-            "/placeholders"
+            "/v1/users/login/**",
+            "/v1/users/sign-up/**",
+            "/v1/users/id-check/**",
+            "/v1/users/refresh/**",
+            "/v1/joy/today/**",
+            "/v1/albums/all/**",
+            "/v1/notices",
+            "/v1/placeholders"
     );
 }
