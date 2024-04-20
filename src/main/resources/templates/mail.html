@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>회원가입 인증</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F6F6F6; font-family: 'Pretendard', sans-serif;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background-color: #F6F6F6;" width="100%">
+    <tr>
+        <td align="center" style="padding: 20px;" valign="top">
+            <!-- 이메일 본문 테이블 -->
+            <table border="0" cellpadding="0" cellspacing="0" role="presentation"
+                   style="border-radius: 14px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <tr>
+                    <td style="background-image: url('https://cdn.madii.kr/signup_email_background.png'); background-size: cover; background-position: top; border-radius: 14px 14px 0 0; padding: 50px; text-align: left;">
+                        <!-- 상단 이미지와 텍스트 -->
+                        <h1 style="color: #FFFFFF; font-size: 28px; font-weight: 700; margin-top: 0; margin-bottom: 24px;">
+                            회원가입을 진심으로 환영합니다!</h1>
+                        <p style="color: #FFFFFF; font-size: 16px; font-weight: 500; margin-top: 0; margin-bottom: 24px;">
+                            안녕하세요. 마디입니다.<br>
+                            아래의 인증코드 6자리를 입력하여 회원가입을 완료해주세요.<br>
+                            만약 해당 이메일로 가입을 시도한 적이 없다면 madii.service.cs@gmail.com로 문의바랍니다.
+                        </p>
+                        <!-- 인증코드 표시 부분 -->
+                    <td style="font-size: 42px; font-family: 'Pretendard', sans-serif; font-weight: 600; line-height: 63px; color: black; padding-top: 30px;">
+                        <p style="text-align: center; font-size: 1.25rem; font-weight: bold; border: none; border-radius: 0.25rem; padding: 1rem 1.25rem; margin-bottom: 1rem; background-color: #F6F6F6; color: #717171;"
+                           th:text="${code}"></p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
