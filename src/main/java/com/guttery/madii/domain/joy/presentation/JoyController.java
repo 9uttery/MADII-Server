@@ -35,7 +35,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/joy")
+@RequestMapping("/v1/joy")
 @Validated
 @Tag(name = "Joy", description = "Joy 관련 API")
 public class JoyController {

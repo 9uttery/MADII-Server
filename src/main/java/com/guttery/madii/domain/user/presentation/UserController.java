@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/v1/users")
 @Validated
 @Tag(name = "User", description = "User 관련 API")
 public class UserController {

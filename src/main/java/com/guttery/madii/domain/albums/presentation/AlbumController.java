@@ -18,7 +18,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/albums")
+@RequestMapping("/v1/albums")
 @Validated
 @Tag(name = "Albums", description = "Albums 관련 API")
 public class AlbumController {
