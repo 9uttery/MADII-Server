@@ -14,6 +14,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.guttery.madii.domain.albums.domain.model.QSavingJoy.savingJoy;
 import static com.guttery.madii.domain.joy.domain.model.QJoy.joy;
 import static com.guttery.madii.domain.joytag.domain.model.QJoyTag.joyTag;
 import static com.guttery.madii.domain.tag.domain.model.QTag.tag;
@@ -80,7 +82,7 @@ public class JoyRepositoryImpl implements JoyQueryDslRepository {
     }
 
     @Override
-    public List<JoyGetRecommendResponse> getJoyRecommend(JoyGetRecommendRequest request) {
+    public List<JoyGetRecommendResponse> getJoyRecommend(JoyGetRecommendRequest request, Long userId) {
 
         Set<Long> resultJoyIds = new HashSet<>();
 
@@ -122,9 +124,27 @@ public class JoyRepositoryImpl implements JoyQueryDslRepository {
         Collections.shuffle(allRecommendations);
 
         // 최대 3개의 항목만 선택하여 DTO로 변환
+//        return allRecommendations.stream()
+//                .limit(3)
+//                .map(joy -> new JoyGetRecommendResponse(joy.getJoyId(), joy.getJoyIconNum(), joy.getContents(), ??))
+//                .collect(Collectors.toList());
+
         return allRecommendations.stream()
                 .limit(3)
-                .map(joy -> new JoyGetRecommendResponse(joy.getJoyId(), joy.getJoyIconNum(), joy.getContents()))
+                .map(joy -> {
+                    Boolean isSaved = queryFactory
+                            .select(savingJoy.isNotNull())
+                            .from(savingJoy)
+                            .where(savingJoy.joy.joyId.eq(joy.getJoyId()),
+                                    savingJoy.album.user.userId.eq(userId))
+                            .fetchOne();
+
+                    // isSaved 값이 null인 경우 false로 처리
+                    Boolean isJoySaved = isSaved != null && isSaved;
+
+                    // joy 객체를 JoyGetRecommendResponse로 매핑하여 반환
+                    return new JoyGetRecommendResponse(joy.getJoyId(), joy.getJoyIconNum(), joy.getContents(), isJoySaved);
+                })
                 .collect(Collectors.toList());
     }
 

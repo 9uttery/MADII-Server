@@ -158,7 +158,8 @@ public class JoyService {
 
     @Transactional(readOnly = true)
     public List<JoyGetRecommendResponse> getJoyRecommend(JoyGetRecommendRequest joyGetRecommendRequest, UserPrincipal userPrincipal) {
-        List<JoyGetRecommendResponse> joyGetRecommendResponseList = joyQueryDslRepository.getJoyRecommend(joyGetRecommendRequest);
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+        List<JoyGetRecommendResponse> joyGetRecommendResponseList = joyQueryDslRepository.getJoyRecommend(joyGetRecommendRequest, user.getUserId());
         return joyGetRecommendResponseList;
     }
 

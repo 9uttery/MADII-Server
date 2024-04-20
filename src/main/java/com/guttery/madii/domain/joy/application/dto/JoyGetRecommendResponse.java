@@ -9,6 +9,8 @@ public record JoyGetRecommendResponse(
         @Schema(description = "소확행 썸네일 아이콘 번호", example = "3")
         Integer joyIconNum,
         @Schema(description = "소확행 내용", example = "낮잠자기")
-        String contents
+        String contents,
+        @Schema(description = "소확행 저장 여부", example = "true(1)")
+        Boolean isJoySaved
 ) {
 }

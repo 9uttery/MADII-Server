@@ -12,5 +12,5 @@ public interface JoyQueryDslRepository {
 
     List<Joy> getRandomOfficialJoys(int amount);
 
-    List<JoyGetRecommendResponse> getJoyRecommend(JoyGetRecommendRequest joyGetRecommendRequest);
+    List<JoyGetRecommendResponse> getJoyRecommend(JoyGetRecommendRequest joyGetRecommendRequest, Long userId);
 }
