@@ -18,21 +18,21 @@ public class MailController {
     private final MailSendService mailSendService;
     private final MailVerifyService mailVerifyService;
 
-    @GetMapping("/sign-up")
+    @GetMapping("/v1/sign-up")
     public void sendSignUpMail(
             @NotBlank @RequestParam("email") final String email
     ) {
         mailSendService.sendSignUpMail(email);
     }
 
-    @GetMapping("/password-reset")
+    @GetMapping("/v1/password-reset")
     public void sendPasswordResetMail(
             @NotBlank @RequestParam("email") final String email
     ) {
         mailSendService.sendSignUpMail(email); // TODO: 추후 수정 필요
     }
 
-    @GetMapping("/verify")
+    @GetMapping("/v1/verify")
     public void verifyEmail(
             @NotBlank @RequestParam("email") final String email,
             @NotBlank @RequestParam("code") final String code
