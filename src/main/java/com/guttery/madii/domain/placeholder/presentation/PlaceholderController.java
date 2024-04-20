@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/placeholders")
+@RequestMapping("/v1/placeholders")
 @Validated
 @Tag(name = "플레이스홀더", description = "플레이스홀더 관리 API")
 public class PlaceholderController {

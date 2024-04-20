@@ -35,7 +35,7 @@ import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/achievements")
+@RequestMapping("/v1/achievements")
 @Validated
 @Tag(name = "Achievement", description = "실천 및 캘린더 관련 API")
 public class AchievementController {

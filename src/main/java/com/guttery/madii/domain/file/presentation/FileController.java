@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/file")
+@RequestMapping("/v1/file")
 @Validated
 @Tag(name = "File", description = "파일 관련 API")
 public class FileController {
