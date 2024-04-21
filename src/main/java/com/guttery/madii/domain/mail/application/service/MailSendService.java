@@ -1,7 +1,8 @@
-package com.guttery.madii.domain.mail.application;
+package com.guttery.madii.domain.mail.application.service;
 
 import com.guttery.madii.common.exception.CustomException;
 import com.guttery.madii.common.exception.ErrorDetails;
+import com.guttery.madii.domain.mail.application.dto.MailVerificationCodeResponse;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -26,7 +27,7 @@ public class MailSendService {
     private final SpringTemplateEngine springTemplateEngine;
     private final RedisTemplate<String, String> redisTemplate;
 
-    public void sendSignUpMail(final String email) {
+    public MailVerificationCodeResponse sendSignUpMail(final String email) {
         final String code = MailVerificationCodeGenerator.generate(); // 인증코드 생성
         final MimeMessage message = javaMailSender.createMimeMessage();
 
@@ -41,6 +42,8 @@ public class MailSendService {
 
         redisTemplate.opsForValue().set(email, code, EXPIRE_TIME, TimeUnit.MILLISECONDS); // Redis에 인증코드 저장
         javaMailSender.send(message); // 이메일 전송
+
+        return new MailVerificationCodeResponse(code);
     }
 
     private String setContext(final String code) { // 타임리프 설정하는 코드

@@ -1,4 +1,4 @@
-package com.guttery.madii.domain.mail.application;
+package com.guttery.madii.domain.mail.application.service;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

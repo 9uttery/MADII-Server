@@ -30,6 +30,7 @@ public class SecurityConstant {
             "/v1/joy/today/**",
             "/v1/albums/all/**",
             "/v1/notices",
-            "/v1/placeholders"
+            "/v1/placeholders",
+            "/v1/mail/**"
     );
 }

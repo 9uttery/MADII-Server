@@ -1,7 +1,8 @@
 package com.guttery.madii.domain.mail.presentation;
 
-import com.guttery.madii.domain.mail.application.MailSendService;
-import com.guttery.madii.domain.mail.application.MailVerifyService;
+import com.guttery.madii.domain.mail.application.dto.MailVerificationCodeResponse;
+import com.guttery.madii.domain.mail.application.service.MailSendService;
+import com.guttery.madii.domain.mail.application.service.MailVerifyService;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -12,27 +13,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/mail")
+@RequestMapping("/v1/mail")
 @Validated
 public class MailController {
     private final MailSendService mailSendService;
     private final MailVerifyService mailVerifyService;
 
-    @GetMapping("/v1/sign-up")
-    public void sendSignUpMail(
+    @GetMapping("/sign-up")
+    public MailVerificationCodeResponse sendSignUpMail(
             @NotBlank @RequestParam("email") final String email
     ) {
-        mailSendService.sendSignUpMail(email);
+        return mailSendService.sendSignUpMail(email);
     }
 
-    @GetMapping("/v1/password-reset")
+    @GetMapping("/password-reset")
     public void sendPasswordResetMail(
             @NotBlank @RequestParam("email") final String email
     ) {
         mailSendService.sendSignUpMail(email); // TODO: 추후 수정 필요
     }
 
-    @GetMapping("/v1/verify")
+    @GetMapping("/verify")
     public void verifyEmail(
             @NotBlank @RequestParam("email") final String email,
             @NotBlank @RequestParam("code") final String code
