@@ -16,9 +16,12 @@ public class MailVerifyService {
 
     @Transactional(readOnly = true)
     public void verifyEmail(final String email, final String code) {
-        final String redisCode = redisTemplate.opsForValue().getAndDelete(email);
+        final String redisCode = redisTemplate.opsForValue().get(email);
+
         if (redisCode == null || !redisCode.equals(code)) {
             throw CustomException.of(ErrorDetails.MAIL_VERIFY_FAILED);
         }
+
+        redisTemplate.delete(email);
     }
 }
