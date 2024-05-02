@@ -44,6 +44,8 @@ public class Album extends BaseTimeEntity {
     private AlbumInfo albumInfo; // 앨범 썸네일 아이콘 번호, 배경 번호
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SavingAlbum> savingAlbums;
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SavingJoy> savingJoys;
 
     public Album(User user, String name, String description, AlbumStatus albumStatus, AlbumInfo albumInfo) {
         this.user = user;
