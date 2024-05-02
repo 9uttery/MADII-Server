@@ -2,6 +2,7 @@ package com.guttery.madii.domain.joy.domain.repository;
 
 import com.guttery.madii.domain.joy.application.dto.MostAchievedJoyInfoProjection;
 import com.guttery.madii.domain.joy.domain.model.Joy;
+import com.guttery.madii.domain.user.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -40,4 +41,6 @@ public interface JoyRepository extends JpaRepository<Joy, Long> {
 
     @Query(nativeQuery = true, value = GET_MOST_ACHIEVED_JOY_QUERY)
     List<MostAchievedJoyInfoProjection> getMostAchievedJoy(Long userId);
+
+    void deleteByUser(User foundUser);
 }
