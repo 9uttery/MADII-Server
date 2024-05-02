@@ -1,6 +1,7 @@
 package com.guttery.madii.domain.joy.domain.model;
 
 import com.guttery.madii.common.domain.model.BaseTimeEntity;
+import com.guttery.madii.domain.achievement.domain.model.Achievement;
 import com.guttery.madii.domain.albums.domain.model.SavingJoy;
 import com.guttery.madii.domain.user.domain.model.User;
 import jakarta.persistence.Access;
@@ -43,6 +44,8 @@ public class Joy extends BaseTimeEntity {
     private String contents; // 소확행 내용
     @OneToMany(mappedBy = "joy", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SavingJoy> savingJoys;
+    @OneToMany(mappedBy = "joy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Achievement> achievements;
 
     public Joy(User user, JoyType joyType, Integer joyIconNum, String contents) {
         this.user = user;

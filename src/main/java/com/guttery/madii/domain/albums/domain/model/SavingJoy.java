@@ -29,7 +29,7 @@ public class SavingJoy extends BaseTimeEntity {
     @JoinColumn(name = "joy_id", nullable = false)
     private Joy joy; // 소확행 id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "album_id")
+    @JoinColumn(name = "album_id", nullable = false)
     private Album album; // 앨범 id
 
     public SavingJoy(Joy joy, Album album) {
