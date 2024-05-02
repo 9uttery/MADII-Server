@@ -33,6 +33,7 @@ public class JoyPlaylistService {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
         final Joy joy = JoyServiceHelper.findExistingJoy(joyRepository, addAchievementRequest.joyId());
         final Achievement newAchievement = Achievement.create(user, joy, FinishInfo.createNotFinished());
+        AchievementServiceHelper.validateUnfinishedJoyAchievementNotInPlaylist(achievementRepository, joy, user);
 
         achievementRepository.save(newAchievement);
     }
@@ -59,4 +60,5 @@ public class JoyPlaylistService {
         achievementRepository.delete(foundAchievement);
         achievementRepository.save(newAchievement);
     }
+
 }
