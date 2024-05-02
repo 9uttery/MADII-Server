@@ -15,5 +15,4 @@ public interface AchievementQueryDslRepository {
     CalenderDailyJoyAchievementResponse getDailyJoyAchievementInfos(Long userId, LocalDate date);
 
     Achievement getJoyAlreadyInPlaylist(Long userId, Long joyId, LocalDate date);
-
 }

@@ -4,6 +4,8 @@ import com.guttery.madii.common.exception.CustomException;
 import com.guttery.madii.common.exception.ErrorDetails;
 import com.guttery.madii.domain.achievement.domain.model.Achievement;
 import com.guttery.madii.domain.achievement.domain.repository.AchievementRepository;
+import com.guttery.madii.domain.joy.domain.model.Joy;
+import com.guttery.madii.domain.user.domain.model.User;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -26,5 +28,11 @@ public class AchievementServiceHelper {
         validateAchievementAchiever(foundAchievement, userPrincipal.id());
 
         return foundAchievement;
+    }
+
+    public static void validateUnfinishedJoyAchievementNotInPlaylist(final AchievementRepository achievementRepository, final Joy joy, final User achiever) {
+        if (achievementRepository.existsByJoyAndAchieverAndFinishInfo_IsFinishedFalse(joy, achiever)) {
+            throw CustomException.of(ErrorDetails.UNFINISHED_JOY_ALREADY_EXISTS_IN_PLAYLIST);
+        }
     }
 }

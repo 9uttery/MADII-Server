@@ -60,6 +60,7 @@ public enum ErrorDetails {
     ACHIEVEMENT_NOT_FOUND("P001", HttpStatus.NOT_FOUND.value(), "오늘의 플레이리스트에서 해당 실천을 찾을 수 없습니다."),
     INVALID_SATISFACTION_ENUM("P002", HttpStatus.BAD_REQUEST.value(), "만족도 ENUM이 유효하지 않습니다. BAD, SO_SO, GOOD, GREAT, EXCELLENT 중 하나여야 합니다."),
     ACHIEVEMENT_ACHIEVER_NOT_MATCH("P003", HttpStatus.FORBIDDEN.value(), "해당 실천을 만든 사용자가 아닙니다."),
+    UNFINISHED_JOY_ALREADY_EXISTS_IN_PLAYLIST("P004", HttpStatus.CONFLICT.value(), "미완료 소확행이 이미 플레이리스트에 존재합니다."),
 
     FILE_UPLOAD_FAILED("F001", HttpStatus.INTERNAL_SERVER_ERROR.value(), "파일 업로드에 실패했습니다."),
 
