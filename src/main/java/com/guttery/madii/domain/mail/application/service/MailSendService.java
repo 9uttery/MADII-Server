@@ -34,7 +34,7 @@ public class MailSendService {
 
         try {
             message.addRecipients(Message.RecipientType.TO, email); // 보낼 이메일 설정
-            message.setSubject("[MADII] 회원가입 인증번호 발송"); // 이메일 제목
+            message.setSubject("[MADII] 인증번호 발송"); // 이메일 제목
             message.setText(setContext(code, mailType.getTemplateFileName()), "utf-8", "html"); // 내용 설정(Template Process)
             message.setFrom(new InternetAddress("madii.service.cs@gmail.com", "마디"));
         } catch (final MessagingException | UnsupportedEncodingException e) {
