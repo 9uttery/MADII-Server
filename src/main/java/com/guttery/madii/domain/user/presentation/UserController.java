@@ -9,6 +9,7 @@ import com.guttery.madii.domain.user.application.dto.NormalLoginRequest;
 import com.guttery.madii.domain.user.application.dto.ProfileReadResponse;
 import com.guttery.madii.domain.user.application.dto.ProfileUpdateRequest;
 import com.guttery.madii.domain.user.application.dto.RefreshResponse;
+import com.guttery.madii.domain.user.application.dto.ResetPasswordRequest;
 import com.guttery.madii.domain.user.application.dto.SignUpRequest;
 import com.guttery.madii.domain.user.application.dto.TokenRefreshRequest;
 import com.guttery.madii.domain.user.application.dto.UpdateMarketingAgreementRequest;
@@ -194,6 +195,24 @@ public class UserController {
             @AuthenticationPrincipal final UserPrincipal userPrincipal
     ) {
         profileService.updateProfile(profileUpdateRequest, userPrincipal);
+    }
+
+    @PutMapping("/password-reset")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "비밀번호 재설정 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "비밀번호 재설정 API", description = "비밀번호 재설정 API입니다.")
+    public void resetPassword(
+            @Valid @RequestBody ResetPasswordRequest resetPasswordRequest,
+            @AuthenticationPrincipal final UserPrincipal userPrincipal
+    ) {
+        profileService.changePassword(resetPasswordRequest, userPrincipal);
     }
 
     @GetMapping("/stat")

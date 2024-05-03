@@ -18,6 +18,10 @@ public final class LoginInfo {
     private String loginId;
     private String password;
 
+    public LoginInfo changePassword(final String password) {
+        return new LoginInfo(this.loginId, password);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
