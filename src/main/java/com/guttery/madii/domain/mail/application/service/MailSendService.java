@@ -3,6 +3,7 @@ package com.guttery.madii.domain.mail.application.service;
 import com.guttery.madii.common.exception.CustomException;
 import com.guttery.madii.common.exception.ErrorDetails;
 import com.guttery.madii.domain.mail.application.dto.MailVerificationCodeResponse;
+import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -27,14 +28,14 @@ public class MailSendService {
     private final SpringTemplateEngine springTemplateEngine;
     private final RedisTemplate<String, String> redisTemplate;
 
-    public MailVerificationCodeResponse sendSignUpMail(final String email) {
+    public MailVerificationCodeResponse sendMail(final String email, final MailType mailType) {
         final String code = MailVerificationCodeGenerator.generate(); // 인증코드 생성
         final MimeMessage message = javaMailSender.createMimeMessage();
 
         try {
-            message.addRecipients(MimeMessage.RecipientType.TO, email); // 보낼 이메일 설정
+            message.addRecipients(Message.RecipientType.TO, email); // 보낼 이메일 설정
             message.setSubject("[MADII] 회원가입 인증번호 발송"); // 이메일 제목
-            message.setText(setContext(code), "utf-8", "html"); // 내용 설정(Template Process)
+            message.setText(setContext(code, mailType.getTemplateFileName()), "utf-8", "html"); // 내용 설정(Template Process)
             message.setFrom(new InternetAddress("madii.service.cs@gmail.com", "마디"));
         } catch (final MessagingException | UnsupportedEncodingException e) {
             throw CustomException.of(ErrorDetails.MAIL_SEND_FAILED);
@@ -46,11 +47,11 @@ public class MailSendService {
         return new MailVerificationCodeResponse(code);
     }
 
-    private String setContext(final String code) { // 타임리프 설정하는 코드
+    private String setContext(final String code, final String templateFileName) { // 타임리프 설정하는 코드
         final Context context = new Context();
         context.setVariable("code", code); // Template에 전달할 데이터 설정
 
-        return springTemplateEngine.process("mail", context); // mail.html
+        return springTemplateEngine.process(templateFileName, context); // sign_up_mail.html
     }
 
 }
