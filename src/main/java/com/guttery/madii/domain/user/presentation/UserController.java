@@ -13,6 +13,7 @@ import com.guttery.madii.domain.user.application.dto.ResetPasswordRequest;
 import com.guttery.madii.domain.user.application.dto.SignUpRequest;
 import com.guttery.madii.domain.user.application.dto.TokenRefreshRequest;
 import com.guttery.madii.domain.user.application.dto.UpdateMarketingAgreementRequest;
+import com.guttery.madii.domain.user.application.service.LoginInfoService;
 import com.guttery.madii.domain.user.application.service.LoginService;
 import com.guttery.madii.domain.user.application.service.LogoutService;
 import com.guttery.madii.domain.user.application.service.ProfileService;
@@ -49,6 +50,7 @@ public class UserController {
     private final ProfileService profileService;
     private final WithdrawService withdrawService;
     private final LogoutService logoutService;
+    private final LoginInfoService loginInfoService;
 
     @GetMapping("/id-check")
     @ApiResponses(
@@ -212,7 +214,7 @@ public class UserController {
             @Valid @RequestBody ResetPasswordRequest resetPasswordRequest,
             @AuthenticationPrincipal final UserPrincipal userPrincipal
     ) {
-        profileService.changePassword(resetPasswordRequest, userPrincipal);
+        loginInfoService.changePassword(resetPasswordRequest, userPrincipal);
     }
 
     @GetMapping("/stat")

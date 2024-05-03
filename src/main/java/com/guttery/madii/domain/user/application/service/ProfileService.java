@@ -2,7 +2,6 @@ package com.guttery.madii.domain.user.application.service;
 
 import com.guttery.madii.domain.user.application.dto.ProfileReadResponse;
 import com.guttery.madii.domain.user.application.dto.ProfileUpdateRequest;
-import com.guttery.madii.domain.user.application.dto.ResetPasswordRequest;
 import com.guttery.madii.domain.user.application.dto.UpdateMarketingAgreementRequest;
 import com.guttery.madii.domain.user.application.mapper.UserMapper;
 import com.guttery.madii.domain.user.domain.model.User;
@@ -36,12 +35,6 @@ public class ProfileService {
     public void updateMarketingAgreement(final UpdateMarketingAgreementRequest updateMarketingAgreementRequest, final UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
         user.updateMarketingAgreement(updateMarketingAgreementRequest.agreesMarketing());
-        userRepository.save(user);
-    }
-
-    public void changePassword(final ResetPasswordRequest resetPasswordRequest, final UserPrincipal userPrincipal) {
-        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
-        user.changetPassword(resetPasswordRequest.password());
         userRepository.save(user);
     }
 }

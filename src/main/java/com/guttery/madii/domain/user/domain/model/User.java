@@ -85,7 +85,7 @@ public class User extends BaseTimeEntity {
         this.socialInfo = null;
     }
 
-    public void changetPassword(String password) {
+    public void changePassword(String password) {
         this.loginInfo = this.loginInfo.changePassword(password);
     }
 
@@ -99,6 +99,10 @@ public class User extends BaseTimeEntity {
 
     public boolean hasProfile() {
         return this.userProfile != null;
+    }
+
+    public boolean hasLoginInfo() {
+        return this.loginInfo != null;
     }
 
     public boolean matchesUserId(final Long userId) {
