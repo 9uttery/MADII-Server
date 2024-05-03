@@ -85,6 +85,10 @@ public class User extends BaseTimeEntity {
         this.socialInfo = null;
     }
 
+    public void changePassword(String password) {
+        this.loginInfo = this.loginInfo.changePassword(password);
+    }
+
     public String getNickname() {
         return this.userProfile.getNickname();
     }
@@ -95,6 +99,10 @@ public class User extends BaseTimeEntity {
 
     public boolean hasProfile() {
         return this.userProfile != null;
+    }
+
+    public boolean hasLoginInfo() {
+        return this.loginInfo != null;
     }
 
     public boolean matchesUserId(final Long userId) {

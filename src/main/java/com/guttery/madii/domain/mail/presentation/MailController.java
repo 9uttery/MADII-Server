@@ -2,6 +2,7 @@ package com.guttery.madii.domain.mail.presentation;
 
 import com.guttery.madii.domain.mail.application.dto.MailVerificationCodeResponse;
 import com.guttery.madii.domain.mail.application.service.MailSendService;
+import com.guttery.madii.domain.mail.application.service.MailType;
 import com.guttery.madii.domain.mail.application.service.MailVerifyService;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +24,14 @@ public class MailController {
     public MailVerificationCodeResponse sendSignUpMail(
             @NotBlank @RequestParam("email") final String email
     ) {
-        return mailSendService.sendSignUpMail(email);
+        return mailSendService.sendMail(email, MailType.SIGN_UP);
     }
 
     @GetMapping("/password-reset")
-    public void sendPasswordResetMail(
+    public MailVerificationCodeResponse sendPasswordResetMail(
             @NotBlank @RequestParam("email") final String email
     ) {
-        mailSendService.sendSignUpMail(email); // TODO: 추후 수정 필요
+        return mailSendService.sendMail(email, MailType.PASSWORD_RESET);
     }
 
     @GetMapping("/verify")

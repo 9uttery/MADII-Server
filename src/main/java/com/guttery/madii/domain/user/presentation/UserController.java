@@ -9,9 +9,11 @@ import com.guttery.madii.domain.user.application.dto.NormalLoginRequest;
 import com.guttery.madii.domain.user.application.dto.ProfileReadResponse;
 import com.guttery.madii.domain.user.application.dto.ProfileUpdateRequest;
 import com.guttery.madii.domain.user.application.dto.RefreshResponse;
+import com.guttery.madii.domain.user.application.dto.ResetPasswordRequest;
 import com.guttery.madii.domain.user.application.dto.SignUpRequest;
 import com.guttery.madii.domain.user.application.dto.TokenRefreshRequest;
 import com.guttery.madii.domain.user.application.dto.UpdateMarketingAgreementRequest;
+import com.guttery.madii.domain.user.application.service.LoginInfoService;
 import com.guttery.madii.domain.user.application.service.LoginService;
 import com.guttery.madii.domain.user.application.service.LogoutService;
 import com.guttery.madii.domain.user.application.service.ProfileService;
@@ -48,6 +50,7 @@ public class UserController {
     private final ProfileService profileService;
     private final WithdrawService withdrawService;
     private final LogoutService logoutService;
+    private final LoginInfoService loginInfoService;
 
     @GetMapping("/id-check")
     @ApiResponses(
@@ -194,6 +197,24 @@ public class UserController {
             @AuthenticationPrincipal final UserPrincipal userPrincipal
     ) {
         profileService.updateProfile(profileUpdateRequest, userPrincipal);
+    }
+
+    @PutMapping("/password-reset")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "비밀번호 재설정 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "비밀번호 재설정 API", description = "비밀번호 재설정 API입니다.")
+    public void resetPassword(
+            @Valid @RequestBody ResetPasswordRequest resetPasswordRequest,
+            @AuthenticationPrincipal final UserPrincipal userPrincipal
+    ) {
+        loginInfoService.changePassword(resetPasswordRequest, userPrincipal);
     }
 
     @GetMapping("/stat")
