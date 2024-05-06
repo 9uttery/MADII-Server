@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -42,7 +42,7 @@ public class JoyPlaylistService {
     public JoyPlaylistResponse getAchievementsInPlaylist(final UserPrincipal userPrincipal) {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
 
-        return achievementRepository.getAchievementsInPlaylist(user.getUserId(), LocalDate.now());
+        return achievementRepository.getAchievementsInPlaylist(user.getUserId(), LocalDateTime.now());
     }
 
     @Transactional

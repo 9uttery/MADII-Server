@@ -41,7 +41,8 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
     }
 
     @Override
-    public JoyPlaylistResponse getAchievementsInPlaylist(final Long userId, final LocalDate date) {
+    public JoyPlaylistResponse getAchievementsInPlaylist(final Long userId, final LocalDateTime dateTime) {
+        final LocalDate date = convertToLocalDateByOffset(dateTime);
         final List<JoyAchievementInfo> yesterdayAchievementInfos = queryJoyAchievementInfos(userId, date.minusDays(1));
         final List<JoyAchievementInfo> todayAchievementInfos = queryJoyAchievementInfos(userId, date);
 
@@ -49,6 +50,14 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
                 new DailyJoyPlaylist(date, todayAchievementInfos),
                 new DailyJoyPlaylist(date.minusDays(1), yesterdayAchievementInfos)
         );
+    }
+
+    private LocalDate convertToLocalDateByOffset(final LocalDateTime dateTime) {
+        if (dateTime.getHour() < TODAY_PLAYLIST_TIME_OFFSET) {
+            return dateTime.toLocalDate().minusDays(1); // 오늘 새벽 1시 전이면 전날로 변환
+        }
+
+        return dateTime.toLocalDate();
     }
 
     private List<JoyAchievementInfo> queryJoyAchievementInfos(final Long userId, final LocalDate date) {
