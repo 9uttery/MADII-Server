@@ -52,10 +52,10 @@ public class Notification {
                 .toList();
     }
 
-    public static List<Notification> createdBulkFormatted(List<User> users, String title, String formattedContents) {
+    public static List<Notification> createdBulkFormatted(List<User> users, String formattedTitle, String contents) {
         return users.stream()
                 .filter(User::hasProfile)
-                .map(user -> new Notification(user, title, String.format(formattedContents, user.getNickname()), false))
+                .map(user -> new Notification(user, String.format(formattedTitle, user.getNickname()), contents, false))
                 .toList();
     }
 
