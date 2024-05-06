@@ -6,9 +6,10 @@ import com.guttery.madii.domain.achievement.application.dto.JoyPlaylistResponse;
 import com.guttery.madii.domain.achievement.domain.model.Achievement;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public interface AchievementQueryDslRepository {
-    JoyPlaylistResponse getAchievementsInPlaylist(Long userId, LocalDate date);
+    JoyPlaylistResponse getAchievementsInPlaylist(Long userId, LocalDateTime dateTime);
 
     CalenderAchievementColorResponse getAchievementsInCalender(Long userId, LocalDate startDate, LocalDate endDate);
 
