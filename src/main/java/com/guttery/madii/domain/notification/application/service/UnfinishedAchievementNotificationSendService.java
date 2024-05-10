@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 public class UnfinishedAchievementNotificationSendService {
     private static final int UNFINISHED_ACHIEVEMENT_NOTIFICATION_TIME = 20;
-    private static final String UNFINISHED_ACHIEVEMENT_NOTIFICATION_TITLE = "어제 실천하지 못한 소확행이 있어요";
+    private static final String UNFINISHED_ACHIEVEMENT_NOTIFICATION_TITLE = "오늘 실천하지 못한 소확행이 있어요";
     private static final List<String> UNFINISHED_ACHIEVEMENT_NOTIFICATION_MESSAGES =
             List.of(
                     "오늘 잊지 말고 실천해 보세요 \uD83D\uDE09",
