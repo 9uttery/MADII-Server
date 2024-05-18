@@ -1,16 +1,17 @@
 buildscript {
-    ext {
-        queryDslVersion = "5.0.0"
-    }
-    repositories {
-        mavenCentral()
-    }
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+	repositories {
+		mavenCentral()
+	}
 }
 
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.5'
 	id 'io.spring.dependency-management' version '1.1.3'
+	id 'io.sentry.jvm.gradle' version '4.5.1'
 }
 
 group = 'com.guttery'
@@ -32,7 +33,6 @@ repositories {
 
 dependencies {
 	// Spring Boot 의존성
-	// JPA, Redis, Security, Validation, Web, Cache, Mail, Thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -58,8 +58,8 @@ dependencies {
 
 	// QueryDSL
 	implementation "com.querydsl:querydsl-jpa:5.0.0:jakarta"
-    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
-//	annotationProcessor "io.github.mingeun0507:querydsl-apt-for-records:5.0.0.M1"
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+	//annotationProcessor "io.github.mingeun0507:querydsl-apt-for-records:5.0.0.M1"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
@@ -79,10 +79,14 @@ dependencies {
 	// DB
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 	implementation "org.springframework.boot:spring-boot-starter-data-mongodb"
 
 	// Firebase
 	implementation 'com.google.firebase:firebase-admin:9.2.0'
+
+	// Sentry
+	implementation 'io.sentry:sentry-jdbc:6.29.0'
 
 	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -97,16 +101,44 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-def generated = layout.buildDirectory.dir("generated/querydsl").get().asFile
-
-tasks.withType(JavaCompile) {
-    options.getGeneratedSourceOutputDirectory().set(file(generated))
-}
+def generated = file("$buildDir/generated/querydsl")
 
 sourceSets {
-    main.java.srcDirs += [generated]
+	main {
+		java {
+			srcDirs += generated
+		}
+	}
+}
+
+task createGeneratedDir {
+	doLast {
+		if (!generated.exists()) {
+			generated.mkdirs()
+		}
+	}
+}
+
+tasks.withType(JavaCompile) {
+	dependsOn createGeneratedDir
+	options.annotationProcessorGeneratedSourcesDirectory = generated
 }
 
 clean {
-    delete file(generated)
+	delete file(generated)
+}
+
+sentry {
+	includeSourceContext = true
+	org = "9uttery"
+	projectName = "madii"
+	authToken = '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'
+}
+
+tasks.named('sentryCollectSourcesJava').configure {
+	dependsOn compileJava, compileTestJava
+}
+
+tasks.named('generateSentryBundleIdJava').configure {
+	dependsOn compileJava
 }
