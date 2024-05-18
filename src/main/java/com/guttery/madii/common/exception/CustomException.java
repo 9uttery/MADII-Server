@@ -9,7 +9,9 @@ public class CustomException extends RuntimeException{
     }
 
     public static CustomException of(ErrorDetails errorDetails) {
-        return new CustomException(errorDetails);
+        final CustomException customException = new CustomException(errorDetails);
+        SentryCapturingHelper.captureException(customException);
+        return customException;
     }
 
     public int getErrorDetailsStatus() {
