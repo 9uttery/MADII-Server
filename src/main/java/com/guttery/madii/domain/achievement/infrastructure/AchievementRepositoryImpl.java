@@ -9,9 +9,10 @@ import com.guttery.madii.domain.achievement.application.dto.DailyJoyAchievementI
 import com.guttery.madii.domain.achievement.application.dto.DailyJoyPlaylist;
 import com.guttery.madii.domain.achievement.application.dto.JoyAchievementInfo;
 import com.guttery.madii.domain.achievement.application.dto.JoyPlaylistResponse;
-import com.guttery.madii.domain.achievement.domain.model.Achievement;
 import com.guttery.madii.domain.achievement.domain.repository.AchievementQueryDslRepository;
 import com.guttery.madii.domain.achievement.domain.repository.AchievementRepository;
+import com.guttery.madii.domain.joy.domain.model.Joy;
+import com.guttery.madii.domain.user.domain.model.User;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.StringExpression;
@@ -122,14 +123,16 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
     }
 
     @Override
-    public Achievement getJoyAlreadyInPlaylist(Long userId, Long joyId, LocalDate date) {
+    public boolean checkJoyAlreadyInPlaylist(final Joy addedJoy, final User achiever) {
+        final LocalDate date = convertToLocalDateByOffset(LocalDateTime.now());
+
         return select(achievement)
                 .from(achievement)
                 .join(achievement.joy, joy)
                 .fetchJoin()
                 .join(achievement.achiever, user)
                 .fetchJoin()
-                .where(achievement.achiever.userId.eq(userId), joy.joyId.eq(joyId), achievement.createdAt.between(date.atStartOfDay().plusHours(TODAY_PLAYLIST_TIME_OFFSET), date.atStartOfDay().plusDays(1).minusSeconds(1).plusHours(TODAY_PLAYLIST_TIME_OFFSET)))
-                .fetchFirst();
+                .where(achievement.achiever.eq(user), joy.eq(addedJoy), achievement.finishInfo.isFinished.isFalse(), achievement.createdAt.between(date.atStartOfDay().plusHours(TODAY_PLAYLIST_TIME_OFFSET), date.atStartOfDay().plusDays(1).minusSeconds(1).plusHours(TODAY_PLAYLIST_TIME_OFFSET)))
+                .fetchFirst() != null;
     }
 }

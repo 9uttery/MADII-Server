@@ -31,7 +31,7 @@ public class AchievementServiceHelper {
     }
 
     public static void validateUnfinishedJoyAchievementNotInPlaylist(final AchievementRepository achievementRepository, final Joy joy, final User achiever) {
-        if (achievementRepository.existsByJoyAndAchieverAndFinishInfo_IsFinishedFalse(joy, achiever)) {
+        if (achievementRepository.checkJoyAlreadyInPlaylist(joy, achiever)) {
             throw CustomException.of(ErrorDetails.UNFINISHED_JOY_ALREADY_EXISTS_IN_PLAYLIST);
         }
     }
