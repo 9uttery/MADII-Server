@@ -30,6 +30,8 @@ import java.util.List;
 @Table(name = "t_user")
 @Access(AccessType.FIELD)
 public class User extends BaseTimeEntity {
+    private static final String DEFAULT_NICKNAME = "사용자";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -90,6 +92,10 @@ public class User extends BaseTimeEntity {
     }
 
     public String getNickname() {
+        if (this.userProfile == null) {
+            return DEFAULT_NICKNAME;
+        }
+
         return this.userProfile.getNickname();
     }
 
