@@ -132,7 +132,7 @@ public class AchievementRepositoryImpl extends BaseQueryDslRepository<Achievemen
                 .fetchJoin()
                 .join(achievement.achiever, user)
                 .fetchJoin()
-                .where(achievement.achiever.eq(user), joy.eq(addedJoy), achievement.finishInfo.isFinished.isFalse(), achievement.createdAt.between(date.atStartOfDay().plusHours(TODAY_PLAYLIST_TIME_OFFSET), date.atStartOfDay().plusDays(1).minusSeconds(1).plusHours(TODAY_PLAYLIST_TIME_OFFSET)))
+                .where(achievement.achiever.eq(achiever), joy.eq(addedJoy), achievement.finishInfo.isFinished.isFalse(), achievement.createdAt.between(date.atStartOfDay().plusHours(TODAY_PLAYLIST_TIME_OFFSET), date.atStartOfDay().plusDays(1).minusSeconds(1).plusHours(TODAY_PLAYLIST_TIME_OFFSET)))
                 .fetchFirst() != null;
     }
 }
