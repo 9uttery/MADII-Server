@@ -1714,4 +1714,245 @@ values(now(), now(), 237, 1);
 insert into t_joy_tag(created_at, modified_at, joy_id, tag_id)
 values(now(), now(), 237, 4);
 insert into t_joy_tag(created_at, modified_at, joy_id, tag_id)
-values(now(), now(), 237, 7); 
+values(now(), now(), 237, 7);
+
+
+-- 0602 추가
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 421, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 421, 3);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 421, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 421, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 422, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 422, 3);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 422, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 422, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 423, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 423, 3);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 423, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 423, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 424, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 424, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 424, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 424, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 425, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 425, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 425, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 425, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 426, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 426, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 426, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 426, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 426, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 427, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 427, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 427, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 427, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 427, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 428, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 428, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 428, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 428, 7);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 429, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 429, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 429, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 430, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 430, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 430, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 430, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 431, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 431, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 431, 6);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 431, 7);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 432, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 432, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 432, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 433, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 433, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 433, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 433, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 433, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 434, 3);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 434, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 434, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 434, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 434, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 435, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 435, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 435, 6);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 435, 7);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 436, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 436, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 436, 6);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 436, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 436, 7);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 437, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 437, 6);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 437, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 437, 7);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 438, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 438, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 438, 9);
+
+-- 뜨거운 여름
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 439, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 439, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 439, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 439, 6);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 439, 7);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 440, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 440, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 440, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 440, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 441, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 441, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 441, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 441, 6);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 441, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 442, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 442, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 442, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 442, 6);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 442, 7);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 443, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 443, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 443, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 443, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 444, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 444, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 444, 6);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 444, 7);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 445, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 445, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 445, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 445, 6);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 445, 7);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 446, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 446, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 446, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 446, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 447, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 447, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 447, 7);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 448, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 448, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 448, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 448, 9);
+
+-- 뮤직
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 449, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 449, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 449, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 450, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 450, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 450, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 451, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 451, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 451, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 452, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 452, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 452, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 453, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 453, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 453, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 454, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 454, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 454, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 454, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 455, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 455, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 455, 5);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 455, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 456, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 456, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 456, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 456, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 457, 1);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 457, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 457, 3);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 457, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 457, 9);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 458, 2);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 458, 4);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 458, 8);
+
+-- 직장인
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 459, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 459, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 459, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 460, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 460, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 460, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 461, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 461, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 461, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 461, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 462, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 462, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 462, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 462, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 463, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 463, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 463, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 463, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 463, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 464, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 464, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 464, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 465, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 465, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 465, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 466, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 466, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 466, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 466, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 467, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 467, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 467, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 467, 8);
+
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 468, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 468, 8);
+insert into t_joy_tag(created_at, modified_at, joy_id, tag_id) values(now(), now(), 468, 8);
