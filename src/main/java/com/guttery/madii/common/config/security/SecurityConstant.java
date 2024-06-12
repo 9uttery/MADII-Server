@@ -31,6 +31,7 @@ public class SecurityConstant {
             "/v1/albums/all/**",
             "/v1/notices",
             "/v1/placeholders",
-            "/v1/mail/**"
+            "/v1/mail/**",
+            "/v1/users/password-reset"
     );
 }
