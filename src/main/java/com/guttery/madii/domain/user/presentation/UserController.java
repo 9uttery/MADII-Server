@@ -211,10 +211,9 @@ public class UserController {
     )
     @Operation(summary = "비밀번호 재설정 API", description = "비밀번호 재설정 API입니다.")
     public void resetPassword(
-            @Valid @RequestBody ResetPasswordRequest resetPasswordRequest,
-            @AuthenticationPrincipal final UserPrincipal userPrincipal
+            @Valid @RequestBody ResetPasswordRequest resetPasswordRequest
     ) {
-        loginInfoService.changePassword(resetPasswordRequest, userPrincipal);
+        loginInfoService.changePassword(resetPasswordRequest);
     }
 
     @GetMapping("/stat")

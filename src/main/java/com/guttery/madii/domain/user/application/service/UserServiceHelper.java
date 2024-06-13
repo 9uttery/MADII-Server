@@ -15,6 +15,11 @@ public final class UserServiceHelper {
                 .orElseThrow(() -> CustomException.of(ErrorDetails.USER_NOT_FOUND));
     }
 
+    public static User findExistingUserByEmail(final UserRepository userRepository, final String email) {
+        return userRepository.findByLoginInfo_LoginId(email)
+                .orElseThrow(() -> CustomException.of(ErrorDetails.USER_NOT_FOUND));
+    }
+
     public static void validateExistingUser(final UserRepository userRepository, final UserPrincipal userPrincipal) {
         if (!userRepository.existsByUserId(userPrincipal.id())) {
             throw CustomException.of(ErrorDetails.USER_NOT_FOUND);
