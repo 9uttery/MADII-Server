@@ -7,15 +7,7 @@ import com.guttery.madii.domain.albums.domain.model.SavingJoy;
 import com.guttery.madii.domain.albums.domain.repository.AlbumQueryDslRepository;
 import com.guttery.madii.domain.albums.domain.repository.AlbumRepository;
 import com.guttery.madii.domain.albums.domain.repository.SavingJoyRepository;
-import com.guttery.madii.domain.joy.application.dto.JoyCreateRequest;
-import com.guttery.madii.domain.joy.application.dto.JoyCreateResponse;
-import com.guttery.madii.domain.joy.application.dto.JoyGetMostAchievedResponse;
-import com.guttery.madii.domain.joy.application.dto.JoyGetMyAllResponse;
-import com.guttery.madii.domain.joy.application.dto.JoyGetRecommendRequest;
-import com.guttery.madii.domain.joy.application.dto.JoyGetRecommendResponse;
-import com.guttery.madii.domain.joy.application.dto.JoyPutRequest;
-import com.guttery.madii.domain.joy.application.dto.JoyPutResponse;
-import com.guttery.madii.domain.joy.application.dto.MostAchievedJoyInfo;
+import com.guttery.madii.domain.joy.application.dto.*;
 import com.guttery.madii.domain.joy.domain.model.Joy;
 import com.guttery.madii.domain.joy.domain.model.JoyType;
 import com.guttery.madii.domain.joy.domain.repository.JoyQueryDslRepository;
@@ -69,7 +61,7 @@ public class JoyService {
 
     public void deleteFromSavingJoy(Long joyId, List<Long> beforeAlbumIds) {
         for (Long albumId : beforeAlbumIds) {
-            final Joy joy =  joyRepository.findById(joyId)
+            final Joy joy = joyRepository.findById(joyId)
                     .orElseThrow(() -> CustomException.of(ErrorDetails.JOY_NOT_FOUND));
             final Album album = albumRepository.findById(albumId)
                     .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
@@ -80,7 +72,7 @@ public class JoyService {
 
     public void addToSavingJoy(Long joyId, List<Long> afterAlbumIds) {
         for (Long albumId : afterAlbumIds) {
-            final Joy joy =  joyRepository.findById(joyId)
+            final Joy joy = joyRepository.findById(joyId)
                     .orElseThrow(() -> CustomException.of(ErrorDetails.JOY_NOT_FOUND));
             final Album album = albumRepository.findById(albumId)
                     .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
@@ -168,5 +160,12 @@ public class JoyService {
         final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
 
         return new JoyGetMostAchievedResponse(joyRepository.getMostAchievedJoy(user.getUserId()).stream().map(MostAchievedJoyInfo::fromProjection).toList());
+    }
+
+    @Transactional(readOnly = true)
+    public JoyGetDetailResponse getJoyDetail(Long joyId, UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+        JoyGetDetailResponse joyGetDetailResponse = joyQueryDslRepository.getJoyDetail(joyId, user.getUserId());
+        return joyGetDetailResponse;
     }
 }

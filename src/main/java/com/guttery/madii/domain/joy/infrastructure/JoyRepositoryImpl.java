@@ -1,10 +1,7 @@
 package com.guttery.madii.domain.joy.infrastructure;
 
 import com.guttery.madii.common.util.OrderSpecifierUtils;
-import com.guttery.madii.domain.joy.application.dto.JoyGetMyAllResponse;
-import com.guttery.madii.domain.joy.application.dto.JoyGetMyOne;
-import com.guttery.madii.domain.joy.application.dto.JoyGetRecommendRequest;
-import com.guttery.madii.domain.joy.application.dto.JoyGetRecommendResponse;
+import com.guttery.madii.domain.joy.application.dto.*;
 import com.guttery.madii.domain.joy.domain.model.Joy;
 import com.guttery.madii.domain.joy.domain.model.JoyType;
 import com.guttery.madii.domain.joy.domain.model.QJoy;
@@ -146,6 +143,27 @@ public class JoyRepositoryImpl implements JoyQueryDslRepository {
                     return new JoyGetRecommendResponse(joy.getJoyId(), joy.getJoyIconNum(), joy.getContents(), isJoySaved);
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public JoyGetDetailResponse getJoyDetail(Long joyId, Long userId) {
+
+        JPQLQuery<JoyGetDetailResponse> query = queryFactory
+                .select(Projections.constructor(JoyGetDetailResponse.class,
+                        joy.joyId,
+                        joy.joyIconNum,
+                        joy.contents,
+                        JPAExpressions
+                                .selectOne()
+                                .from(savingJoy)
+                                .where(savingJoy.joy.joyId.eq(joy.joyId),
+                                        savingJoy.album.user.userId.eq(userId))
+                                .exists()))
+                .from(joy)
+                .where(joy.joyId.eq(joyId));
+
+        return query.fetchOne();
+
     }
 
     private Set<Long> getJoyIdsByTagType(TagType tagType, List<Long> tagIds) {
