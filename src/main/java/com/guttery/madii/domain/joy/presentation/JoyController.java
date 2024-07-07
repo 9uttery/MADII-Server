@@ -1,14 +1,6 @@
 package com.guttery.madii.domain.joy.presentation;
 
-import com.guttery.madii.domain.joy.application.dto.JoyCreateRequest;
-import com.guttery.madii.domain.joy.application.dto.JoyCreateResponse;
-import com.guttery.madii.domain.joy.application.dto.JoyGetMostAchievedResponse;
-import com.guttery.madii.domain.joy.application.dto.JoyGetMyAllResponse;
-import com.guttery.madii.domain.joy.application.dto.JoyGetRecommendRequest;
-import com.guttery.madii.domain.joy.application.dto.JoyGetRecommendResponse;
-import com.guttery.madii.domain.joy.application.dto.JoyGetTodayResponse;
-import com.guttery.madii.domain.joy.application.dto.JoyPutRequest;
-import com.guttery.madii.domain.joy.application.dto.JoyPutResponse;
+import com.guttery.madii.domain.joy.application.dto.*;
 import com.guttery.madii.domain.joy.application.service.JoyRecommendService;
 import com.guttery.madii.domain.joy.application.service.JoyService;
 import com.guttery.madii.domain.user.domain.model.UserPrincipal;
@@ -21,15 +13,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -71,6 +55,22 @@ public class JoyController {
     @Operation(summary = "내가 기록한 소확행 조회 API", description = "내가 기록한 소확행 조회 API입니다.")
     public List<JoyGetMyAllResponse> getMyJoy(@AuthenticationPrincipal final UserPrincipal userPrincipal) {
         return joyService.getMyJoy(userPrincipal);
+    }
+
+    @GetMapping("/{joyId}")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "소확행 상세 조회 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "소확행 상세 조회 API", description = "소확행 상세 조회 API입니다.")
+    public JoyGetDetailResponse getJoyDetail(@PathVariable Long joyId,
+                                             @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        return joyService.getJoyDetail(joyId, userPrincipal);
     }
 
     @PutMapping("/{joyId}")
