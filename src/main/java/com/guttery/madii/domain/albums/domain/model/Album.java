@@ -19,7 +19,9 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -46,6 +48,7 @@ public class Album extends BaseTimeEntity {
     private List<SavingAlbum> savingAlbums;
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SavingJoy> savingJoys;
+    private LocalDateTime officialSetAt;
 
     public Album(User user, String name, String description, AlbumStatus albumStatus, AlbumInfo albumInfo) {
         this.user = user;
@@ -66,14 +69,9 @@ public class Album extends BaseTimeEntity {
         this.description = description;
     }
 
-    public void modifyInfo(AlbumInfo albumInfo) { this.albumInfo = albumInfo; }
-
     public void makeOfficial() {
         this.albumStatus = this.albumStatus.withOfficial(true);
-    }
-
-    public void makePersonal() {
-        this.albumStatus = this.albumStatus.withOfficial(false);
+        this.officialSetAt = LocalDateTime.now();
     }
 
     public void makeBlocked() {

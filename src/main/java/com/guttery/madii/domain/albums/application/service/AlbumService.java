@@ -115,11 +115,9 @@ public class AlbumService {
         final Album album = albumRepository.findById(albumId)
                 .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
 
-        if (album.getAlbumStatus().getIsOfficial()) {
-            album.makePersonal();
-        } else {
-            album.makeOfficial();
-        }
+        if (album.getAlbumStatus().getIsOfficial()) throw CustomException.of(ErrorDetails.ALREADY_OFFICIAL);
+
+        album.makeOfficial();
     }
 
     @Transactional(readOnly = true)

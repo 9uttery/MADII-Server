@@ -57,6 +57,7 @@ public enum ErrorDetails {
     ALREADY_EXIST_BOOKMARK("A002", HttpStatus.BAD_REQUEST.value(), "이미 저장한 앨범입니다."),
     NOT_FOUND_BOOKMARK("A003", HttpStatus.BAD_REQUEST.value(), "저장한 앨범이 아닙니다."),
     NOT_MY_ALBUM("A004", HttpStatus.BAD_REQUEST.value(), "내가 만든 앨범이 아닙니다."),
+    ALREADY_OFFICIAL("A005", HttpStatus.BAD_REQUEST.value(), "이미 공개된 앨범입니다."),
 
     ACHIEVEMENT_NOT_FOUND("P001", HttpStatus.NOT_FOUND.value(), "오늘의 플레이리스트에서 해당 실천을 찾을 수 없습니다."),
     INVALID_SATISFACTION_ENUM("P002", HttpStatus.BAD_REQUEST.value(), "만족도 ENUM이 유효하지 않습니다. BAD, SO_SO, GOOD, GREAT, EXCELLENT 중 하나여야 합니다."),
