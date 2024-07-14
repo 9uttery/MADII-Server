@@ -195,9 +195,6 @@ public class AlbumController {
             }
     )
     @Operation(summary = "전체 앨범 조회 API", description = "전체 앨범 조회 API입니다.")
-//    public List<AlbumGetAllResponse> getAllAlbums() {
-//        return albumService.getAllIsOfficialAlbums();
-//    }
     public Slice<AlbumGetAllResponse> getAllAlbums(@RequestParam(required = false) Long albumId,
                                                    @RequestParam int size) {
         return albumService.getAllAlbums(albumId, size);
