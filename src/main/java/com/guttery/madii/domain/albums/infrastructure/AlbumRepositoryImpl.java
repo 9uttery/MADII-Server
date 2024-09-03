@@ -53,7 +53,7 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
                 .join(savingJoy)
                 .on(savingJoy.joy.joyId.eq(joy.joyId)
                         .and(savingJoy.album.albumId.eq(albumId)))
-                .orderBy(savingJoy.createdAt.desc())
+                .orderBy(savingJoy.joyOrder.asc())
                 .fetch();
     }
 
@@ -76,7 +76,7 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
                 .join(savingJoy)
                 .on(savingJoy.joy.joyId.eq(joy.joyId)
                         .and(savingJoy.album.albumId.eq(albumId)))
-                .orderBy(savingJoy.createdAt.desc())
+                .orderBy(savingJoy.joyOrder.asc())
                 .fetch();
     }
 
@@ -96,7 +96,7 @@ public class AlbumRepositoryImpl implements AlbumQueryDslRepository {
                 .join(savingJoy)
                 .on(savingJoy.joy.joyId.eq(joy.joyId)
                         .and(savingJoy.album.albumId.eq(albumId)))
-                .orderBy(savingJoy.createdAt.desc())
+                .orderBy(savingJoy.joyOrder.asc())
                 .fetch();
     }
 
