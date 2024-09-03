@@ -58,6 +58,10 @@ public class Joy extends BaseTimeEntity {
         return new Joy(user, JoyType.PERSONAL, joyIconNum, contents);
     }
 
+    public static Joy createOfficialJoy(User user, Integer joyIconNum, String contents) {
+        return new Joy(user, JoyType.OFFICIAL, joyIconNum, contents);
+    }
+
     public void modifyContents(String contents) {
         this.contents = contents;
     }

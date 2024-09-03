@@ -97,7 +97,11 @@ public class AlbumService {
                     .orElseThrow(() -> CustomException.of(ErrorDetails.JOY_NOT_FOUND));
             final Album album = albumRepository.findById(albumId)
                     .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
-            final SavingJoy savingJoy = SavingJoy.createSavingJoy(joy, album);
+
+            // 앨범 내에서 가장 높은 order 값을 조회하여 1을 더해줌
+            Integer maxOrder = savingJoyRepository.findMaxOrderByAlbum(album);
+            Integer joyOrder = (maxOrder == null) ? 1 : maxOrder + 1;
+            final SavingJoy savingJoy = SavingJoy.createSavingJoy(joy, album, joyOrder);
             savingJoyRepository.save(savingJoy);
         }
     }
@@ -308,4 +312,51 @@ public class AlbumService {
         album.makeBlocked();
     }
 
+    public void putAllAlbum(AlbumPutAllRequest albumPutAllRequest, Long albumId, UserPrincipal userPrincipal) {
+        final User user = UserServiceHelper.findExistingUser(userRepository, userPrincipal);
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
+
+        String name = albumPutAllRequest.name();
+        String description = albumPutAllRequest.description();
+        List<SavingJoyDto> joys = albumPutAllRequest.joys();
+        List<Long> deletedJoyIds = albumPutAllRequest.deletedJoyIds();
+
+        // 1. 삭제된 소확행 처리
+        if (deletedJoyIds != null && !deletedJoyIds.isEmpty()) {
+            savingJoyRepository.deleteAllByJoyJoyIdIn(deletedJoyIds);
+        }
+
+        for (SavingJoyDto joyDto :joys) {
+            // 2. 수정된 소확행 처리
+            if (joyDto.joyId() != null) {
+                // 소확행명 수정 - joy table update
+                Joy joy = joyRepository.findById(joyDto.joyId())
+                        .orElseThrow(() -> CustomException.of(ErrorDetails.JOY_NOT_FOUND));
+                joy.modifyContents(joyDto.contents());
+
+                // 순서 세팅 - saving_joy table update
+                SavingJoy savingJoy = savingJoyRepository.findByJoyAndAlbum(joy, album)
+                        .orElseThrow(() -> CustomException.of(ErrorDetails.SAVING_JOY_NOT_FOUND));
+                savingJoy.modifyJoyOrder(joyDto.joyOrder());
+            } else {
+                // 3. 새로 추가된 소확행 처리
+                Random random = new Random();
+                int bound = 24; // 소확행 썸네일 아이콘 번호 1 ~ 24 중 랜덤 생성
+
+                Joy joy;
+                if (album.getAlbumStatus().getIsOfficial()) {
+                    joy = Joy.createOfficialJoy(user, 1 + random.nextInt(bound), joyDto.contents());
+                } else {
+                    joy = Joy.createPersonalJoy(user, 1 + random.nextInt(bound), joyDto.contents());
+                }
+
+                joyRepository.save(joy);
+                SavingJoy savingJoy = SavingJoy.createSavingJoy(joy, album, joyDto.joyOrder());
+                savingJoyRepository.save(savingJoy);
+            }
+        }
+
+        album.modifyNameAndDes(name, description);
+    }
 }
