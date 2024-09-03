@@ -31,11 +31,19 @@ public class SavingJoy extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id", nullable = false)
     private Album album; // 앨범 id
+    private Integer joyOrder; // 소확행 정렬 순서
 
-    public SavingJoy(Joy joy, Album album) {
+    public SavingJoy(Joy joy, Album album, Integer joyOrder) {
         this.joy = joy;
         this.album = album;
+        this.joyOrder = joyOrder;
     }
 
-    public static SavingJoy createSavingJoy(Joy joy, Album album) { return new SavingJoy(joy, album); }
+    public static SavingJoy createSavingJoy(Joy joy, Album album, Integer joyOrder) {
+        return new SavingJoy(joy, album, joyOrder);
+    }
+
+    public void modifyJoyOrder(Integer joyOrder) {
+        this.joyOrder = joyOrder;
+    }
 }
