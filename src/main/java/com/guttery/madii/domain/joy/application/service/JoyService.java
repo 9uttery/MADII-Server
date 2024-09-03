@@ -65,7 +65,8 @@ public class JoyService {
                     .orElseThrow(() -> CustomException.of(ErrorDetails.JOY_NOT_FOUND));
             final Album album = albumRepository.findById(albumId)
                     .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
-            final SavingJoy savingJoy = savingJoyRepository.findByJoyAndAlbum(joy, album);
+            final SavingJoy savingJoy = savingJoyRepository.findByJoyAndAlbum(joy, album)
+                    .orElseThrow(() -> CustomException.of(ErrorDetails.SAVING_JOY_NOT_FOUND));
             savingJoyRepository.delete(savingJoy);
         }
     }
@@ -76,7 +77,11 @@ public class JoyService {
                     .orElseThrow(() -> CustomException.of(ErrorDetails.JOY_NOT_FOUND));
             final Album album = albumRepository.findById(albumId)
                     .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
-            final SavingJoy savingJoy = SavingJoy.createSavingJoy(joy, album);
+
+            // 앨범 내에서 가장 높은 order 값을 조회하여 1을 더해줌
+            Integer maxOrder = savingJoyRepository.findMaxOrderByAlbum(album);
+            Integer joyOrder = (maxOrder == null) ? 1 : maxOrder + 1;
+            final SavingJoy savingJoy = SavingJoy.createSavingJoy(joy, album, joyOrder);
             savingJoyRepository.save(savingJoy);
 
             // 앨범은 공개, 소확행은 비공개일 때 -> 소확행 공개로 변경
