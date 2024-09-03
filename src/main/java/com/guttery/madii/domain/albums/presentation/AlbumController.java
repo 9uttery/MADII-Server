@@ -280,4 +280,22 @@ public class AlbumController {
         albumService.reportAlbum(albumReportRequest, albumId, userPrincipal);
     }
 
+
+    @PutMapping("/{albumId}/all")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "앨범 편집 성공",
+                            useReturnTypeSchema = true
+                    )
+            }
+    )
+    @Operation(summary = "앨범 편집 API", description = "앨범 편집 API입니다.")
+    public void putAllAlbum(@Valid @RequestBody AlbumPutAllRequest albumPutAllRequest,
+                            @PathVariable Long albumId,
+                            @AuthenticationPrincipal final UserPrincipal userPrincipal) {
+        albumService.putAllAlbum(albumPutAllRequest, albumId, userPrincipal);
+    }
+
 }

@@ -52,6 +52,7 @@ public enum ErrorDetails {
 
     JOY_NOT_FOUND("J001", HttpStatus.NOT_FOUND.value(), "소확행을 찾을 수 없습니다."),
     TODAY_JOY_NOT_FOUND("J100", HttpStatus.NOT_FOUND.value(), "오늘의 소확행을 찾을 수 없습니다."),
+    SAVING_JOY_NOT_FOUND("J001", HttpStatus.NOT_FOUND.value(), "앨범에 저장된 소확행 기록을 찾을 수 없습니다."),
 
     ALBUM_NOT_FOUND("A001", HttpStatus.NOT_FOUND.value(), "앨범을 찾을 수 없습니다."),
     ALREADY_EXIST_BOOKMARK("A002", HttpStatus.BAD_REQUEST.value(), "이미 저장한 앨범입니다."),
