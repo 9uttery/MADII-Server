@@ -99,8 +99,7 @@ public class AlbumService {
                     .orElseThrow(() -> CustomException.of(ErrorDetails.ALBUM_NOT_FOUND));
 
             // 앨범 내에서 가장 높은 order 값을 조회하여 1을 더해줌
-            Integer maxOrder = savingJoyRepository.findMaxOrderByAlbum(album);
-            Integer joyOrder = (maxOrder == null) ? 1 : maxOrder + 1;
+            final Integer joyOrder = savingJoyRepository.findTopByAlbumOrderByJoyOrderDesc(album).map(SavingJoy::getJoyOrder).orElse(0) + 1;
             final SavingJoy savingJoy = SavingJoy.createSavingJoy(joy, album, joyOrder);
             savingJoyRepository.save(savingJoy);
         }
