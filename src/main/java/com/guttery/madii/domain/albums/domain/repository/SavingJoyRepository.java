@@ -14,7 +14,7 @@ public interface SavingJoyRepository extends JpaRepository<SavingJoy, Long> {
 
     void deleteByAlbumAlbumId(Long albumId);
 
-    Integer findMaxOrderByAlbum(Album album);
+    Optional<SavingJoy> findTopByAlbumOrderByJoyOrderDesc(Album album);
 
     void deleteAllByJoyJoyIdIn(List<Long> deletedJoyIds);
 
