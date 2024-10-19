@@ -80,25 +80,36 @@ jobs:
     needs: build_and_push
     runs-on: ubuntu-latest
     steps:
-      - name: Install SSH Key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.NCP_DEV_SSH_KEY }}
-          known_hosts: ${{ secrets.NCP_DEV_KNOWN_HOSTS }}
-
-      - name: Install sshpass
-        run: sudo apt-get install sshpass
-
-      - name: Connect SSH and Deploy
-        env:
-          SSH_PASSWORD: ${{ secrets.NCP_DEV_PASSWORD }}
+      - name: Setting NCP CLI & Credentials
         run: |
-          sshpass -p "$SSH_PASSWORD" ssh -tt -o StrictHostKeyChecking=no root@${{ secrets.NCP_DEV_HOST }} << EOF
-            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/${{ env.PROJECT_NAME }}:latest
-            docker stop ${{ env.PROJECT_NAME }} || true
-            docker rm ${{ env.PROJECT_NAME }} || true
-            docker run -d --name ${{ env.PROJECT_NAME }} -p 8080:8080 \
-              -e SPRING_PROFILES_ACTIVE=prod \
-              ${{ secrets.NCP_CONTAINER_REGISTRY }}/${{ env.PROJECT_NAME }}:latest
+          cd ~
+          wget https://www.ncloud.com/api/support/download/5/65
+          unzip 65
+          mkdir ~/.ncloud
+          echo -e "[DEFAULT]\nncloud_access_key_id = ${{ secrets.NCP_ACCESS_KEY }}\nncloud_secret_access_key = ${{ secrets.NCP_SECRET_KEY }}\nncloud_api_url = https://ncloud.apigw.ntruss.com" >> ~/.ncloud/configure
+
+      - name: deploy file
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          username: 'root'
+          server: ${{ secrets.NCP_DEV_HOST }}
+          password: ${{ secrets.NCP_DEV_PASSWORD }}
+          local_path: './docker-compose.yml'
+          remote_path: '/root'
+          sftpArgs: '-o ConnectTimeout=5'
+
+      - name: Connect SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.NCP_DEV_HOST }}
+          username: root
+          password: ${{ secrets.NCP_DEV_PASSWORD }}
+          port: 22
+          script: |
+            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/nextjs-server
+            docker stop $(docker ps -a -q)
+            docker rm $(docker ps -a -q)
+            docker compose up -d
             docker image prune -f
-          EOF
+
+      
