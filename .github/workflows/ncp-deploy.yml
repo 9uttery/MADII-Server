@@ -83,8 +83,8 @@ jobs:
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          key: ${{ secrets.NCP_DEV_SSH_KEY }}
+          known_hosts: ${{ secrets.NCP_DEV_KNOWN_HOSTS }}
 
       - name: Install sshpass
         run: sudo apt-get install sshpass
