@@ -88,16 +88,6 @@ jobs:
           mkdir ~/.ncloud
           echo -e "[DEFAULT]\nncloud_access_key_id = ${{ secrets.NCP_ACCESS_KEY }}\nncloud_secret_access_key = ${{ secrets.NCP_SECRET_KEY }}\nncloud_api_url = https://ncloud.apigw.ntruss.com" >> ~/.ncloud/configure
 
-      - name: deploy file
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
-        with:
-          username: 'root'
-          server: ${{ secrets.NCP_DEV_HOST }}
-          password: ${{ secrets.NCP_DEV_PASSWORD }}
-          local_path: './docker-compose.yml'
-          remote_path: '/root'
-          sftpArgs: '-o ConnectTimeout=5'
-
       - name: Connect SSH
         uses: appleboy/ssh-action@master
         with:
