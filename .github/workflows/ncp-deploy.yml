@@ -3,47 +3,97 @@ name: Deploy to Naver Cloud Platform
 on:
   push:
     branches:
+      - main
       - dev
+  workflow_dispatch:
+
+env:
+  PROJECT_NAME: seesaw-app
 
 jobs:
-  push_to_registry:
-    name: Push to NCP container registry
+  build_and_push:
+    name: Build and Push to NCP container registry
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Make application-secret.yml
+        run: echo ${{ secrets.APPLICATION_SECRET_BASE64 }} | base64 --decode > ./src/main/resources/application-secret.yml
+
+      - name: Make application-dev.yml
+        run: echo ${{ secrets.APPLICATION_DEV_BASE64 }} | base64 --decode > ./src/main/resources/application-dev.yml
+
+      - name: Make application-prod.yml
+        run: echo ${{ secrets.APPLICATION_PROD_BASE64 }} | base64 --decode > ./src/main/resources/application-prod.yml
+
+      - name: Create Firebase Admin SDK JSON
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "madii-app-firebase-adminsdk-uriyk-c04677456f.json"
+          json: ${{ secrets.FIREBASE_KEY_JSON }}
+          dir: "src/main/resources/"
+
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+
       - name: Login to NCP Container Registry
         uses: docker/login-action@v2
         with:
           registry: ${{ secrets.NCP_CONTAINER_REGISTRY }}
           username: ${{ secrets.NCP_ACCESS_KEY }}
           password: ${{ secrets.NCP_SECRET_KEY }}
-      - name: build and push
+
+      - name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:latest
-          cache-from: type=registry,ref=${{ secrets.NCP_CONTAINER_REGISTRY }}/madii-api-server:latest
+          tags: ${{ secrets.NCP_CONTAINER_REGISTRY }}/${{ env.PROJECT_NAME }}:latest
+          cache-from: type=registry,ref=${{ secrets.NCP_CONTAINER_REGISTRY }}/${{ env.PROJECT_NAME }}:latest
           cache-to: type=inline
-  pull_from_registry:
-    name: Connect server ssh and pull from container registry
-    needs: push_to_registry
+
+  deploy:
+    name: Deploy to NCP server
+    needs: build_and_push
     runs-on: ubuntu-latest
     steps:
-      - name: connect ssh
-        uses: appleboy/ssh-action@master
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
         with:
-          host: ${{ secrets.NCP_DEV_HOST }}
-          username: ${{ secrets.NCP_DEV_USERNAME }}
-          password: ${{ secrets.NCP_DEV_PASSWORD }}
-          port: 22
-          script: |
-            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name
-            docker stop $(docker ps -a -q)
-            docker rm $(docker ps -a -q)
-            docker run -d -p 3000:80 --env-file ${{ secrets.ENV_FILENAME_FRONTEND }} ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
+      - name: Connect SSH and Deploy
+        run: |
+          ssh -o StrictHostKeyChecking=no root@${{ secrets.NCP_DEV_HOST }} << EOF
+            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/${{ env.PROJECT_NAME }}:latest
+            docker stop ${{ env.PROJECT_NAME }} || true
+            docker rm ${{ env.PROJECT_NAME }} || true
+            docker run -d --name ${{ env.PROJECT_NAME }} -p 8080:8080 \
+              -e SPRING_PROFILES_ACTIVE=prod \
+              ${{ secrets.NCP_CONTAINER_REGISTRY }}/${{ env.PROJECT_NAME }}:latest
             docker image prune -f
+          EOF
