@@ -106,10 +106,12 @@ jobs:
           password: ${{ secrets.NCP_DEV_PASSWORD }}
           port: 22
           script: |
-            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/nextjs-server
-            docker stop $(docker ps -a -q)
-            docker rm $(docker ps -a -q)
-            docker compose up -d
+            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/${{ env.PROJECT_NAME }}:latest
+            docker stop ${{ env.PROJECT_NAME }} || true
+            docker rm ${{ env.PROJECT_NAME }} || true
+            docker run -d --name ${{ env.PROJECT_NAME }} -p 8080:8080 \
+            -e SPRING_PROFILES_ACTIVE=prod \
+            ${{ secrets.NCP_CONTAINER_REGISTRY }}/${{ env.PROJECT_NAME }}:latest
             docker image prune -f
 
       
