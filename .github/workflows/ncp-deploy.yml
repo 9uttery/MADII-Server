@@ -96,6 +96,7 @@ jobs:
           password: ${{ secrets.NCP_DEV_PASSWORD }}
           port: 22
           script: |
+            docker login ${{ secrets.NCP_CONTAINER_REGISTRY }} -u ${{ secrets.NCP_ACCESS_KEY }} -p ${{ secrets.NCP_SECRET_KEY }}
             docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/${{ env.PROJECT_NAME }}:latest
             docker stop ${{ env.PROJECT_NAME }} || true
             docker rm ${{ env.PROJECT_NAME }} || true
