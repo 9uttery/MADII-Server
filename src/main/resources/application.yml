@@ -7,6 +7,10 @@ spring:
             url: https://kauth.kakao.com
           apple-oidc-key-client:
             url: https://appleid.apple.com
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
   profiles:
     group:
